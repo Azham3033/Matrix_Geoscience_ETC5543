@@ -57,7 +57,7 @@ Your review will guide improvements to TESMs and the inclusion of specialty crop
 ```{r, warning=F, message=F}
 library(tidyverse)
 
-crops_all <- readRDS("data/all_crops_df.rds")
+crops_all <- readRDS("dataset/all_crops_df.rds")
 
 head(crops_all,5)
 ```
