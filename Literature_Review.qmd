@@ -1,0 +1,260 @@
+---
+title: "Literature Review Instructions"
+author:
+- name: Rafli Ramdani
+  degrees: TBA
+  email: rram0049@student.monash.edu
+- name: Azham Hassan Venghat
+  degrees: TBA
+  email: aven0024@student.monash.edu
+phone: TBA
+email: BusEco-Econometrics@monash.edu
+organization: TBA
+bibliography: references.bib
+format: report-pdf
+---
+
+
+# Objective
+
+To support the development of a flexible, high‑resolution modelling framework by conducting a structured literature review of:
+
+1. The **existing Tasmanian Enterprise Suitability Maps (TESMs)** – their inputs, methods, and limitations  
+2. Comparable **crop suitability models** from other regions  
+3. **Emerging, high‑value, or climate‑resilient crops** suitable for Tasmania’s cool temperate climate  
+
+Your review will guide improvements to TESMs and the inclusion of specialty crops (e.g. truffles).
+
+
+This project focuses on reviewing the current Tasmanian Enterprise Suitability Map (TESM) and the crops included in it. It will look closely at how the TESM works, including the criteria and data it uses to decide which crops are suitable where, and will point out the strengths and weaknesses of this approach. The project will also explore how crops get chosen for the TESM and whether the map effectively reflects Tasmania’s different land types and local climate conditions.
+
+Next, the project will compare the TESM’s methods and crop choices with similar mapping systems from other places to see how they differ and what lessons can be learned. Finally, based on this comparison and understanding, the project will suggest some new and emerging crops that are well-suited to Tasmanian conditions and could be added to the TESM. These suggestions aim to help improve crop diversity, support better land use decisions, and promote sustainable agricultural growth in Tasmania. TO be continued... 
+---
+
+# Part 1: Review of the Existing Tasmanian Enterprise Suitability Maps (TESMs)
+
+# Tasmanian Enterprise Suitability Map (TESM) Overview
+
+The Tasmanian Enterprise Suitability Map (TESM) is a comprehensive tool designed to help farmers, investors, and land managers understand what crops or agricultural enterprises are best suited to different parts of Tasmania. It integrates detailed information on soil, climate, and landscape characteristics to assess land suitability for various crops.
+
+TESM combines high-resolution digital soil mapping, climate modeling, and specific crop suitability rules developed in collaboration with industry experts and the Tasmanian Institute of Agriculture (TIA). These maps rate key factors like temperature, rainfall, soil properties, frost risk, drainage, and slope against the requirements of different crops to classify areas into categories such as well suited, suitable, marginally suitable, or unsuitable.
+
+This mapping supports regional agricultural planning by identifying areas where crops could be introduced, intensified, or diversified and highlights potential risks and management considerations. It also incorporates projected climate change scenarios for 2030 and 2050 to help stakeholders plan for future shifts in suitability.
+
+TESM data can be accessed and interacted with via [LISTmap](https://maps.thelist.tas.gov.au/listmap/app/list/map?bookmarkId=694984), where users can explore suitability ratings for different crops in specific locations and understand the limitations or manageable constraints of the land.
+Users can view and query the maps, zoom into specific locations, and overlay other relevant environmental or administrative spatial layers. Access to the suitability maps, crop rules and Enterprise fact sheets and user guides are provided on the [Enterprise Suitability Maps](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit/enterprise-suitability-maps) page. `Overall, TESM provides a science-based, spatially detailed guide to support sustainable agricultural development across Tasmania.
+
+
+## Tasks
+
+- **Summarise current model features**  
+## Methodology
+
+Digital Soil Mapping (DSM): Detailed soil attributes such as pH, soil depth, texture, drainage, stoniness, salinity, sodicity, and organic carbon are modeled using soil sampling data, laboratory analysis, and predictive machine-learning techniques to generate high spatial resolution (typically 30m to 80m) raster maps.
+
+Climate Modelling: Climate parameters important for crop growth such as temperature (mean, max, min), frost risk, chill hours, growing degree days, rainfall patterns, and extreme weather risks are modeled based on long-term weather station data and temperature logger networks. These models are validated and refined through statistical cross-validation.
+
+Crop Suitability Rules:
+
+Expert consultations with the Tasmanian Institute of Agriculture (TIA) and industry specialists combined with literature and research data to develop specific crop rules. Each crop has defined threshold values or “rules” for climate, soil, and landscape parameters that classify land into suitability classes: well suited, suitable, marginally suitable, or unsuitable.
+
+Mapping layers for each environmental factor are categorized accordingly.
+
+Enterprise Suitability Rulesets: Crop suitability is rated according to rule sets for each commodity (e.g., cereals, vegetables, pastures, forestry) developed in consultation with the Tasmanian Institute of Agriculture and industry partners.
+
+Incorporation of Climate Futures Tasmania (CFT):
+
+Future climate projections (for 2030 and 2050) based on Representative Concentration Pathway 8.5 scenarios are integrated into the modelling to assess how suitability may change under projected climate conditions.
+
+## Key Components
+Features
+1. Interactive Mapping Portal (LISTmap)
+
+LISTmap is an online tool that allows users to explore the enterprise suitability maps at specific locations across Tasmania. Users can query any point on the map to view suitability ratings for different crops or enterprises. The portal also lets users overlay additional environmental layers, such as soil attributes, climate variables, and administrative boundaries, for a comprehensive understanding of site conditions. This facilitates informed decision-making by offering localized insights into land suitability.
+More about LISTmap and how to use it can be found here:
+[Enterprise Suitability Maps on LISTmap - NRE Tasmania](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit)
+
+2. Versatility Index
+The Enterprise Versatility Index is an aggregated measure that indicates how versatile a piece of land is by showing the number and range of crops it is suitable for. Areas with high versatility scores are deemed capable of supporting a diverse range of enterprises or crop rotations. This index is valuable for guiding diversification strategies and enabling mixed farming systems, helping land managers optimize productivity and reduce risks associated with monoculture.
+More on the Versatility Index can be accessed via the Enterprise Suitability Toolkit:[Enterprise Suitability Toolkit](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit)
+
+3. Constraint Identification
+TESM highlights both hard (non-manageable) and manageable constraints that affect crop suitability at any location. These might include environmental risks like frost frequency, soil drainage issues, pH levels, and salinity. By identifying these constraints, users can better understand what factors limit agricultural potential and consider appropriate management practices to overcome—or adapt to—these limitations. For example, poor drainage might be improved through infrastructure, or acidic soils may be amended with lime to improve suitability.
+Details on constraints and their management are available here:
+[Enterprise Suitability Maps Documentation](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit)
+
+4. Hazard Layers
+To support sustainable land use, TESM incorporates hazard mapping layers such as soil erosion risk (from wind and water), salinity, sodicity, and waterlogging. These hazard layers help land managers identify vulnerable soils and take preventive or corrective measures to avoid land degradation, ensuring long-term productivity and environmental health. They provide an essential input for sustainable farm management practices and environmental stewardship.
+More information on hazard layers and sustainable land management options is found here:[Digital Soil Mapping and Vulnerable Soils - NRE Tasmania](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit)
+
+Review Process and Collaboration
+The review and evaluation process of the Tasmanian Enterprise Suitability Maps (TESM) has been a collaborative effort involving the Tasmanian Institute of Agriculture (TIA) and various industry stakeholders. This partnership ensures that the mapping framework aligns closely with local agricultural knowledge and established land-use practices, thus enhancing the maps’ relevance and practical utility for Tasmania’s farming and investment communities.
+
+The ongoing evaluation involves consultation with experts and end-users to validate the accuracy of suitability ratings and the effectiveness of crop-specific suitability rules. This iterative process supports refinement of the maps in response to new scientific data, changes in agricultural markets, and evolving environmental conditions. 
+
+  - List/tabulate all crops currently included  
+  
+```{r}
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+
+# Create data frame
+crops <- data.frame(
+  Category = c(
+    "Cereal / Grain", 
+    "Vegetables / Roots / Bulbs",
+    "Fruits / Berries",
+    "Oilseed / Specialty",
+    "Nut Crops",
+    "Pasture / Forage",
+    "Forestry / Tree Species"
+  ),
+  Crops = c(
+    "Barley, Wheat, Linseed",
+    "Carrots, Carrot Seed, Onions, Potatoes",
+    "Blueberries (NHB & SHB), Cherries, Raspberries, Strawberries, Wine Grapes (Sparkling & Table)",
+    "Industrial Hemp, Olives, Pyrethrum, Poppies",
+    "Hazelnuts",
+    "Lucerne, Cocksfoot (Continental & Mediterranean), Ryegrass, Phalaris, Clover varieties (Red, White, Strawberry), Tall Fescue (Continental & Mediterranean)",
+    "Eucalyptus globulus, Eucalyptus nitens, Pinus radiata"
+  )
+)
+
+# Create table with subheading
+crops %>%
+  kable("html", col.names = c("Category", "Crops"), escape = FALSE) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover")) %>%
+  add_header_above(c("Current Crop Categories in TESM" = 2))
+
+```
+** How these crops are determined suitable ** 
+
+Suitability for a crop is decided by looking at several key environmental factors—like soil depth, drainage, pH, electrical conductivity, slope, frost risk, and others—at a particular location. Each factor is evaluated against threshold values specific to the crop. These thresholds are set based on what the crop needs to perform well.
+
+The process uses a "most-limiting-factor" approach. This means that, even if most factors are excellent, just one poor factor can determine the overall suitability. In other words, the weakest link sets the limit:
+
+If a location scores “Well suited” for everything except drainage (which is “Unsuitable”), the whole site is deemed “Unsuitable” for that crop, because the poor drainage is expected to severely limit success.
+
+Suitability levels are usually scored or classified from:
+
+1.0 Well suited – All individual criteria are “Well suited.”
+
+2.0 Suitable – A single limiting factor is “Suitable,” all others are “Well suited.”
+
+3.0 Moderately suitable – One or more “Moderately suitable” factors.
+
+4.0 Unsuitable – Any factor is “Unsuitable” (or the land is protected, urban, or open water).
+
+Improving Suitability
+If a limiting factor is considered manageable (a "manageable constraint"), landowners can take steps to address it. For example:
+
+Low soil pH: Applying lime can raise pH, making the soil suitable for crops like barley.
+
+Poor drainage: Installing drainage systems can help.
+
+Excess stones: Stones can be mechanically or manually removed.
+
+If such mitigations are feasible, the suitability rating may improve from “Moderately suitable” to “Suitable (with management).”
+
+-----
+Suitability is determined by rating all important growing conditions, then choosing the lowest rating among these (the most limiting factor) as the overall score. If that limiting factor can be addressed by practical management techniques, the land’s suitability rating for a crop might be increased to reflect that potential improvement.
+
+  - Describe modelling approach (deterministic rules, scoring thresholds)  
+  
+  Modelling Approach
+Deterministic Rules: Crop-specific suitability rules are designed by expert consultation; each rule integrates documented thresholds for temperature, rainfall, frost risk, soil pH, drainage, etc.
+
+Scoring/Classifications: Mapped areas are classified into “Well suited,” “Suitable,” “Moderately suitable,” or “Unsuitable” classes, sometimes with notes for management improvements.
+
+Integration with Climate Futures Tasmania: Future projections (2030, 2050) incorporate RCP 8.5 scenarios and downscaled climate models.
+
+Spatial Modelling: Soil attributes through digital soil mapping (DSM) at 30–80m resolution, climate layers interpolated using regression trees/kriging algorithms.
+
+============
+
+
+- **Critically assess limitations**  
+  - Missing inputs (e.g. chill hours, pH, drainage, frost exposure)  
+  - Lack of uncertainty estimation or validation  
+  - Inflexibility for adding niche or specialty crops  
+  - Over generalization (ignoring micro climates, management practices)  
+  
+  Limitations
+
+Modelling Assumptions
+TESM assumes that adequate water is available for irrigation, so water scarcity or irrigation limitations are not factored into suitability ratings. It also does not capture all specific on-farm constraints such as localized soil variability, pest/disease pressures, or detailed management practices.
+
+Necessity for Ground-Truthing
+TESM provides a broad regional overview intended to guide where crops might be suitable at a broad scale. However, it is not a substitute for detailed, site-specific soil testing and on-farm investigations, which are essential before making any investment or operational decisions.
+
+Uncertainties in Climate Modelling
+The integration of Climate Futures Tasmania (CFT) projections inherently includes uncertainties due to the complexities and limitations of climate and soil models, emission scenario assumptions, and the variability of natural processes. These uncertainties affect the accuracy of future suitability predictions, which should be interpreted as likely scenarios rather than exact forecasts.
+
+
+## Suggested Comparator Models
+
+Briefly describe **2–3** of the following alternative suitability frameworks, focusing on inputs, methods, uncertainty, extensibility:
+
+- **New Zealand S‑map & Crop Suitability Layers** (Manaaki Whenua – Landcare Research)  
+  - Includes truffles and other specialty crops  
+  - Integrates soil, climate & management  
+  - Modular and extensible design
+
+- Victorian Horticulture Crop Suitability Framework  
+- Queensland Land Suitability Guidelines (DES)  
+- FAO EcoCrop / GAEZ  
+- USDA Crop Suitability Tools  
+- CSIRO land evaluation frameworks  
+
+---
+
+# Part 2: Literature Review on Emerging & Climate‑Resilient Crops
+
+## Selection Criteria
+
+Identify crops that are:
+
+- **Not** in TESMs  
+- High‑value or specialty (e.g. truffles, saffron, hops)  
+- Climate‑resilient (drought/frost/salinity tolerance)  
+- Suitable for regenerative, small‑scale systems in Tasmania  
+- Under trial or limited local production (bonus)
+
+## Crop Summary Requirements
+
+For each candidate crop, capture at minimum the details required as inout to the existing TESM, and any others indentified from your literature review, e.g:
+
+- **Climatic**: temperature range, rainfall, chill hours, frost/heat tolerance  
+- **Soil**: texture, drainage, pH, organic matter  
+- **Topography**: slope, elevation suitability  
+- **Water**: irrigation needs or dryland tolerance  
+- **Management**: pest/disease issues, growing season, pollination  
+- **Markets**: value, demand trends, Tasmanian viability  
+- **Model Inputs**: spatial variables you could add to TESMs  
+
+---
+
+# Deliverables
+
+1. **Narrative Report** (4–6 pages)  
+   - Executive summary  
+   - TESMs overview & limitations  
+   - Comparator model insights  
+   - 5–10 recommended crops (with focus on truffles)  
+   - Recommendations for new inputs & uncertainty handling  
+
+2. **Reference List**  
+Please only use Peer‑reviewed journals, government & industry reports. Use reference formatting according to Monash unit guidelines.  
+
+
+# Resources
+
+- **TESMs**: <https://dpipwe.tas.gov.au/agriculture/land-resources/land-capability-and-suitability/enterprise-suitability>  
+- **NZ S‑map**: <https://smap.landcareresearch.co.nz/>  
+- **FAO EcoCrop**: <https://ecocrop.fao.org/>  
+- CSIRO, AgriFutures, DPIPWE, AgVic, QLD DES publications  
+- Google Scholar, Scopus, Web of Science, Trove  
+
+---
+
