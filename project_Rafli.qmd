@@ -23,13 +23,11 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 To support the development of a flexible, high‑resolution modelling framework by conducting a structured literature review of:
 
-1. The **existing Tasmanian Enterprise Suitability Maps (TESMs)** – their inputs, methods, and limitations  (extensive, around 4500 words)
+1. Examine the existing Tasmanian Enterprise Suitability Maps (TESMs) by providing a comprehensive analysis of their input data, methodological foundations, and identified limitations.
 
-2. Comparable **crop suitability models** from other regions
+2. Evaluate comparable crop suitability modelling frameworks applied in other regions, highlighting their methodologies, strengths, and relevance to the Tasmanian context.
 
-3. **Emerging, high‑value, or climate‑resilient crops** suitable for Tasmania’s cool temperate climate  
-
-Your review will guide improvements to TESMs and the inclusion of specialty crops (e.g. truffles).
+3. Investigate emerging, high-value, and climate-resilient crops with potential suitability for Tasmania’s cool temperate environment, with particular attention to specialty crops such as truffles.
 
 ---
 
@@ -240,7 +238,7 @@ According to @tbl-allvariables, across the three classes, topography only has 2 
 
 Tasmania’s Enterprise Suitability Maps (TESMs) are modelled using a deterministic, rule-based framework grounded in digital soil assessment (DSA). The soil component relies on machine learning (interpolation) and geostatistical methods to predict soil attributes from field observations and environmental covariates while quantifying uncertainty. Climate and terrain factors are integrated through threshold rules derived from agronomic literature, expert workshops, and industry consultation.
 
-Each enterprise/crop has a specific rule set defining suitable ranges for soil, climate, and landscape parameters. These thresholds are applied to spatial data layers at 30-meter resolution (high resolution) to produce categorical suitability scores, ranging from Well suited (score 1.0) until Unsuitable (score 4.0). This approach allows users to identify limiting factors, such as frost risk, non-ideal soil depth, etc. and consider risk mitigation options.
+Each enterprise/crop has a specific rule set defining suitable ranges for soil, climate, and landscape parameters. These thresholds are applied to spatial data layers at 30-meter resolution (high resolution) to produce categorical suitability scores, ranging from Well suited (score 1.0) to Unsuitable (score 4.0). This approach allows users to identify limiting factors, such as frost risk, non-ideal soil depth, etc. and consider risk mitigation options.
 
 Climate inputs come from high-resolution, downscaled regional projections validated with empirical data, incorporating future scenarios for 2030 and 2050 (RCP 8.5) to support adaptation planning. The TESMs also include an Enterprise Versatility Index that aggregates suitability across multiple crops, helping to identify broadly versatile land for sustainable agricultural development in Tasmania. In summary, TESMs combine expert-defined deterministic rules with advanced digital soil mapping to provide a practical, interpretable, and scientifically robust tool for land-use planning, acknowledging inherent limitations in data and modelling assumptions (Kidd et al., 2012; Kidd et al., 2014; Webb et al., 2014; Kidd, 2015; Webb et al., 2018; Kidd et al., 2020).
 
@@ -266,49 +264,67 @@ In addition to microclimatic variability, the maps also overlook differences in 
 
 ## Suggested Comparator Models
 
-Briefly describe **2–3** of the following alternative suitability frameworks, focusing on inputs, methods, uncertainty, extensibility:
+### **New Zealand S‑map & Crop Suitability Layers** 
 
-- **New Zealand S‑map & Crop Suitability Layers** (Manaaki Whenua – Landcare Research) 
+New Zealand’s national S-map integrates soil, climate, and terrain data at a 500 m resolution to assess crop suitability, including specialty crops such as truffles, hops, and few specialty wine grapes. It is jointly maintained by Plant & Food Research, Manaaki Whenua – Landcare Research, NIWA, and MPI. Compared to Tasmania’s TESM, the framework includes more explicit representation of biophysical constraints and yields expressed as a range, offering users insight into uncertainty.
+
+  - Inputs: Soil (depth, pH, drainage from S-map), climate (temperature, rainfall from NIWA Virtual Climate Station), and terrain (slope, aspect).
+
+  - Methods: Rule-based GIS modelling adapted from Kidd et al. (2015), similar to modelling reference of TESM, with suitability defined in four categories (well-suited, suitable, marginal, unsuitable) based on most-limiting factor logic. Rules are iteratively refined with expert feedback.
+
+  - Uncertainty: Yield estimates presented as lower and upper bounds, categorical suitability classes carry a “moderate reliability” caveat at national scale.
+
+  - Extensibility: Modular design allows addition of new crops; explicit management scenarios (e.g. irrigation, liming, drainage) demonstrate adaptability to different farm practices.
+
+Compared to TESM, the New Zealand's S-map framework provides national-scale consistency and explicit yield ranges, though with less resolution for fine-grained, farm-level decisions.
 
 
-  - Includes truffles and other specialty crops  
-  - Integrates soil, climate & management  
-  - Modular and extensible design
 
-- Victorian Horticulture Crop Suitability Framework  
+### **FAO GAEZ: Agro-MAPS**
 
-- Queensland Land Suitability Guidelines (DES)  
+The FAO Global Agro-Ecological Zones (GAEZ) framework, with its Agro-MAPS database, is a global land evaluation system designed to assess agricultural potential under current and future climate conditions. Unlike Tasmania’s TESMs, which are state-level, GAEZ integrates global datasets on soils, climate, terrain, and agricultural statistics to evaluate suitability, potential yields, and yield gaps across multiple scales.
 
-- FAO EcoCrop / GAEZ  
+  - Inputs: Climate (historical and scenario-based, e.g., 1981–2010, RCP futures), soils and terrain (from the Harmonized World Soil Database and SRTM slope data), land cover/use, phenology and crop calendars, population and livestock distributions, and national/subnational agricultural statistics (via Agro-MAPS).
 
-In modern suitability frameworks (e.g., New Zealand’s S-map + crop suitability layers, or FAO’s GAEZ), probabilistic modelling and climate scenarios are often incorporated. This adds reliability because it expresses the range of possible outcomes, not just a single binary threshold. TESMs fall short here.
+  - Methods: Multi-module modelling system. Module I analyses agro-climatic variables (length of growing period, water balance, frost days); Module II calculates biomass and yields; Modules III–IV assess agro-climatic and edaphic (soil/terrain) constraints; Modules V–VII integrate evaluations, downscale production statistics, and compute yield gaps. Suitability is classed by limiting factors across rain-fed and irrigated conditions, with input/management levels considered.
 
-- USDA Crop Suitability Tools  
+  - Uncertainty: Addressed by scenario modelling (e.g., RCP climate pathways, CO2 fertilisation effects) and by providing ranges for yields and constraints. Downscaling of agricultural statistics incorporates calibration with national data.
 
-- CSIRO land evaluation frameworks  
+  - Extensibility: Highly flexible. GAEZ accommodates multiple management levels, irrigation systems, and climate scenarios, and is updated iteratively (e.g., GAEZ v5 underway). Crop sets can expand, and the framework links to biodiversity, protected areas, and socio-economic overlays for policy support.
 
+Compared to TESMs, GAEZ provides much broader geographic scope and scenario-based foresight, but at coarser resolution and less direct farm-scale applicability.
+
+
+### **Comparator Summary**
+
+
+| Feature            | Tasmania TESM | NZ S-map & Crop Layers | FAO GAEZ / Agro-MAPS |
+|--------------------|---------------|------------------------|----------------------|
+| **Inputs**         | Soil, climate, topography from state datasets; assumes irrigation is available. | Soil attributes (S-map), climate (NIWA Virtual Climate Station), terrain; crop-specific rules. | Global climate (historical + scenarios), soils (HWSD), terrain (SRTM), land cover/use, crop calendars, ag. statistics (Agro-MAPS). |
+| **Methods**        | Rule-based, deterministic thresholds; “most limiting factor” approach; outputs 9 suitability classes (with management options). | Rule-based GIS modelling, 4 suitability classes; expert-reviewed iterations; yields expressed as ranges. | Multi-module system (Modules I–VII): agro-climatic analysis, yield modelling, constraints, soil/terrain suitability, integration with national stats, yield gap analysis. |
+| **Uncertainty**    | Not explicitly quantified; only “manageable constraints” noted. | Yields given as lower/upper ranges; categorical maps rated “moderate reliability” at national scale. | Explicitly incorporates climate scenarios, CO2 effects, yield ranges, and calibration with national statistics. |
+| **Extensibility**  | Crop list fixed but new crops added via rule-sets and consultation; designed for state planning. | Modular; new crops/scenarios can be added; includes specialty crops (e.g. truffles) and management scenarios (irrigation, drainage, liming). | Highly extensible: multiple management levels, irrigated vs rain-fed, climate change scenarios; regularly updated (e.g. v5 in development). |
+| **Scale/Resolution** | State of Tasmania; higher resolution (30–80 m); farm to regional planning. | National (NZ); 500 m resolution; suitable for regional benchmarking, not block-level. | Global; coarse (~5 arc-min, ~10 km); intended for national, regional, and global planning, not local farm scale. |
 
 
 ---
 
 # Part 2: Literature Review on Emerging & Climate‑Resilient Crops
 
-## Selection Criteria
+## Novelty Crop Selection
 
-Identify crops that are:
+### a. Quinoa (drought, salinity, and frost tolerant, limited local productio)
 
-- **Not** in TESMs  
-- High‑value or specialty (e.g. truffles, saffron, hops) 
 
-  - Ginseng (currently under trial or limited local production).
-  
-- Climate‑resilient (drought/frost/salinity tolerance)  
+### b. Ginseng (currently under trial or limited local production)
 
-  - Quinoa (drought, salinity, and frost tolerant)
 
-- Suitable for regenerative, small‑scale systems in Tasmania  
+### c. Sea Buckthorne (high tolerance to drought, frost, and poor soil, novel)
 
-- Under trial or limited local production (bonus)
+
+### d. Truffle
+
+
 
 
 ## Crop Summary Requirements
@@ -323,45 +339,65 @@ For each candidate crop, capture at minimum the details required as input to the
 - **Markets**: value, demand trends, Tasmanian viability  
 - **Model Inputs**: spatial variables you could add to TESMs  
 
+
+```{r}
+#| label: tbl-noveltycrops
+#| fig-cap: "Crop Summary Requirements for Emerging & Climate-Resilient Crops"
+
+# Create empty table structure
+crops_novelty <- data.frame(
+  Requirement = c("Climatic", 
+                  "Soil", 
+                  "Topography", 
+                  "Water", 
+                  "Management", 
+                  "Markets", 
+                  "Model Inputs"),
+  Quinoa = "",
+  Ginseng = "",
+  Truffle = ""
+)
+
+# Print table
+kable(crops_novelty) |>
+  kable_styling(full_width = FALSE) |>
+  column_spec(2, width = "13cm") 
+```
+
+
+
+
 ---
-
-# Deliverables
-
-1. **Narrative Report** (4–6 pages)  
-   - Executive summary  
-   - TESMs overview & limitations  
-   - Comparator model insights  
-   - 5–10 recommended crops (with focus on truffles)  
-   - Recommendations for new inputs & uncertainty handling  
-
-2. **Reference List**  
-Please only use Peer‑reviewed journals, government & industry reports. Use reference formating according to Monash unit guidelines.  
-
 
 # Resources
 
-- **TESMs**: <https://dpipwe.tas.gov.au/agriculture/land-resources/land-capability-and-suitability/enterprise-suitability>  
+- **TESMs**: <https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit/enterprise-suitability-mapsy>  
+
+- TESM Modelling References:
+
+
 - **NZ S‑map**: <https://smap.landcareresearch.co.nz/>  
+
 - **FAO EcoCrop**: <https://ecocrop.fao.org/>  
+
 - CSIRO, AgriFutures, DPIPWE, AgVic, QLD DES publications  
+
 - Google Scholar, Scopus, Web of Science, Trove  
 
 ---
 
 # Appendix
 
-#### Table 1
+#### Table 1. All Crop Rules
 
 ```{r, warning=F, message=F}
-#| label: tbl-allrules
-#| tbl-cap: "Table A1. All Rules Inputs for TESM"
 
 head(crops_all,5)
-
 ```
 
 
-#### Figure 1
+
+#### Figure 1. Adding multiple GIS layers in Quarto
 
 ![](images/adding_layers_GIS.png)
 
