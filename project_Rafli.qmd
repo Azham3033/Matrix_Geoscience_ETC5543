@@ -104,14 +104,13 @@ grouped_tbl <- crops_types |>
   arrange(Type)
 
 kable(grouped_tbl) |>
-  kable_styling()
+  kable_styling(full_width = FALSE) |>
+  column_spec(2, width = "10cm")
 
 ```
 
 
 The range of agricultural commodities covered in this map includes vegetables, cereals, pharmaceuticals, perennial horticulture, pastures, and forestry, with a detailed description of the crop–commodity type pairs provided in @tbl-cropcommodity.
-
-  - Identify spatial inputs (e.g. rainfall, soil type, temperature, slope)
 
 The Tasmanian Enterprise Suitability Maps (TESMs) draw upon a wide array of spatial inputs grouped into soil, climate, and topographic attributes. These inputs are derived from digital soil mapping (DSM) and climate modelling, which generate spatially continuous raster grids of functional attributes across the state. Soil properties such as pH, electrical conductivity, clay percentage, exchangeable calcium and magnesium, stone content, effective rooting depth, and depth to sodic layers form the foundation of the database.
 
@@ -199,8 +198,8 @@ vars_classified <- vars_clean |>
     # Topography 
     str_detect(var_lc, "\\bslope\\b") ~ "topography",
     str_detect(var_lc, "\\belevation\\b") ~ "topography",
-    str_detect(var_lc, "\\baspect\\b") ~ "topography",  # safe if it reappears
-
+    str_detect(var_lc, "\\baspect\\b") ~ "topography",  
+    
     # Soil attributes
     str_detect(var_lc, "\\bsoil depth\\b|\\bsoil\\s*depth\\b|^soil depth$") ~ "soil",
     str_detect(var_lc, "\\bsoil depth\\b|\\bsoil depth\\b") ~ "soil",
@@ -211,26 +210,39 @@ vars_classified <- vars_clean |>
     str_detect(var_lc, "stone abundance") ~ "soil",
     str_detect(var_lc, "depth to sodic layer") ~ "soil",
     str_detect(var_lc, "exchangeable calcium|exchangeable magnesium") ~ "soil",
-
     TRUE ~ "other"
   )) |>
   filter(Variable != "Crop Type") |>
   select(Variable, Class)
 
-kable(vars_classified) |>
-  kable_styling()
 ```
 
 
-  - Describe modelling approach (deterministic rules, scoring thresholds)  
+```{r}
+#| label: tbl-allvariables
+#| tbl-cap: "List of All Variables in TESM"
 
-Current Tasmania Enterprise Suitability Maps modelled using ... approach, specifically using ... in the ... part of the mapping, and .... in the .... . 
+vars_tbl <- vars_classified |>
+  filter(Class %in% c("soil", "climate", "topography")) |>
+  mutate(Class = recode(Class, "soil" = "soil attribute")) |>
+  group_by(Class) |>
+  summarise(Variables = paste(sort(unique(Variable)), collapse = ", "),
+            .groups = "drop") |>
+  arrange(Class)
+  
+kable(vars_tbl, booktabs = TRUE, col.names = c("Class", "Variables")) |>
+  kable_styling(full_width = FALSE) |>
+  column_spec(2, width = "13cm") 
 
-The TESMs employ a deterministic, rule-based modelling framework underpinned by digital soil assessment (DSA). Each enterprise has a rule-set derived from agronomic literature, expert workshops, and industry consultation, specifying threshold ranges for soil, climate, and terrain parameters. For example, blueberries require well-to-moderately well-drained soils, with imperfect drainage considered only marginally suitable. These thresholds are applied to the input rasters to generate binary or categorical scores (e.g., well-suited, suitable, marginal, unsuitable), following the FAO-style “most limiting factor” principle where the lowest-rated parameter governs the final suitability class. The rule-based approach ensures transparency and interpretability: stakeholders can query maps to identify specific limiting factors (e.g., frost risk or shallow soil depth) and consider mitigation strategies.
+```
 
-The modelling relies heavily on digital soil mapping outputs, which are produced using machine-learning and geostatistical methods such as regression trees, random forests, and regression-kriging. These methods allow predictions of soil attributes from field observations and environmental covariates, while also quantifying uncertainty in the estimates. 
+According to @tbl-allvariables, across the three classes, topography only has 2 variables, as opposed to soil attributes and climates that have more component. This different in number may reflect on how crop suitability being mapped, but this early finding does not determine anything important towards variable selection in TESM.
 
-In short, TESMs are built by applying expert-defined suitability rules to high-resolution soil and climate grids, combining deterministic thresholds with DSM-derived spatial predictions. The result is a transparent, operational tool for land-use planning, with all of its drawbacks.
+Tasmania’s Enterprise Suitability Maps (TESMs) are modelled using a deterministic, rule-based framework grounded in digital soil assessment (DSA). The soil component relies on machine learning (interpolation) and geostatistical methods to predict soil attributes from field observations and environmental covariates while quantifying uncertainty. Climate and terrain factors are integrated through threshold rules derived from agronomic literature, expert workshops, and industry consultation.
+
+Each enterprise/crop has a specific rule set defining suitable ranges for soil, climate, and landscape parameters. These thresholds are applied to spatial data layers at 30-meter resolution (high resolution) to produce categorical suitability scores, ranging from Well suited (score 1.0) until Unsuitable (score 4.0). This approach allows users to identify limiting factors, such as frost risk, non-ideal soil depth, etc. and consider risk mitigation options.
+
+Climate inputs come from high-resolution, downscaled regional projections validated with empirical data, incorporating future scenarios for 2030 and 2050 (RCP 8.5) to support adaptation planning. The TESMs also include an Enterprise Versatility Index that aggregates suitability across multiple crops, helping to identify broadly versatile land for sustainable agricultural development in Tasmania. In summary, TESMs combine expert-defined deterministic rules with advanced digital soil mapping to provide a practical, interpretable, and scientifically robust tool for land-use planning, acknowledging inherent limitations in data and modelling assumptions (Kidd et al., 2012; Kidd et al., 2014; Webb et al., 2014; Kidd, 2015; Webb et al., 2018; Kidd et al., 2020).
 
 ## Critically assess limitations
   - Missing inputs (e.g. chill hours, pH, drainage, frost exposure) adding new proposed parameters that may help making our map perform better in accuracy.
@@ -243,14 +255,10 @@ Adding on, by investigating the crops rules dataset _(see Appendix Table A1)_, t
 
 Another limitation is in the suitability framework, the integration of these attributes remains deterministic rather than probabilistic. Uncertainty estimates are not considered through into the final TESMs. This makes the maps practical and user-friendly, but at the cost of underrepresenting the variability and confidence levels inherent in the underlying data. with limited flexibility and no formal propagation of uncertainty.
 
-  - Inflexibility for adding niche or specialty crops  
-
 Although LISTmap provides an option to add external layers through formats such as WMS or KML and others _(see Appendix Figure A1)_, the main limitation lies in the availability of suitable data rather than the platform itself. High-resolution spatial datasets for niche or specialty crops are rarely produced because they require costly ground truthing, sensor calibration, and long-term monitoring. Even when data are available from sources such as New Zealand’s S-map or FAO’s GAEZ, the absence of locally collected, large-scale field data in Tasmania prevents the development of reliable crop maps for underrepresented commodities (Zhong et al., 2019; Zhang et al., 2024). This scarcity means that specialty crops cannot be mapped with the same spatial detail as mainstream commodities like cereals or fruit. Furthermore, integrating new data into LISTmap is not straightforward. Users must first prepare and host the datasets in platforms such as ArcGIS, then import them manually into LISTmap. Even then, integration may not function seamlessly, and formal inclusion of a new crop layer still requires request to the custodians of Tasmania’s agricultural spatial data at the Department of Natural Resources and Environment.
 
 Equally important is the lack of locally validated crop-specific suitability rules, which are essential for converting soil, climate, and topographic data into meaningful classifications of land potential. Suitability assessments rely on agronomic thresholds such as acceptable ranges for pH, rainfall, or frost tolerance, yet these thresholds are largely absent for specialty crops in Tasmania. As emphasised by Magliocca et al. (2020) and Pramanik et al. (2023), the introduction of new crops is limited not only by the scarcity of environmental datasets but also by uncertainty in defining where and under what conditions they can be successfully cultivated. Together, these gaps in spatial data and suitability rules explain the current inflexibility in extending Tasmania’s Enterprise Suitability Maps to niche or specialty crops.
 
-  - Over generalization (ignoring micro climates, management practices) 
-  
 Despite the robustness of the spatial inputs and the transparency of the rule-based modelling approach, several limitations emerge when moving from data layers to practical suitability maps. The deterministic framework treats thresholds as fixed, without accounting for uncertainty in soil and climate predictions or variability in management practices. Moreover, while the rules capture key agronomic requirements, they may oversimplify interactions between factors such as soil drainage, temperature extremes, and crop management. As a result, the TESMs provide a valuable first-pass planning tool, but their outputs must be interpreted with caution, particularly when extending to niche crops, areas with complex microclimates, or situations where farmers employ adaptive management strategies.
 
 In addition to microclimatic variability, the maps also overlook differences in management practices that strongly influence crop outcomes. Access to water is a clear example: while rainfall and groundwater availability are well mapped, the actual feasibility of irrigation depends on proximity to dams, rivers, or irrigation infrastructure, which is not captured in the current models. Similarly, the effectiveness of pest and disease management can substantially alter yields on land that appears equally suitable in biophysical terms. Crop rotations and seasonal timing also affect soil resilience and productivity in ways that deterministic rules cannot reflect. By standardising these factors, TESMs risk portraying land units as uniform when, in reality, farmers’ practices create significant variation in outcomes. This underscores the importance of integrating management-related variables such as irrigation access and pest or disease pressure into future suitability frameworks, making them more reflective of real-world agricultural conditions.
@@ -342,6 +350,8 @@ Please only use Peer‑reviewed journals, government & industry reports. Use ref
 
 # Appendix
 
+#### Table 1
+
 ```{r, warning=F, message=F}
 #| label: tbl-allrules
 #| tbl-cap: "Table A1. All Rules Inputs for TESM"
@@ -351,6 +361,9 @@ head(crops_all,5)
 ```
 
 
+#### Figure 1
+
+![](images/adding_layers_GIS.png)
 
 
 ---
