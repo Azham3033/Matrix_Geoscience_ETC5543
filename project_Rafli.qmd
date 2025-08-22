@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 To support the development of a flexible, high‑resolution modelling framework by conducting a structured literature review of:
 
-1. Examine the existing Tasmanian Enterprise Suitability Maps (TESMs) by providing a comprehensive analysis of their input data, methodological foundations, and identified limitations.
+1. Examine the existing Tasmanian Enterprise Suitability Maps (TESM) by providing a comprehensive analysis of their input data, methodological foundations, and identified limitations.
 
 2. Evaluate comparable crop suitability modelling frameworks applied in other regions, highlighting their methodologies, strengths, and relevance to the Tasmanian context.
 
@@ -31,14 +31,14 @@ To support the development of a flexible, high‑resolution modelling framework 
 
 ---
 
-# Part 1: Review of the Existing Tasmanian Enterprise Suitability Maps (TESMs)
+# Part 1: Review of the Existing Tasmanian Enterprise Suitability Maps (TESM)
 ## Current model features
 
 Enterprise Suitability Maps are a map that combine high-resolution digital soil mapping, climate modelling, crop suitability rules. These rate climate, landscape, and soil variables to the requirements of a range of crops. The purpose of this map is to assist farmers, industry, or investors to identify areas where crops or enterprises could potentially be introduced, intensified, or diversified, guiding more detailed investigations at the farm or paddock-scale. possible risks or impediments to growing the crops and mitigation to improve suitability.
 
-Tasmania's Department of Natural Resources and Environment Tasmania alongside Tasmania Institute of Agriculture develop, review, evaluate, and improve the map. Tasmania Enterprise Suitability Maps (TESM) is built from digital soil and climate modelling through on-farm soil sampling and climate sensing (refer to the Digital Soil Mapping and Climate Mapping sections below for further information on these topics). 
+Tasmania's Department of Natural Resources and Environment Tasmania (NRE Tas) alongside Tasmania Institute of Agriculture (TIA) develop, review, evaluate, and improve the map. Tasmania Enterprise Suitability Maps (TESM) is built from digital soil and climate modelling through on-farm soil sampling and climate sensing.
 
-The current mapping assumes water for crop irrigation is available and therefore not a limiting factor to production. This assumption is made in order to enable an assessment of land potential based on soil and climate attributes, independent of current water limitations, and to support planning and investment decisions that align with the scope of new irrigation infrastructure projects in Tasmania, particularly those driven by initiatives such as the "Water for Profit" program, which has expanded irrigation capacity and underpinned decision support for Tasmanian agriculture. The program operates through co-investment models where government funds subsidize infrastructure and development costs, but farmers and enterprises contribute financially for access and ongoing usage, so water is not provided free of charge (Kidd et al, 2015).
+The current mapping assumes water for crop irrigation is available and therefore not a limiting factor to production. This assumption is made in order to enable an assessment of land potential based on soil and climate attributes, independent of current water limitations, and to support planning and investment decisions that align with the scope of new irrigation infrastructure projects in Tasmania, particularly those driven by initiatives such as the [Water for Profit](https://www.utas.edu.au/tia/research/research-projects/project/agricultural-systems/water-for-profit) program, which has expanded irrigation capacity and underpinned decision support for Tasmanian agriculture. The program operates through co-investment models where government funds subsidize infrastructure and development costs, but farmers and enterprises contribute financially for access and ongoing usage, so water is not provided free of charge (Kidd et al, 2015).
 
 ```{r, warning=F, message=F}
 library(tidyverse)
@@ -110,7 +110,7 @@ kable(grouped_tbl) |>
 
 The range of agricultural commodities covered in this map includes vegetables, cereals, pharmaceuticals, perennial horticulture, pastures, and forestry, with a detailed description of the crop–commodity type pairs provided in @tbl-cropcommodity.
 
-The Tasmanian Enterprise Suitability Maps (TESMs) draw upon a wide array of spatial inputs grouped into soil, climate, and topographic attributes. These inputs are derived from digital soil mapping (DSM) and climate modelling, which generate spatially continuous raster grids of functional attributes across the state. Soil properties such as pH, electrical conductivity, clay percentage, exchangeable calcium and magnesium, stone content, effective rooting depth, and depth to sodic layers form the foundation of the database.
+The Tasmanian Enterprise Suitability Maps (TESM) draw upon a wide array of spatial inputs grouped into soil, climate, and topographic attributes. These inputs are derived from digital soil mapping (DSM) and climate modelling, which generate spatially continuous raster grids of functional attributes across the state. Soil properties such as pH, electrical conductivity, clay percentage, exchangeable calcium and magnesium, stone content, effective rooting depth, and depth to sodic layers form the foundation of the database.
 
 Soil drainage class is a particularly critical input, as it strongly influences whether irrigated enterprises can establish successfully; Kidd et al. (2014) demonstrated that integrating expert-based drainage estimates with DSM techniques produced predictive drainage surfaces with robust validation metrics
  
@@ -236,63 +236,60 @@ kable(vars_tbl, booktabs = TRUE, col.names = c("Class", "Variables")) |>
 
 According to @tbl-allvariables, across the three classes, topography only has 2 variables, as opposed to soil attributes and climates that have more component. This different in number may reflect on how crop suitability being mapped, but this early finding does not determine anything important towards variable selection in TESM.
 
-Tasmania’s Enterprise Suitability Maps (TESMs) are modelled using a deterministic, rule-based framework grounded in digital soil assessment (DSA). The soil component relies on machine learning (interpolation) and geostatistical methods to predict soil attributes from field observations and environmental covariates while quantifying uncertainty. Climate and terrain factors are integrated through threshold rules derived from agronomic literature, expert workshops, and industry consultation.
+Tasmania’s Enterprise Suitability Maps (TESM) are modelled using a deterministic, rule-based framework grounded in digital soil assessment (DSA). The soil component relies on machine learning (interpolation) and geostatistical methods to predict soil attributes from field observations and environmental covariates while quantifying uncertainty. Climate and terrain factors are integrated through threshold rules derived from agronomic literature, expert workshops, and industry consultation.
 
 Each enterprise/crop has a specific rule set defining suitable ranges for soil, climate, and landscape parameters. These thresholds are applied to spatial data layers at 30-meter resolution (high resolution) to produce categorical suitability scores, ranging from Well suited (score 1.0) to Unsuitable (score 4.0). This approach allows users to identify limiting factors, such as frost risk, non-ideal soil depth, etc. and consider risk mitigation options.
 
-Climate inputs come from high-resolution, downscaled regional projections validated with empirical data, incorporating future scenarios for 2030 and 2050 (RCP 8.5) to support adaptation planning. The TESMs also include an Enterprise Versatility Index that aggregates suitability across multiple crops, helping to identify broadly versatile land for sustainable agricultural development in Tasmania. In summary, TESMs combine expert-defined deterministic rules with advanced digital soil mapping to provide a practical, interpretable, and scientifically robust tool for land-use planning, acknowledging inherent limitations in data and modelling assumptions (Kidd et al., 2012; Kidd et al., 2014; Webb et al., 2014; Kidd, 2015; Webb et al., 2018; Kidd et al., 2020).
+Climate inputs come from high-resolution, downscaled regional projections validated with empirical data, incorporating future scenarios for 2030 and 2050 (RCP 8.5) to support adaptation planning. The TESM also include an Enterprise Versatility Index that aggregates suitability across multiple crops, helping to identify broadly versatile land for sustainable agricultural development in Tasmania. In summary, TESM combine expert-defined deterministic rules with advanced digital soil mapping to provide a practical, interpretable, and scientifically robust tool for land-use planning, acknowledging inherent limitations in data and modelling assumptions (Kidd et al., 2012; Kidd et al., 2014; Webb et al., 2014).
 
 ## Critically assess limitations
-  - Missing inputs (e.g. chill hours, pH, drainage, frost exposure) adding new proposed parameters that may help making our map perform better in accuracy.
 
-According to the each crop rules dataset, extracted from the [website,](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit/enterprise-suitability-maps) each crops has different combination of crucial climate variable(s) and topography to consider. This claim supported by [this data](https://nrmdatalibrary.dpipwe.tas.gov.au/FactSheets/WfW/ListMapUserNotes/Inventory_DCM_Tas.pdf) from Tasmanian Goverment. This makes modelling an accurate and reliable model for all crops challenging. Missing data happen in all variables. 
+According to the each crop rules dataset, extracted from the [website,](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit/enterprise-suitability-maps) each crops has different combination of crucial climate variables and topography to consider. This claim supported by [this data](https://nrmdatalibrary.dpipwe.tas.gov.au/FactSheets/WfW/ListMapUserNotes/Inventory_DCM_Tas.pdf) from Tasmanian Goverment. This makes modelling an accurate and reliable model for all crops challenging. Missing data happen in all variables. 
 
-Adding on, by investigating the crops rules dataset _(see Appendix Table A1)_, there are limitations of the lack of common/standardize variables. This makes the mapping harder, since the lack of common variables means the map is less-reliable.
+Adding on, by investigating the crops rules dataset _(see Appendix Table A1)_, there are limitations of the lack of common/standardize variables. This makes the mapping harder, since the lack of common variables means the map is less reliable.
 
-  - Lack of uncertainty estimation or validation  (modelling limitation, compare this with smap and gaez)
-
-Another limitation is in the suitability framework, the integration of these attributes remains deterministic rather than probabilistic. Uncertainty estimates are not considered through into the final TESMs. This makes the maps practical and user-friendly, but at the cost of underrepresenting the variability and confidence levels inherent in the underlying data. with limited flexibility and no formal propagation of uncertainty.
+Another limitation is in the suitability framework, the integration of these attributes remains deterministic rather than probabilistic. Uncertainty estimates are not considered through into the final TESM. This makes the maps practical and user-friendly, but at the cost of underrepresenting the variability and confidence levels inherent in the underlying data. with limited flexibility and no formal propagation of uncertainty.
 
 Although LISTmap provides an option to add external layers through formats such as WMS or KML and others _(see Appendix Figure A1)_, the main limitation lies in the availability of suitable data rather than the platform itself. High-resolution spatial datasets for niche or specialty crops are rarely produced because they require costly ground truthing, sensor calibration, and long-term monitoring. Even when data are available from sources such as New Zealand’s S-map or FAO’s GAEZ, the absence of locally collected, large-scale field data in Tasmania prevents the development of reliable crop maps for underrepresented commodities (Zhong et al., 2019; Zhang et al., 2024). This scarcity means that specialty crops cannot be mapped with the same spatial detail as mainstream commodities like cereals or fruit. Furthermore, integrating new data into LISTmap is not straightforward. Users must first prepare and host the datasets in platforms such as ArcGIS, then import them manually into LISTmap. Even then, integration may not function seamlessly, and formal inclusion of a new crop layer still requires request to the custodians of Tasmania’s agricultural spatial data at the Department of Natural Resources and Environment.
 
 Equally important is the lack of locally validated crop-specific suitability rules, which are essential for converting soil, climate, and topographic data into meaningful classifications of land potential. Suitability assessments rely on agronomic thresholds such as acceptable ranges for pH, rainfall, or frost tolerance, yet these thresholds are largely absent for specialty crops in Tasmania. As emphasised by Magliocca et al. (2020) and Pramanik et al. (2023), the introduction of new crops is limited not only by the scarcity of environmental datasets but also by uncertainty in defining where and under what conditions they can be successfully cultivated. Together, these gaps in spatial data and suitability rules explain the current inflexibility in extending Tasmania’s Enterprise Suitability Maps to niche or specialty crops.
 
-Despite the robustness of the spatial inputs and the transparency of the rule-based modelling approach, several limitations emerge when moving from data layers to practical suitability maps. The deterministic framework treats thresholds as fixed, without accounting for uncertainty in soil and climate predictions or variability in management practices. Moreover, while the rules capture key agronomic requirements, they may oversimplify interactions between factors such as soil drainage, temperature extremes, and crop management. As a result, the TESMs provide a valuable first-pass planning tool, but their outputs must be interpreted with caution, particularly when extending to niche crops, areas with complex microclimates, or situations where farmers employ adaptive management strategies.
+Despite the robustness of the spatial inputs and the transparency of the rule-based modelling approach, several limitations emerge when moving from data layers to practical suitability maps. The deterministic framework treats thresholds as fixed, without accounting for uncertainty in soil and climate predictions or variability in management practices. Moreover, while the rules capture key agronomic requirements, they may oversimplify interactions between factors such as soil drainage, temperature extremes, and crop management. As a result, the TESM provide a valuable first-pass planning tool, but their outputs must be interpreted with caution, particularly when extending to niche crops, areas with complex microclimates, or situations where farmers employ adaptive management strategies.
 
-In addition to microclimatic variability, the maps also overlook differences in management practices that strongly influence crop outcomes. Access to water is a clear example: while rainfall and groundwater availability are well mapped, the actual feasibility of irrigation depends on proximity to dams, rivers, or irrigation infrastructure, which is not captured in the current models. Similarly, the effectiveness of pest and disease management can substantially alter yields on land that appears equally suitable in biophysical terms. Crop rotations and seasonal timing also affect soil resilience and productivity in ways that deterministic rules cannot reflect. By standardising these factors, TESMs risk portraying land units as uniform when, in reality, farmers’ practices create significant variation in outcomes. This underscores the importance of integrating management-related variables such as irrigation access and pest or disease pressure into future suitability frameworks, making them more reflective of real-world agricultural conditions.
+In addition to microclimatic variability, the maps also overlook differences in management practices that strongly influence crop outcomes. Access to water is a clear example: while rainfall and groundwater availability are well mapped, the actual feasibility of irrigation depends on proximity to dams, rivers, or irrigation infrastructure, which is not captured in the current models. Similarly, the effectiveness of pest and disease management can substantially alter yields on land that appears equally suitable in biophysical terms. Crop rotations and seasonal timing also affect soil resilience and productivity in ways that deterministic rules cannot reflect. By standardising these factors, TESM risk portraying land units as uniform when, in reality, farmers’ practices create significant variation in outcomes. This underscores the importance of integrating management-related variables such as irrigation access and pest or disease pressure into future suitability frameworks, making them more reflective of real-world agricultural conditions.
 
 
 ## Suggested Comparator Models
 
 ### **New Zealand S‑map & Crop Suitability Layers** 
 
-New Zealand’s national S-map integrates soil, climate, and terrain data at a 500 m resolution to assess crop suitability, including specialty crops such as truffles, hops, and few specialty wine grapes. It is jointly maintained by Plant & Food Research, Manaaki Whenua – Landcare Research, NIWA, and MPI. Compared to Tasmania’s TESM, the framework includes more explicit representation of biophysical constraints and yields expressed as a range, offering users insight into uncertainty.
+New Zealand’s national S-map integrates soil, climate, and terrain data at a 500 m resolution to assess crop suitability, including specialty crops such as truffles, hops, and few specialty wine grapes. It is jointly maintained by Plant & Food Research, [Manaaki Whenua Landcare Research](https://www.landcareresearch.co.nz/), [NIWA](https://niwa.co.nz/), and [MPI](https://www.mpi.govt.nz/). Compared to Tasmania’s TESM, the framework includes more explicit representation of biophysical constraints and yields expressed as a range, offering users insight into uncertainty.
 
   - Inputs: Soil (depth, pH, drainage from S-map), climate (temperature, rainfall from NIWA Virtual Climate Station), and terrain (slope, aspect).
 
-  - Methods: Rule-based GIS modelling adapted from Kidd et al. (2015), similar to modelling reference of TESM, with suitability defined in four categories (well-suited, suitable, marginal, unsuitable) based on most-limiting factor logic. Rules are iteratively refined with expert feedback.
+  - Methods: Rule-based GIS modelling adapted from Kidd et al. (2015), similar to modelling reference of TESM, with suitability defined in four categories (well-suited, suitable, marginal, unsuitable) based on most-limiting factor logic. Rules are continuously refined with expert feedback.
 
-  - Uncertainty: Yield estimates presented as lower and upper bounds, categorical suitability classes carry a “moderate reliability” caveat at national scale.
+  - Uncertainty: Yield estimates are presented as lower and upper bounds rather than single values, acknowledging inherent variability. Suitability classes carry a “moderate reliability” disclaimer at the national scale, since estimates depend on expert judgment, national yield statistics, and generalised soil–climate interactions.
 
-  - Extensibility: Modular design allows addition of new crops; explicit management scenarios (e.g. irrigation, liming, drainage) demonstrate adaptability to different farm practices.
+  - Extensibility: Modular design allows addition of new crops and explicit management scenarios (e.g. irrigation, liming, drainage) demonstrate adaptability to different farm practices.
 
-Compared to TESM, the New Zealand's S-map framework provides national-scale consistency and explicit yield ranges, though with less resolution for fine-grained, farm-level decisions.
+Compared to TESM, the New Zealand's S-map framework provides national-scale consistency and explicit yield ranges, though with less resolution for farm-level decisions.
 
 
 
 ### **FAO GAEZ: Agro-MAPS**
 
-The FAO Global Agro-Ecological Zones (GAEZ) framework, with its Agro-MAPS database, is a global land evaluation system designed to assess agricultural potential under current and future climate conditions. Unlike Tasmania’s TESMs, which are state-level, GAEZ integrates global datasets on soils, climate, terrain, and agricultural statistics to evaluate suitability, potential yields, and yield gaps across multiple scales.
+The FAO Global Agro-Ecological Zones (GAEZ) framework, with its [Agro-MAPS](https://gaez.fao.org/pages/agromaps) database, is a global land evaluation system designed to assess agricultural potential under current and future climate conditions. Unlike Tasmania’s TESM, which are state-level, GAEZ integrates global datasets on soils, climate, terrain, and agricultural statistics to evaluate suitability, potential yields, and yield gaps across multiple scales.
 
-  - Inputs: Climate (historical and scenario-based, e.g., 1981–2010, RCP futures), soils and terrain (from the Harmonized World Soil Database and SRTM slope data), land cover/use, phenology and crop calendars, population and livestock distributions, and national/subnational agricultural statistics (via Agro-MAPS).
+  - Inputs: Climate (historical and scenario-based, RCP futures), soils and terrain (from the Harmonized World Soil Database and SRTM slope data), land cover/use, phenology and crop calendars, population and livestock distributions, and national/subnational agricultural statistics.
 
-  - Methods: Multi-module modelling system. Module I analyses agro-climatic variables (length of growing period, water balance, frost days); Module II calculates biomass and yields; Modules III–IV assess agro-climatic and edaphic (soil/terrain) constraints; Modules V–VII integrate evaluations, downscale production statistics, and compute yield gaps. Suitability is classed by limiting factors across rain-fed and irrigated conditions, with input/management levels considered.
+  - Methods: Multi-module modelling system. Module I analyses agro-climatic variables (length of growing period, water balance, frost days); Module II calculates biomass and yields; Modules III–IV assess agro-climatic and edaphic (soil/terrain) constraints; Modules V–VII integrate evaluations, downscale production statistics, and compute yield gaps. Suitability is classed by limiting factors across irrigated conditions, with input/management levels considered.
 
-  - Uncertainty: Addressed by scenario modelling (e.g., RCP climate pathways, CO2 fertilisation effects) and by providing ranges for yields and constraints. Downscaling of agricultural statistics incorporates calibration with national data.
+  - Uncertainty: Addressed by scenario modelling (RCP climate pathways, CO2 fertilisation effects) and by providing ranges for yields and constraints. Downscaling of agricultural statistics incorporates calibration with national data.
 
-  - Extensibility: Highly flexible. GAEZ accommodates multiple management levels, irrigation systems, and climate scenarios, and is updated iteratively (e.g., GAEZ v5 underway). Crop sets can expand, and the framework links to biodiversity, protected areas, and socio-economic overlays for policy support.
+  - Extensibility: Highly flexible. GAEZ accommodates multiple management levels, irrigation systems, and climate scenarios, and is updated iteratively (GAEZ v5 is underway). Crop sets can expand, and the framework links to biodiversity, protected areas, and socio-economic overlays for policy support.
 
-Compared to TESMs, GAEZ provides much broader geographic scope and scenario-based foresight, but at coarser resolution and less direct farm-scale applicability.
+Compared to TESM, GAEZ provides much broader geographic scope and scenario-based foresight, but at coarser resolution and less direct farm-scale applicability.
 
 
 ### **Comparator Summary**
@@ -303,7 +300,7 @@ Compared to TESMs, GAEZ provides much broader geographic scope and scenario-base
 | **Inputs**         | Soil, climate, topography from state datasets; assumes irrigation is available. | Soil attributes (S-map), climate (NIWA Virtual Climate Station), terrain; crop-specific rules. | Global climate (historical + scenarios), soils (HWSD), terrain (SRTM), land cover/use, crop calendars, ag. statistics (Agro-MAPS). |
 | **Methods**        | Rule-based, deterministic thresholds; “most limiting factor” approach; outputs 9 suitability classes (with management options). | Rule-based GIS modelling, 4 suitability classes; expert-reviewed iterations; yields expressed as ranges. | Multi-module system (Modules I–VII): agro-climatic analysis, yield modelling, constraints, soil/terrain suitability, integration with national stats, yield gap analysis. |
 | **Uncertainty**    | Not explicitly quantified; only “manageable constraints” noted. | Yields given as lower/upper ranges; categorical maps rated “moderate reliability” at national scale. | Explicitly incorporates climate scenarios, CO2 effects, yield ranges, and calibration with national statistics. |
-| **Extensibility**  | Crop list fixed but new crops added via rule-sets and consultation; designed for state planning. | Modular; new crops/scenarios can be added; includes specialty crops (e.g. truffles) and management scenarios (irrigation, drainage, liming). | Highly extensible: multiple management levels, irrigated vs rain-fed, climate change scenarios; regularly updated (e.g. v5 in development). |
+| **Extensibility**  | Crop list fixed but new crops added via rule-sets and consultation; designed for state planning. | Modular; new crops/scenarios can be added; includes specialty crops (e.g. truffles) and management scenarios (irrigation, drainage, liming). | Highly extensible: multiple management levels, irrigated vs rain-fed, climate change scenarios; regularly updated (v5 in development). |
 | **Scale/Resolution** | State of Tasmania; higher resolution (30–80 m); farm to regional planning. | National (NZ); 500 m resolution; suitable for regional benchmarking, not block-level. | Global; coarse (~5 arc-min, ~10 km); intended for national, regional, and global planning, not local farm scale. |
 
 
@@ -313,65 +310,61 @@ Compared to TESMs, GAEZ provides much broader geographic scope and scenario-base
 
 ## Novelty Crop Selection
 
-### a. Quinoa (drought, salinity, and frost tolerant, limited local productio)
+### a. Quinoa
+
+Quinoa _(Chenopodium quinoa)_ is an annual pseudocereal originating from the Andes, traditionally cultivated between sea level and 4000 m. It is valued as a specialty, high-value crop due to its exceptional nutritional profile: a complete protein source, rich in essential amino acids, fiber, and micronutrients. Its reputation as a “superfood” has secured global demand, particularly in health-conscious and gluten-free markets, which makes it attractive for niche agricultural enterprises (Dehghanian et al, 2024).
+
+A defining feature of quinoa is its climate resilience. It can tolerate drought, salinity (up to 15–75 dS/m), frost (to about –8 degrees C in certain ecotypes), and poor soils, while still producing reasonable yields. FAO GAEZ identifies it as suitable across diverse soil textures and altitudes, with optimal growing temperatures of 14–18 degrees C and tolerance from 2–35 degrees C. Quinoa is particularly well adapted to regions with bright light, moderate fertility soils, and well-drained profiles, conditions that align closely with the cool, sunny, and semi-arid microclimates found in parts of Tasmania.
+
+For Tasmania, quinoa is notable as a novelty crop aligned with regenerative and small-scale organic systems. Its short lifecycle (90–120 days), adaptability to marginal soils, and compatibility with organic practices make it a candidate for rotation in mixed farming systems. While global quinoa supply has expanded, in Australia production remains limited, with pioneering cultivation led by farms such as [Kindred Organics](https://www.weeklytimesnow.com.au/agribusiness/farm-magazine/kindred-organics-pioneers-of-quinoa-keeping-the-craze-alive/news-story/07aad6541c5c07c439f7d39a1682999c) in northern Tasmania. This positions quinoa as both an [under-trial](https://www.completehome.com.au/outdoors/kindred-organics-quinoa-farm.html) and locally distinctive crop, offering opportunities for diversification, resilience against climate variability, and access to premium niche markets.
 
 
-### b. Ginseng (currently under trial or limited local production)
+### b. Ginseng
+
+_Panax ginseng_, commonly referred to as Asian or Korean ginseng, is a perennial medicinal and aromatic herb long celebrated as the “king of herbs.” Traditionally used in East Asia for thousands of years, ginseng is prized for its root, which contains ginsenosides, gintonin, and polysaccharides, bioactive compounds linked to improved immunity, energy, and stress resistance. Its high economic value as a medicinal plant and as an ingredient in nutraceuticals and cosmeceuticals makes it a specialty crop with niche, high-return potential (Kim et al, 2024).
+
+From an ecological standpoint, ginseng is climate-sensitive but highly valuable. FAO GAEZ identifies optimal growth under cool temperate to subtropical humid conditions (12–20 degrees C, tolerating 8–27 degrees C), with 700–1300 mm rainfall, high soil fertility, well-drained medium to organic soils, and pH 5.5–7. It is shade-requiring, thriving under forest canopies or artificial covers. This reliance on shaded, moist, and cold conditions, combined with a long growth cycle of 4–6 years, makes ginseng distinct from short-season annuals like quinoa. Its sensitivity to direct sun, pests, and soil imbalances underlines its “high-risk high-reward” nature.
+
+In Tasmanian context, ginseng is notable as a novel but under-realized crop. The state’s cool winters, fertile soils, and established forestry landscapes provide ecological parallels to its native Asian habitats, making shaded valleys or agroforestry systems suitable niches. However, production in Australia has remained experimental and small-scale, with only a handful of growers persisting after earlier waves of enthusiasm, one of them is [41 Degrees South](https://www.thecitizen.org.au/articles/ginsengs-coals-newcastle-promise-never-quite-took). The long establishment time, labour-intensive harvest, and need for precise habitat replication have constrained its expansion. Nevertheless, as a specialty medicinal crop with global demand, particularly in East Asian markets, ginseng represents a unique diversification opportunity for regenerative systems in Tasmania, especially when integrated with shaded forest plantings or high-value organics.
 
 
-### c. Sea Buckthorne (high tolerance to drought, frost, and poor soil, novel)
+### c. Sea Buckthorne
+
+Sea buckthorn _(Hippophae rhamnoides)_ is a hardy, deciduous shrub native to cold-temperate regions of Eurasia. Traditionally used in food, medicine, and cosmetics, its berries are exceptionally rich in vitamin C (up to 2500 mg/100 g in Chinese varieties), carotenoids, unsaturated fatty acids, and phytosterols. These properties position it as a specialty, high-value crop with nutraceutical, cosmeceutical, and ecological applications. Its oil, derived from both seeds and pulp is particularly valued for cardioprotective, antioxidant, anti-inflammatory, and dermatological benefits, making sea buckthorn a candidate for both health-focused and value-added product markets (Olas, 2018).
+
+Ecologically, sea buckthorn is climate-resilient and multifunctional. It tolerates extreme cold (–43 degrees C to –50 degrees C in dormancy) and heat up to 40 degrees C, while thriving on degraded, nutrient-poor, and even saline soils due to its nitrogen-fixing root symbiosis. It prefers well-drained sandy loams with neutral pH but is adaptable to a wide range of soils, including eroded landscapes. Its extensive root system stabilizes slopes, improves soil fertility, and prevents erosion, making it suitable for regenerative agriculture and land restoration. The plant is drought resistant but moisture-sensitive during flowering and fruiting, requiring supplementary irrigation in dry spring conditions, with plantations remaining viable for 30 years under proper management (Ren, 2020).
+
+For Tasmania, sea buckthorn offers potential as a novel multipurpose crop under limited trial conditions. The island’s cool temperate climate, acidic but improvable soils, and growing demand for functional foods and organics provide a promising niche. Beyond its specialty fruit, the plant’s ecological soil enrichment ability, wildlife habitat, and slope stabilization, align with regenerative farming models. Although local production remains undeveloped, international examples (China, Canada, Europe) demonstrate both its commercial viability and ecosystem benefits, suggesting opportunities for Tasmanian diversification into nutraceuticals, cosmetics, and ecological restoration systems.
 
 
-### d. Truffle
+### d. Truffle (_Tuber melanosporum_ or Black Truffle)
 
+_Tuber melanosporum_, known as the black truffle or French truffle, is a subterranean fungus forming a symbiotic relationship with oaks, hazelnuts, and other trees. It is highly valued as a luxury culinary product, contributing to niche gourmet and agritourism markets where harvest is closely linked to immediate consumption. Depending on species and quality, truffle prices can range from €600 to €6000 per kilogram. Their reputation as the “diamonds of the kitchen” reflects both rarity and gastronomic prestige, positioning them among the highest-value specialty crops suited to limited but profitable cultivation ventures (Allen & Bennett, 2021).
 
+Ecologically, black truffles are demanding yet climate-resilient under the right conditions. S-map suitability rules specify optimal rainfall between 700–1500 mm, well-drained calcareous soils with pH 6.5–8.3, and mild summer temperatures averaging >= 16 degrees C in January. Studies highlight that successful fructification depends not only on chemistry but also on physical soil properties, low fine earth and silt content, moderate clay, high bulk density, and good water-holding capacity, balancing aeration with soil moisture. Excess carbonates or waterlogging reduce yields, while supplementary irrigation can enhance production reliability in drier summers. Productive orchards require deep rooting (>100 cm), loose stony soils, and slopes <20 degrees, offering both drainage and stability.
+
+For Tasmania, truffles have already proven their novelty crop potential. Since the first harvest in [Deloraine](https://www.afr.com/life-and-luxury/food-and-wine/meet-the-tasmanians-who-started-australia-s-truffle-industry-20250703-p5mcd4) in 1999, the state has emerged as a pioneer of the Australian truffle industry, with conditions in the central north mirroring those of Perigord, France. Early ventures demonstrated that Tasmania’s cool winters, calcareous soils, and temperate rainfall make it highly suited to truffle orchards. Today, farms such as the Terry family’s Deloraine plantation not only supply domestic markets but also drive agritourism through truffle hunts. While establishment requires significant upfront investment, inoculated tree plantations, and patience (first harvests after 5–8 years), truffles represent a distinctive Tasmanian opportunity that blends high-value specialty food production with ecosystem-compatible forestry.
 
 
 ## Crop Summary Requirements
 
-For each candidate crop, capture at minimum the details required as input to the existing TESM, and any others indentified from your literature review, e.g:
 
-- **Climatic**: temperature range, rainfall, chill hours, frost/heat tolerance  
-- **Soil**: texture, drainage, pH, organic matter  
-- **Topography**: slope, elevation suitability  
-- **Water**: irrigation needs or dryland tolerance  
-- **Management**: pest/disease issues, growing season, pollination  
-- **Markets**: value, demand trends, Tasmanian viability  
-- **Model Inputs**: spatial variables you could add to TESMs  
-
-
-```{r}
-#| label: tbl-noveltycrops
-#| fig-cap: "Crop Summary Requirements for Emerging & Climate-Resilient Crops"
-
-# Create empty table structure
-crops_novelty <- data.frame(
-  Requirement = c("Climatic", 
-                  "Soil", 
-                  "Topography", 
-                  "Water", 
-                  "Management", 
-                  "Markets", 
-                  "Model Inputs"),
-  Quinoa = "",
-  Ginseng = "",
-  Truffle = ""
-)
-
-# Print table
-kable(crops_novelty) |>
-  kable_styling(full_width = FALSE) |>
-  column_spec(2, width = "13cm") 
-```
-
-
+| Requirement   | Quinoa | Ginseng | Sea Buckthorn | Truffle |
+|---------------|--------|---------|---------------|---------|
+| **Climatic** | Optimal 14–18 degrees C; tolerates 2–35 degrees C; rainfall 500–1000 mm (min 250); frost to –8 degrees C; drought/salinity tolerant. | Optimal 12–20 degrees C; tolerates 8–27 degrees C; rainfall 700–1300 mm; requires cold winters and shade. | Hardy to –43 degrees C (dormancy) and up to 40 degrees C; flowers at 10–15 degrees C; fruits with 14.5–17.5 degrees C effective temps. | Optimal mild summers >=16 degrees C; rainfall 700–1500 mm; unsuitable <600 or >2000 mm; sensitive to waterlogging. |
+| **Soil** | Light–medium, well-drained; tolerates poor fertility; pH 5.5–9.5. | Medium to organic; fertile, moist, well-drained; pH 5.5–7. | Sandy loam with organic matter; pH 6.5–7.5; nitrogen-fixing; tolerant of saline/eroded soils. | Calcareous, well-drained; pH 6.5–8.3; low silt, moderate clay; rooting depth >100 cm. |
+| **Topography** | Sea level–4000 m; plains and valleys. | Forest valleys; <1200 m elevation. | Slopes, valleys, riverbeds; up to 2000 m; requires full sun. | Slopes <20 degrees; loose, stony soils aid drainage. |
+| **Water** | Low requirement; dryland tolerant; irrigation improves yield. | Moisture-demanding; intolerant of drought; shade irrigation often needed. | Drought resistant but moisture-sensitive in spring; irrigation helps fruiting. | Supplementary irrigation often required in dry summers. |
+| **Management** | 90–120 day cycle; relatively low pest/disease risk. | 4–6 years to harvest; hand-dug roots; pest- and stress-sensitive. | 4–5 years to fruit; dioecious (male + female); pests include aphids/fruit fly; plantation life ~30 yrs. | 5–8 years to first harvest; requires inoculated oak/hazel hosts; pruning and soil care critical. |
+| **Markets** | High-value superfood; global gluten-free/health demand; limited Tasmanian production. | High-value medicinal/nutraceutical; strong Asian demand; small Tasmanian trials. | High-value berries (vitamin C, oils); nutraceutical/cosmetic/ecological markets; no Tasmanian industry. | Luxury gourmet product (€600–6000/kg); strong export & agritourism; proven Tasmanian success since 1999. |
+| **Model Inputs** | Rainfall, temperature range, frost risk, soil salinity, elevation. | Canopy/shade proxy, winter chill, soil fertility, rainfall distribution. | Temp extremes, soil salinity, slope/erosion risk, nitrogen-fixing potential. | Rainfall, summer temp, slope, soil pH, carbonate, drainage, rooting depth. |  
 
 
 ---
 
 # Resources
 
-- **TESMs**: <https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit/enterprise-suitability-mapsy>  
+- **TESM**: <https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit/enterprise-suitability-mapsy>  
 
 - TESM Modelling References:
 
@@ -380,9 +373,6 @@ kable(crops_novelty) |>
 
 - **FAO EcoCrop**: <https://ecocrop.fao.org/>  
 
-- CSIRO, AgriFutures, DPIPWE, AgVic, QLD DES publications  
-
-- Google Scholar, Scopus, Web of Science, Trove  
 
 ---
 
