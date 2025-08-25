@@ -13,6 +13,22 @@ organization: TBA
 bibliography: references.bib
 format: report-pdf
 ---
+  pdf:
+    keep_tex: true
+    latex-engine: xelatex
+    number-sections: true
+    toc: true
+    toc-depth: 2
+    fig_caption: true
+    documentclass: article
+    geometry: margin=1in
+    includes:
+      in_header: header.tex
+header-includes:
+  - \usepackage{etoolbox}
+  - \AtBeginEnvironment{tabular}{\small}  # make tables use smaller font size to better fit wide tables
+  - \usepackage{array} # for defining column widths if needed later
+  - \usepackage{caption} # helpful for controlling table captions and spacing
 
 
 # Objective

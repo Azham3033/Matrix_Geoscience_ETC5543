@@ -1,0 +1,125 @@
+---
+title: "Draft 1"
+format: pdf
+editor: visual
+---
+
+## Mangolian Milkvetch 
+
+
+Mongolian milkvetch (Astragalus membranaceus var. mongholicus) is a hardy perennial plant from Mongolia and northern China. It is best known for its root, called Huang Qi in Traditional Chinese Medicine, where it has been used for thousands of years to strengthen the body, fight tiredness, and support heart and immune health. Scientists have found that the root contains unique compounds (such as astragalosides and flavonoids) that may help reduce inflammation, protect against stress, and improve recovery (Auyeung et al., 2016). Unlike crops that are grown in bulk for food, Mongolian milkvetch belongs to the group of high-value specialty crops, similar to saffron or truffles. The global market for Traditional Chinese Medicine is worth over USD 130 billion, and Astragalus products make up a significant share. This makes the crop attractive for farmers looking to grow something that is more about quality and value rather than just large volumes (Liu et al., 2020).
+
+From a farming point of view, Mongolian milkvetch is a very resilient plant. It survives in a wide range of climates and soils, which makes it versatile compared to many other crops. It can handle cold winters down to –28 °C, which means frost is not a major threat, and it also tolerates warm summers. The plant needs moderate rainfall (around 500–900 mm each year) and prefers light sandy or loamy soils that drain well, since waterlogging can damage the roots. It can even grow in salty or less fertile soils, which makes it useful on land that is difficult for other crops. Because it is a legume, it naturally improves soil health by fixing nitrogen from the air. This reduces the need for chemical fertilisers and supports sustainable farming. Its deep roots make the plant drought-tolerant and help prevent erosion by holding the soil together. Farmers usually grow it for 12–15 months before harvesting the roots, which are the most valuable part of the plant (Wang et al., 2018).
+
+In Tasmania, Mongolian milkvetch is still new and not yet a commercial crop. However, the Tasmanian Institute of Agriculture (TIA) has been trialling it since 2019 at research farms like Forthside. These trials are testing how well the plant adapts to Tasmanian soils and weather, how resistant it is to pests and diseases, and whether it can produce roots with high levels of the active medicinal compounds. So far, the results are promising, with good plant growth and root quality being reported. For Tasmania, the crop could be a good fit for several reasons: the cool climate suits its frost tolerance, the soil can be improved for its needs, and the state has a growing interest in niche, high value crops for export. If production challenges such as harvesting methods and efficiency can be solved, Mongolian milkvetch could offer Tasmanian farmers a new way to diversify, tap into the fast-growing herbal medicine market, and contribute to regenerative farming systems by improving soil health (Tasmanian Institute of Agriculture, 2021).
+
+```{r echo=FALSE}
+# Create the comparison data
+comparison_table <- data.frame(
+  Factor = c("Climate", "Temperature", "Rainfall", "Soil Texture", "Soil pH", "Organic Matter", "Topography",
+             "Chill Hours", "Sunlight", "Irrigation", "Pests/Diseases", "Growing Season", "Market Demand"),
+  Tasmania= c(
+    "Cool temperate; mild summers; cold winters",
+    "Winter 7°C avg, summer 17–24°C",
+    "500–2000mm/year; drier East, wetter West/South",
+    "Loam, sandy loam, well-drained",
+    "Mildly acidic-neutral (5.5–7.5)",
+    "Moderate",
+    "Flat to gentle slopes, low to moderate elevation",
+    "Sufficient (Tasmania prone to winter chill)",
+    "Moderate, full sun in open areas",
+    "Moderate need; supplemental in drier districts",
+    "Limited reported; root rot potential on wet soils",
+    "Plant Oct-harvest next autumn (~12 months)",
+    "Emerging TCM industry; experimental commercial use"
+  ),
+  Milkvetch = c(
+    "Temperate/cold; tolerates extreme cold (-28°C)",
+    "Annual avg 4–12°C; cold hardy",
+    "Prefers 500–900mm; avoids waterlogging",
+    "Light sandy/loam, well-drained",
+    "Mildly acidic to mildly alkaline (6.5–8.0)",
+    "Moderate, tolerates poor soils",
+    "Prefers flat/moderate slopes for mechanization",
+    "Requires winter chill for compound development",
+    "Full sun necessary",
+    "Low need; drought tolerant",
+    "Root rot risk if waterlogged; minimal pests",
+    "Long season, 12–15 months",
+    "Global $5B market; demand doubling"
+  ),
+  Compatibility = c(
+    "Well aligned; Tasmanian winters suitable",
+    "Good match",
+    "Drier Tasmanian zones more suitable",
+    "Good match",
+    "Overlaps adequately",
+    "Compatible",
+    "Compatible",
+    "Suitable",
+    "Suitable",
+    "Suitable",
+    "Manage water well",
+    "Matching season",
+    "Promising in Tasmania"
+  ),
+  stringsAsFactors = FALSE
+)
+
+# Print the table in the console
+#print(comparison_table)
+
+```
+
+```{r echo=FALSE,warning=FALSE}
+library(knitr)
+library(kableExtra)
+library(stringr)
+
+# Wrap text by specified character width to help with line breaks
+comparison_table_wrapped <- comparison_table
+comparison_table_wrapped$Tasmania <- str_wrap(comparison_table$Tasmania, width = 40)
+comparison_table_wrapped$Milkvetch <- str_wrap(comparison_table$Milkvetch, width = 40)
+comparison_table_wrapped$Compatibility <- str_wrap(comparison_table$Compatibility, width = 35)
+
+kable(comparison_table_wrapped, caption = "Comparison of Tasmania Conditions and Mongolian Milkvetch Requirements") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down", "repeat_header")) %>%
+  column_spec(1, width = "2.5cm") %>%
+  column_spec(2, width = "5cm") %>%
+  column_spec(3, width = "4.5cm") %>%
+  column_spec(4, width = "4.5cm")
+```
+
+```{r eval=FALSE, echo=FALSE}
+library(knitr)
+library(kableExtra)
+library(stringr)
+
+# Wrap text as before for better fit
+comparison_table_wrapped <- comparison_table
+comparison_table_wrapped$Tasmania <- str_wrap(comparison_table$Tasmania, width = 40)
+comparison_table_wrapped$Milkvetch <- str_wrap(comparison_table$Milkvetch, width = 40)
+comparison_table_wrapped$Compatibility <- str_wrap(comparison_table$Compatibility, width = 35)
+
+# Create table with borders
+kable(comparison_table_wrapped, format = "latex", booktabs = TRUE,
+      caption = "Comparison of Tasmania Conditions and Mongolian Milkvetch Requirements",
+      linesep = c("", "\\addlinespace", "\\hline")) %>% 
+  kable_styling(latex_options = c("hold_position", "scale_down", "repeat_header")) %>% 
+  row_spec(0, bold = TRUE, extra_latex_after = "\\midrule") %>%  # bold header with midrule
+  column_spec(1, border_right = TRUE, width = "2.5cm") %>% 
+  column_spec(2, border_right = TRUE, width = "4.5cm") %>% 
+  column_spec(3, border_right = TRUE, width = "4.5cm") %>% 
+  column_spec(4, width = "4.5cm") 
+
+```
+
+## References
+Auyeung, K. F., Han, Q. B., & Ko, J. K. (2016). Astragalus membranaceus: A review of its protection against inflammation and gastrointestinal cancers. American Journal of Chinese Medicine, 44(1), 1–22.
+
+Liu, P., Zhao, H., & Luo, Y. (2020). Anti-aging implications of Astragalus and its potential application. Aging and Disease, 11(5), 1219–1232.
+
+Wang, J., Li, S., Fan, Y., Chen, Y., & Liu, D. (2018). The growth adaptability and agronomic performance of Astragalus membranaceus under different ecological conditions. Industrial Crops and Products, 118, 247–254.
+
+Tasmanian Institute of Agriculture. (2021). Novel crop trials in Tasmania: Astragalus (Mongolian milkvetch). Hobart: University of Tasmania.
+

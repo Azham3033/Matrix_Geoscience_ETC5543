@@ -17,23 +17,14 @@ format: report-pdf
 
 # Objective
 
-To support the development of a flexible, high‑resolution modelling framework by conducting a structured literature review of:
+ This project focuses on reviewing the current Tasmanian Enterprise Suitability Map (TESM) and the crops included in it. It will look closely at how the TESM works, including the criteria and data it uses to decide which crops are suitable where, and will point out the strengths and weaknesses of this approach. The project will also explore how crops get chosen for the TESM and whether the map effectively reflects Tasmania’s different land types and local climate conditions.
+ 
+Next, the project will compare the TESM’s methods and crop choices with similar mapping systems from other places to see how they differ and what lessons can be learned. Finally, based on this comparison and understanding, the project will suggest some new and emerging crops that are well-suited to Tasmanian conditions and could be added to the TESM. These suggestions aim to help improve crop diversity, support better land use decisions, and promote sustainable agricultural growth in Tasmania. 
 
-1. The **existing Tasmanian Enterprise Suitability Maps (TESMs)** – their inputs, methods, and limitations  
-2. Comparable **crop suitability models** from other regions  
-3. **Emerging, high‑value, or climate‑resilient crops** suitable for Tasmania’s cool temperate climate  
-
-Your review will guide improvements to TESMs and the inclusion of specialty crops (e.g. truffles).
-
-
-This project focuses on reviewing the current Tasmanian Enterprise Suitability Map (TESM) and the crops included in it. It will look closely at how the TESM works, including the criteria and data it uses to decide which crops are suitable where, and will point out the strengths and weaknesses of this approach. The project will also explore how crops get chosen for the TESM and whether the map effectively reflects Tasmania’s different land types and local climate conditions.
-
-Next, the project will compare the TESM’s methods and crop choices with similar mapping systems from other places to see how they differ and what lessons can be learned. Finally, based on this comparison and understanding, the project will suggest some new and emerging crops that are well-suited to Tasmanian conditions and could be added to the TESM. These suggestions aim to help improve crop diversity, support better land use decisions, and promote sustainable agricultural growth in Tasmania. TO be continued... 
----
 
 # Part 1: Review of the Existing Tasmanian Enterprise Suitability Maps (TESMs)
 
-# Tasmanian Enterprise Suitability Map (TESM) Overview
+### Tasmanian Enterprise Suitability Map (TESM) Overview
 
 The Tasmanian Enterprise Suitability Map (TESM) is a comprehensive tool designed to help farmers, investors, and land managers understand what crops or agricultural enterprises are best suited to different parts of Tasmania. It integrates detailed information on soil, climate, and landscape characteristics to assess land suitability for various crops.
 
@@ -47,149 +38,163 @@ Users can view and query the maps, zoom into specific locations, and overlay oth
 
 ## Tasks
 
-- **Summarise current model features**  
-## Methodology
+#### Summarise current model features \newline
+**Digital Soil Mapping (DSM)**: Detailed soil attributes such as pH, soil depth, texture, drainage, stoniness, salinity, sodicity, and organic carbon are modeled using soil sampling data, laboratory analysis, and predictive machine-learning techniques to generate high spatial resolution (typically 30m to 80m) raster maps.
 
-Digital Soil Mapping (DSM): Detailed soil attributes such as pH, soil depth, texture, drainage, stoniness, salinity, sodicity, and organic carbon are modeled using soil sampling data, laboratory analysis, and predictive machine-learning techniques to generate high spatial resolution (typically 30m to 80m) raster maps.
+**Climate Modelling**: Climate parameters important for crop growth such as temperature (mean, max, min), frost risk, chill hours, growing degree days, rainfall patterns, and extreme weather risks are modeled based on long-term weather station data and temperature logger networks. These models are validated and refined through statistical cross-validation.
 
-Climate Modelling: Climate parameters important for crop growth such as temperature (mean, max, min), frost risk, chill hours, growing degree days, rainfall patterns, and extreme weather risks are modeled based on long-term weather station data and temperature logger networks. These models are validated and refined through statistical cross-validation.
+**Crop Suitability Rules**:Expert consultations with the Tasmanian Institute of Agriculture (TIA) and industry specialists combined with literature and research data to develop specific crop rules. Each crop has defined threshold values or “rules” for climate, soil, and landscape parameters that classify land into suitability classes: well suited, suitable, marginally suitable, or unsuitable.
 
-Crop Suitability Rules:
+**Mapping layers for each environmental factor are categorized accordingly**.
 
-Expert consultations with the Tasmanian Institute of Agriculture (TIA) and industry specialists combined with literature and research data to develop specific crop rules. Each crop has defined threshold values or “rules” for climate, soil, and landscape parameters that classify land into suitability classes: well suited, suitable, marginally suitable, or unsuitable.
+**Enterprise Suitability Rulesets**: Crop suitability is rated according to rule sets for each commodity (e.g., cereals, vegetables, pastures, forestry) developed in consultation with the Tasmanian Institute of Agriculture and industry partners.
 
-Mapping layers for each environmental factor are categorized accordingly.
-
-Enterprise Suitability Rulesets: Crop suitability is rated according to rule sets for each commodity (e.g., cereals, vegetables, pastures, forestry) developed in consultation with the Tasmanian Institute of Agriculture and industry partners.
-
-Incorporation of Climate Futures Tasmania (CFT):
-
-Future climate projections (for 2030 and 2050) based on Representative Concentration Pathway 8.5 scenarios are integrated into the modelling to assess how suitability may change under projected climate conditions.
+ **Incorporation of Climate Futures Tasmania (CFT)**:Future climate projections (for 2030 and 2050) based on Representative Concentration Pathway 8.5 scenarios are integrated into the modelling to assess how suitability may change under projected climate conditions.
+\newpage
 
 ## Key Components
-Features
-1. Interactive Mapping Portal (LISTmap)
-
-LISTmap is an online tool that allows users to explore the enterprise suitability maps at specific locations across Tasmania. Users can query any point on the map to view suitability ratings for different crops or enterprises. The portal also lets users overlay additional environmental layers, such as soil attributes, climate variables, and administrative boundaries, for a comprehensive understanding of site conditions. This facilitates informed decision-making by offering localized insights into land suitability.
+#### Features \newline
+**Interactive Mapping Portal (LISTmap)**:LISTmap is an online tool that allows users to explore the enterprise suitability maps at specific locations across Tasmania. Users can query any point on the map to view suitability ratings for different crops or enterprises. The portal also lets users overlay additional environmental layers, such as soil attributes, climate variables, and administrative boundaries, for a comprehensive understanding of site conditions. This facilitates informed decision-making by offering localized insights into land suitability.
 More about LISTmap and how to use it can be found here:
 [Enterprise Suitability Maps on LISTmap - NRE Tasmania](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit)
 
-2. Versatility Index
-The Enterprise Versatility Index is an aggregated measure that indicates how versatile a piece of land is by showing the number and range of crops it is suitable for. Areas with high versatility scores are deemed capable of supporting a diverse range of enterprises or crop rotations. This index is valuable for guiding diversification strategies and enabling mixed farming systems, helping land managers optimize productivity and reduce risks associated with monoculture.
+ **Versatility Index**: The Enterprise Versatility Index is an aggregated measure that indicates how versatile a piece of land is by showing the number and range of crops it is suitable for. Areas with high versatility scores are deemed capable of supporting a diverse range of enterprises or crop rotations. This index is valuable for guiding diversification strategies and enabling mixed farming systems, helping land managers optimize productivity and reduce risks associated with monoculture.
 More on the Versatility Index can be accessed via the Enterprise Suitability Toolkit:[Enterprise Suitability Toolkit](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit)
 
-3. Constraint Identification
-TESM highlights both hard (non-manageable) and manageable constraints that affect crop suitability at any location. These might include environmental risks like frost frequency, soil drainage issues, pH levels, and salinity. By identifying these constraints, users can better understand what factors limit agricultural potential and consider appropriate management practices to overcome—or adapt to—these limitations. For example, poor drainage might be improved through infrastructure, or acidic soils may be amended with lime to improve suitability.
+**Constraint Identification**: TESM highlights both hard (non-manageable) and manageable constraints that affect crop suitability at any location. These might include environmental risks like frost frequency, soil drainage issues, pH levels, and salinity. By identifying these constraints, users can better understand what factors limit agricultural potential and consider appropriate management practices to overcome—or adapt to—these limitations. For example, poor drainage might be improved through infrastructure, or acidic soils may be amended with lime to improve suitability.
 Details on constraints and their management are available here:
 [Enterprise Suitability Maps Documentation](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit)
 
-4. Hazard Layers
-To support sustainable land use, TESM incorporates hazard mapping layers such as soil erosion risk (from wind and water), salinity, sodicity, and waterlogging. These hazard layers help land managers identify vulnerable soils and take preventive or corrective measures to avoid land degradation, ensuring long-term productivity and environmental health. They provide an essential input for sustainable farm management practices and environmental stewardship.
+ **Hazard Layers**: To support sustainable land use, TESM incorporates hazard mapping layers such as soil erosion risk (from wind and water), salinity, sodicity, and waterlogging. These hazard layers help land managers identify vulnerable soils and take preventive or corrective measures to avoid land degradation, ensuring long-term productivity and environmental health. They provide an essential input for sustainable farm management practices and environmental stewardship.
 More information on hazard layers and sustainable land management options is found here:[Digital Soil Mapping and Vulnerable Soils - NRE Tasmania](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit)
 
-Review Process and Collaboration
-The review and evaluation process of the Tasmanian Enterprise Suitability Maps (TESM) has been a collaborative effort involving the Tasmanian Institute of Agriculture (TIA) and various industry stakeholders. This partnership ensures that the mapping framework aligns closely with local agricultural knowledge and established land-use practices, thus enhancing the maps’ relevance and practical utility for Tasmania’s farming and investment communities.
+ - **Review Process and Collaboration**:The review and evaluation process of the Tasmanian Enterprise Suitability Maps (TESM) has been a collaborative effort involving the Tasmanian Institute of Agriculture (TIA) and various industry stakeholders. This partnership ensures that the mapping framework aligns closely with local agricultural knowledge and established land-use practices, thus enhancing the maps’ relevance and practical utility for Tasmania’s farming and investment communities.The ongoing evaluation involves consultation with experts and end-users to validate the accuracy of suitability ratings and the effectiveness of crop-specific suitability rules. This iterative process supports refinement of the maps in response to new scientific data, changes in agricultural markets, and evolving environmental conditions. 
 
-The ongoing evaluation involves consultation with experts and end-users to validate the accuracy of suitability ratings and the effectiveness of crop-specific suitability rules. This iterative process supports refinement of the maps in response to new scientific data, changes in agricultural markets, and evolving environmental conditions. 
+#### List/tabulate all crops currently included  
 
-  - List/tabulate all crops currently included  
-  
+```{r, warning=F, message=F}
+library(tidyverse)
+
+crops_all <- readRDS("dataset/all_crops_df.rds")
+
+```
+
 ```{r}
+library(kableExtra)
+
+crops_list <- crops_all |> 
+  distinct(`Crop Type`)
+```
+  
+```{r eval=TRUE}
 library(knitr)
 library(kableExtra)
 library(tidyverse)
 
-# Create data frame
-crops <- data.frame(
-  Category = c(
-    "Cereal / Grain", 
-    "Vegetables / Roots / Bulbs",
-    "Fruits / Berries",
-    "Oilseed / Specialty",
-    "Nut Crops",
-    "Pasture / Forage",
-    "Forestry / Tree Species"
-  ),
-  Crops = c(
-    "Barley, Wheat, Linseed",
-    "Carrots, Carrot Seed, Onions, Potatoes",
-    "Blueberries (NHB & SHB), Cherries, Raspberries, Strawberries, Wine Grapes (Sparkling & Table)",
-    "Industrial Hemp, Olives, Pyrethrum, Poppies",
-    "Hazelnuts",
-    "Lucerne, Cocksfoot (Continental & Mediterranean), Ryegrass, Phalaris, Clover varieties (Red, White, Strawberry), Tall Fescue (Continental & Mediterranean)",
-    "Eucalyptus globulus, Eucalyptus nitens, Pinus radiata"
-  )
-)
+crops_types <- crops_list |>
+  mutate(
+    Type = case_when(
+      # pastures
+      str_detect(`Crop Type`, 
+                 regex("clover|ryegrass|fescue|phalaris|lucerne|cocksfoot", 
+                       ignore_case = TRUE)) ~ "pastures",
+      # perennial horticulture (fruit, nuts and wine grapes)
+      str_detect(`Crop Type`, 
+                 regex("blueberries|cherries|hazelnuts|olives|raspberries|strawberries|tablewg|sparklingwg", 
+                       ignore_case = TRUE)) ~ "perennial horticulture",
+      # vegetables
+      `Crop Type` %in% c("carrots", "carrotseed", "onions", "potatoes") ~ "vegetables",
 
-# Create table with subheading
-crops %>%
-  kable("html", col.names = c("Category", "Crops"), escape = FALSE) %>%
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover")) %>%
-  add_header_above(c("Current Crop Categories in TESM" = 2))
+      # cereals / oilseeds
+      `Crop Type` %in% c("barley", "wheat", "linseed") ~ "cereals",
+
+      # pharmaceuticals
+      `Crop Type` %in% c("hemp", "poppies", "pyrethrum") ~ "pharmaceuticals",
+
+      # forestry
+      str_detect(`Crop Type`, 
+                 regex("tree", ignore_case = TRUE)) ~ "forestry",
+      TRUE ~ "unclassified"
+    )
+  )
 
 ```
-** How these crops are determined suitable ** 
 
-Suitability for a crop is decided by looking at several key environmental factors—like soil depth, drainage, pH, electrical conductivity, slope, frost risk, and others—at a particular location. Each factor is evaluated against threshold values specific to the crop. These thresholds are set based on what the crop needs to perform well.
+```{r}
+#| label: tbl-cropcommodity
+#| tbl-cap: "List of All Current Crops in TESM"
+
+grouped_tbl <- crops_types |>
+  group_by(Type) |>
+  summarise(
+    `Crops` = paste(sort(unique(`Crop Type`)), collapse = ", "),
+    .groups = "drop"
+  ) |>
+  # (optional) order the rows the way you want
+  mutate(Type = factor(
+    Type,
+    levels = c("cereals","perennial horticulture","vegetables",
+               "pharmaceuticals","pastures","forestry","unclassified")
+  )) |>
+  arrange(Type)
+
+kable(grouped_tbl) |>
+  kable_styling(full_width = FALSE) |>
+  column_spec(2, width = "10cm")
+
+```
+**How these crops are determined suitable** 
+
+Suitability for a crop is decided by looking at several key environmental factors like soil depth, drainage, pH, electrical conductivity, slope, frost risk etc, at a particular location. Each factor is evaluated against threshold values specific to the crop. These thresholds are set based on what the crop needs to perform well.
 
 The process uses a "most-limiting-factor" approach. This means that, even if most factors are excellent, just one poor factor can determine the overall suitability. In other words, the weakest link sets the limit:
 
 If a location scores “Well suited” for everything except drainage (which is “Unsuitable”), the whole site is deemed “Unsuitable” for that crop, because the poor drainage is expected to severely limit success.
 
-Suitability levels are usually scored or classified from:
+\newpage
 
-1.0 Well suited – All individual criteria are “Well suited.”
+ **Suitability levels are usually scored or classified from**:
 
-2.0 Suitable – A single limiting factor is “Suitable,” all others are “Well suited.”
+ - **1.0 Well suited**: All individual criteria are “Well suited.”
 
-3.0 Moderately suitable – One or more “Moderately suitable” factors.
+ - **2.0 Suitable**: "The lowest category among the criteria is Suitable, with all others rated higher.”
 
-4.0 Unsuitable – Any factor is “Unsuitable” (or the land is protected, urban, or open water).
+ - **3.0 Moderately suitable**: One or more “Moderately suitable” factors.
 
-Improving Suitability
-If a limiting factor is considered manageable (a "manageable constraint"), landowners can take steps to address it. For example:
+ - **4.0 Unsuitable**: Any factor is “Unsuitable” (or the land is protected, urban, or open water).
 
-Low soil pH: Applying lime can raise pH, making the soil suitable for crops like barley.
+**Improving Suitability**
+ - If a limiting factor is considered manageable (a "manageable constraint"), landowners can take steps to address it. For example:
 
-Poor drainage: Installing drainage systems can help.
+ - **Low soil pH** : Applying lime can raise pH, making the soil suitable for crops like barley.
 
-Excess stones: Stones can be mechanically or manually removed.
+ - **Poor drainage** : Installing drainage systems can help.
+
+ - **Excess stones**: Stones can be mechanically or manually removed.
 
 If such mitigations are feasible, the suitability rating may improve from “Moderately suitable” to “Suitable (with management).”
 
------
 Suitability is determined by rating all important growing conditions, then choosing the lowest rating among these (the most limiting factor) as the overall score. If that limiting factor can be addressed by practical management techniques, the land’s suitability rating for a crop might be increased to reflect that potential improvement.
 
-  - Describe modelling approach (deterministic rules, scoring thresholds)  
-  
-  Modelling Approach
-Deterministic Rules: Crop-specific suitability rules are designed by expert consultation; each rule integrates documented thresholds for temperature, rainfall, frost risk, soil pH, drainage, etc.
+## Describe modelling approach (deterministic rules, scoring thresholds)  
 
-Scoring/Classifications: Mapped areas are classified into “Well suited,” “Suitable,” “Moderately suitable,” or “Unsuitable” classes, sometimes with notes for management improvements.
+ **Modelling Approach**
+ 
+**Deterministic Rules**: Crop-specific suitability rules are designed by expert consultation; each rule integrates documented thresholds for temperature, rainfall, frost risk, soil pH, drainage, etc.
 
-Integration with Climate Futures Tasmania: Future projections (2030, 2050) incorporate RCP 8.5 scenarios and downscaled climate models.
+**Scoring/Classifications**: Mapped areas are classified into “Well suited,” “Suitable,” “Moderately suitable,” or “Unsuitable” classes, sometimes with notes for management improvements.
 
-Spatial Modelling: Soil attributes through digital soil mapping (DSM) at 30–80m resolution, climate layers interpolated using regression trees/kriging algorithms.
+**Integration with Climate Futures Tasmania**: Future projections (2030, 2050) incorporate RCP 8.5 scenarios and downscaled climate models.
 
-============
+**Spatial Modelling**: Soil attributes through digital soil mapping (DSM) at 30–80m resolution, climate layers interpolated using regression trees/kriging algorithms.
 
+#### Limitations \newline
 
-- **Critically assess limitations**  
-  - Missing inputs (e.g. chill hours, pH, drainage, frost exposure)  
-  - Lack of uncertainty estimation or validation  
-  - Inflexibility for adding niche or specialty crops  
-  - Over generalization (ignoring micro climates, management practices)  
-  
-  Limitations
+**Modelling Assumptions**: TESM assumes that adequate water is available for irrigation, so water scarcity or irrigation limitations are not factored into suitability ratings. It also does not capture all specific on-farm constraints such as localized soil variability, pest/disease pressures, or detailed management practices.
 
-Modelling Assumptions
-TESM assumes that adequate water is available for irrigation, so water scarcity or irrigation limitations are not factored into suitability ratings. It also does not capture all specific on-farm constraints such as localized soil variability, pest/disease pressures, or detailed management practices.
+**Necessity for Ground-Truthing**: TESM provides a broad regional overview intended to guide where crops might be suitable at a broad scale. However, it is not a substitute for detailed, site-specific soil testing and on-farm investigations, which are essential before making any investment or operational decisions.
 
-Necessity for Ground-Truthing
-TESM provides a broad regional overview intended to guide where crops might be suitable at a broad scale. However, it is not a substitute for detailed, site-specific soil testing and on-farm investigations, which are essential before making any investment or operational decisions.
-
-Uncertainties in Climate Modelling
-The integration of Climate Futures Tasmania (CFT) projections inherently includes uncertainties due to the complexities and limitations of climate and soil models, emission scenario assumptions, and the variability of natural processes. These uncertainties affect the accuracy of future suitability predictions, which should be interpreted as likely scenarios rather than exact forecasts.
+**Uncertainties in Climate Modelling**: The integration of Climate Futures Tasmania (CFT) projections inherently includes uncertainties due to the complexities and limitations of climate and soil models, emission scenario assumptions, and the variability of natural processes. These uncertainties affect the accuracy of future suitability predictions, which should be interpreted as likely scenarios rather than exact forecasts.
 
 
 ## Suggested Comparator Models
@@ -206,34 +211,171 @@ Briefly describe **2–3** of the following alternative suitability frameworks, 
 - FAO EcoCrop / GAEZ  
 - USDA Crop Suitability Tools  
 - CSIRO land evaluation frameworks  
+\newpage
 
----
 
 # Part 2: Literature Review on Emerging & Climate‑Resilient Crops
 
-## Selection Criteria
+#### Mongolian Milkvetch \newline
 
-Identify crops that are:
+Mongolian milkvetch doesn't show up on Tasmania's list of Essential State Managed crops (TESMs). When you look through the official documents about Tasmania's main crops and pasture species, it's simply not there among the crops the state considers important or commonly grown. This suggests it's basically a new crop option for Tasmania.
+ 
+Since Mongolian milkvetch isn't already established in Tasmania's farming scene, it could be an interesting opportunity for agricultural diversification. Farmers wouldn't be jumping into a crowded market where lots of other producers are already competing with government backing. Instead, they'd be exploring something relatively fresh for the region.
+ 
+This situation creates potential for niche market development. Without existing large scale production in Tasmania, there might be room to develop specialized markets for whatever products come from Mongolian milkvetch,whether that's for health applications, food uses, or other commercial purposes. Early farmers who try growing it could potentially establish themselves in this space before it becomes more common.
 
-- **Not** in TESMs  
-- High‑value or specialty (e.g. truffles, saffron, hops)  
-- Climate‑resilient (drought/frost/salinity tolerance)  
-- Suitable for regenerative, small‑scale systems in Tasmania  
-- Under trial or limited local production (bonus)
+The fact that it's not competing directly with state-prioritized crops also means it could work well as a diversification strategy for farmers looking to try something different alongside their existing operations, rather than replacing them entirely.
+ 
+**High‑value or specialty (e.g. truffles, saffron, hops)**
+
+Mongolian milkvetch fits into the same category as other high-value specialty crops like truffles, saffron, and hops. What makes it valuable isn't the quantity you can grow, but the specialized market it serves.
+
+The main draw is its medicinal properties. The plant's root, known as "Huang Qi" in traditional Chinese medicine, has built up quite a reputation for health benefits like boosting immune systems, helping the body handle stress, and reducing inflammation. This isn't just traditional knowledge either,there's growing interest in these properties from the modern health and wellness industry.
+
+The numbers are quite impressive when you look at the bigger picture. The global traditional Chinese medicine market is valued at around $130 billion, and Astragalus is one of the key herbs in this massive industry. This market keeps expanding as more people worldwide get interested in herbal medicine and natural health products instead of synthetic alternatives.
+
+What's particularly relevant for Tasmania is that this creates opportunities for local farmers to tap into this enormous global market. The specialty nature of Mongolian milkvetch means it can command premium prices which is quite different from regular commodity crops where you're competing mainly on volume and price.
+ 
+For Tasmanian farmers, this could mean getting into a market where quality and specialization matter more than just how much you can produce per hectare. With the right cultivation practices and market connections, even relatively small-scale operations could potentially access this lucrative international market for traditional medicine ingredients. 
+
+**Climate‑resilient (drought/frost/salinity tolerance)**
+
+Mongolian milkvetch is pretty tough when it comes to challenging growing conditions, which could be a real advantage for Tasmanian farmers dealing with variable weather and climate pressures.
+
+**1. Handling dry conditions**: This plant has evolved to cope well with drought. Related milkvetch species can survive on as little as 300-500mm of annual rainfall in various climates, which puts it in a good position for areas that might experience dry spells. The plant has some clever adaptations like,it can adjust how it manages water internally, keeps its leaves hydrated better than many crops, and maintains efficient photosynthesis even when water is limited. Basically, it doesn't just shut down when things get dry.
+
+**2. Winter hardiness**: As a perennial legume, Mongolian milkvetch has developed strategies for surviving harsh winters(frost). Its deep root system and underground growing points mean it can handle serious frosts and then bounce back each growing season. This winter dormancy and regrowth cycle makes it well-suited to Tasmania's cooler climate zones where frost can be a real challenge for other crops.
+
+**3. Dealing with problem soils**: The plant also shows decent tolerance to salty soils and can grow in neutral to alkaline conditions. This means it could potentially work on marginal or degraded farmland that might not be ideal for other crops. There's an added bonus here too, like other legumes, it actually improves soil quality by fixing nitrogen, so it's not just tolerating poor conditions but actively making them better.
+These resilience traits suggest Mongolian milkvetch could be a useful crop for farmers looking to use land that's challenging for traditional agriculture, while also providing some insurance against increasingly variable weather patterns.
+
+**4. Suitable for Regenerative, Small-Scale Systems in Tasmania** 
+ 
+Mongolian milkvetch has several characteristics that make it a good match for regenerative agricultural approaches. As a leguminous perennial, it naturally fixes nitrogen from the air, improving soil fertility without needing synthetic fertilizers, which reduces input costs while building up the soil's natural nutrient base over time. The plant develops deep root systems that help improve soil structure and allow better water infiltration, reducing erosion problems and breaking up compacted soil layers. For biodiversity, it supports pollinator habitats and contributes to overall ecosystem health by providing flower resources for beneficial insects, fitting with regenerative goals of supporting natural pest control and pollination services. Since it's a perennial, there's less need for regular soil disturbance compared to annual crops, aligning with regenerative principles that emphasize keeping living roots in the soil year-round to maintain soil biology and prevent erosion.
+ 
+The crop integrates well into the mixed crop livestock and agroforestry systems common on small-scale Australian farms, enhancing crop diversity and improving overall farm resilience by providing multiple functions, forage, soil improvement, and potential cash crop. While there haven't been many formal regenerative trials with Mongolian milkvetch specifically in Tasmania yet, its biological characteristics align well with the principles that Tasmania's growing regenerative agriculture network promotes.
+    
+**5. Under Trial or Limited Local Production (Bonus)**
+    
+Mongolian milkvetch isn't completely new to Tasmania, It's actually under active trial right now, led by the Tasmanian Institute of Agriculture (TIA) at their Forthside research farm and other sites. The trials started around 2019 with seed importation and have expanded to larger plots as initial results for growth, adaptation, and bioactive quality have been promising. Researchers are currently investigating practical aspects like agronomy, pest and disease resistance, mechanisation options, and quality assurance for medicinal use. The main goal is to figure out whether Tasmania's climate and soils can sustainably support profitable, high-quality production for both local and export markets.
+ 
+This initiative fits into a broader strategy to tap into the global traditional Chinese medicine market valued at over $130 billion, which could provide new economic opportunities for regional farmers. So while Mongolian milkvetch isn't yet commercially grown on a wide scale in Tasmania, it's under structured evaluation with strong support from local research institutions. This means farmers considering this crop would have access to ongoing research findings and institutional knowledge rather than starting completely from scratch.
 
 ## Crop Summary Requirements
 
-For each candidate crop, capture at minimum the details required as inout to the existing TESM, and any others indentified from your literature review, e.g:
+Mongolian Milkvetch, known for its medicinal root used in Traditional Chinese Medicine (TCM), is a hardy perennial legume native to Mongolia, northern and eastern China. It produces bioactive compounds beneficial for immune boost and cardiovascular health. The crop is gaining interest globally, with expanding market demand, including in Tasmania where trials are underway to develop a commercial industry.
 
-- **Climatic**: temperature range, rainfall, chill hours, frost/heat tolerance  
-- **Soil**: texture, drainage, pH, organic matter  
-- **Topography**: slope, elevation suitability  
-- **Water**: irrigation needs or dryland tolerance  
-- **Management**: pest/disease issues, growing season, pollination  
-- **Markets**: value, demand trends, Tasmanian viability  
-- **Model Inputs**: spatial variables you could add to TESMs  
+The crop’s **climatic** requirements are well defined. It performs optimally at mean annual temperatures between 4 °C and 12 °C and is highly tolerant of cold winters, withstanding temperatures as low as –28 °C. Moderate annual rainfall of 500–900 mm is preferred, particularly in dry, well-drained sites. Adequate winter chill is beneficial for bioactive root production, while strong frost tolerance ensures survival in colder environments. Full sun exposure is essential to support vigorous growth and the development of active compounds.
+ 
+The crop’s **soil** requirements are specific but not overly restrictive. It prefers light sandy to loamy soils that provide good aeration, while heavy clay or waterlogged soils are detrimental. Excellent drainage is critical to prevent root diseases such as rot. The crop performs best in mildly acidic to neutral or mildly alkaline soils with a pH range of 6.5–8.0. Moderate levels of organic matter are sufficient, as it can tolerate nutrient-poor soils; however, excessive fertilizer inputs should be avoided, since high nutrient availability may reduce the quality of bioactive compounds.
+ 
+The crop’s **topographical** requirements are modest. It is best suited to flat or gently sloping land, which facilitates mechanization and ease of management. Moderate elevations are acceptable, provided that adequate soil drainage is maintained.
 
----
+The crop has relatively low **water** requirements and is well adapted to dryland systems. Once established, it has low irrigation demand and demonstrates high drought tolerance, although supplemental irrigation may be applied during unusually dry periods to sustain yield quality. A long growing season of 12–15 months is required from planting to root harvest. Pest pressure is generally minimal, with disease concerns largely confined to root rot under poorly drained conditions. The crop is primarily self-fertile but benefits from insect pollination, attracting bees and other beneficial species. Plant breeding opportunities also exist to enhance cultivated varieties derived from wild seed sources, with the aim of improving yield stability and bioactive compound production.
+ 
+The **market** potential for this crop is considerable. It is recognised as a high-value commodity, largely driven by demand in traditional Chinese medicine, with the global TCM market estimated at approximately USD 130 billion ([University of Tasmania, 2022](https://www.utas.edu.au/about/news-and-stories/articles/2022/farmers-hope-to-cash-in-on-$130b-global-market-for-traditional-chinese-medicine-with-long-term-study)). Demand continues to grow steadily, supported both by established markets in Asia and by increasing Western interest in natural immune boosters and adaptogenic products.
+
+```{r echo=FALSE}
+# Create the comparison data
+comparison_table <- data.frame(
+  Factor = c("Climate", "Temperature", "Rainfall", "Soil Texture", "Soil pH", "Organic Matter", "Topography",
+             "Chill Hours", "Sunlight", "Irrigation", "Pests/Diseases", "Growing Season", "Market Demand"),
+  Tasmania= c(
+    "Cool temperate; mild summers; cold winters",
+    "Winter 7°C avg, summer 17–24°C",
+    "500–2000mm/year; drier East, wetter West/South",
+    "Loam, sandy loam, well-drained",
+    "Mildly acidic-neutral (5.5–7.5)",
+    "Moderate",
+    "Flat to gentle slopes, low to moderate elevation",
+    "Sufficient (Tasmania prone to winter chill)",
+    "Moderate, full sun in open areas",
+    "Moderate need; supplemental in drier districts",
+    "Limited reported; root rot potential on wet soils",
+    "Plant Oct-harvest next autumn (~12 months)",
+    "Emerging TCM industry; experimental commercial use"
+  ),
+  Milkvetch = c(
+    "Temperate/cold; tolerates extreme cold (-28°C)",
+    "Annual avg 4–12°C; cold hardy",
+    "Prefers 500–900mm; avoids waterlogging",
+    "Light sandy/loam, well-drained",
+    "Mildly acidic to mildly alkaline (6.5–8.0)",
+    "Moderate, tolerates poor soils",
+    "Prefers flat/moderate slopes for mechanization",
+    "Requires winter chill for compound development",
+    "Full sun necessary",
+    "Low need; drought tolerant",
+    "Root rot risk if waterlogged; minimal pests",
+    "Long season, 12–15 months",
+    "Global $5B market; demand doubling"
+  ),
+  Compatibility = c(
+    "Well aligned; Tasmanian winters suitable",
+    "Good match",
+    "Drier Tasmanian zones more suitable",
+    "Good match",
+    "Overlaps adequately",
+    "Compatible",
+    "Compatible",
+    "Suitable",
+    "Suitable",
+    "Suitable",
+    "Manage water well",
+    "Matching season",
+    "Promising in Tasmania"
+  ),
+  stringsAsFactors = FALSE
+)
+
+# Print the table in the console
+#print(comparison_table)
+
+```
+
+```{r echo=FALSE,warning=FALSE}
+library(knitr)
+library(kableExtra)
+library(stringr)
+
+# Wrap text by specified character width to help with line breaks
+comparison_table_wrapped <- comparison_table
+comparison_table_wrapped$Tasmania <- str_wrap(comparison_table$Tasmania, width = 40)
+comparison_table_wrapped$Milkvetch <- str_wrap(comparison_table$Milkvetch, width = 40)
+comparison_table_wrapped$Compatibility <- str_wrap(comparison_table$Compatibility, width = 35)
+
+kable(comparison_table_wrapped, caption = "Comparison of Tasmania Conditions and Mongolian Milkvetch Requirements") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down", "repeat_header")) %>%
+  column_spec(1, width = "2.5cm") %>%
+  column_spec(2, width = "5cm") %>%
+  column_spec(3, width = "4.5cm") %>%
+  column_spec(4, width = "4.5cm")
+```
+
+```{r eval=FALSE, echo=FALSE}
+library(knitr)
+library(kableExtra)
+library(stringr)
+
+# Wrap text as before for better fit
+comparison_table_wrapped <- comparison_table
+comparison_table_wrapped$Tasmania <- str_wrap(comparison_table$Tasmania, width = 40)
+comparison_table_wrapped$Milkvetch <- str_wrap(comparison_table$Milkvetch, width = 40)
+comparison_table_wrapped$Compatibility <- str_wrap(comparison_table$Compatibility, width = 35)
+
+# Create table with borders
+kable(comparison_table_wrapped, format = "latex", booktabs = TRUE,
+      caption = "Comparison of Tasmania Conditions and Mongolian Milkvetch Requirements",
+      linesep = c("", "\\addlinespace", "\\hline")) %>% 
+  kable_styling(latex_options = c("hold_position", "scale_down", "repeat_header")) %>% 
+  row_spec(0, bold = TRUE, extra_latex_after = "\\midrule") %>%  # bold header with midrule
+  column_spec(1, border_right = TRUE, width = "2.5cm") %>% 
+  column_spec(2, border_right = TRUE, width = "4.5cm") %>% 
+  column_spec(3, border_right = TRUE, width = "4.5cm") %>% 
+  column_spec(4, width = "4.5cm") 
+
+```
+
 
 # Deliverables
 
@@ -245,12 +387,20 @@ For each candidate crop, capture at minimum the details required as inout to the
    - Recommendations for new inputs & uncertainty handling  
 
 2. **Reference List**  
-Please only use Peer‑reviewed journals, government & industry reports. Use reference formatting according to Monash unit guidelines.  
+Auyeung, K. F., Han, Q. B., & Ko, J. K. (2016). Astragalus membranaceus: A review of its protection against inflammation and gastrointestinal cancers. American Journal of Chinese Medicine, 44(1), 1–22.
 
+Liu, P., Zhao, H., & Luo, Y. (2020). Anti-aging implications of Astragalus and its potential application. Aging and Disease, 11(5), 1219–1232.
+
+Wang, J., Li, S., Fan, Y., Chen, Y., & Liu, D. (2018). The growth adaptability and agronomic performance of Astragalus membranaceus under different ecological conditions. Industrial Crops and Products, 118, 247–254.
+
+Tasmanian Institute of Agriculture. (2021). Novel crop trials in Tasmania: Astragalus (Mongolian milkvetch). Hobart: University of Tasmania.
+
+https://www.utas.edu.au/about/news-and-stories/articles/2022/farmers-hope-to-cash-in-on-$130b-global-market-for-traditional-chinese-medicine-with-long-term-study
+ 
 
 # Resources
 
-- **TESMs**: <https://dpipwe.tas.gov.au/agriculture/land-resources/land-capability-and-suitability/enterprise-suitability>  
+**TESMs**: <https://dpipwe.tas.gov.au/agriculture/land-resources/land-capability-and-suitability/enterprise-suitability>  
 - **NZ S‑map**: <https://smap.landcareresearch.co.nz/>  
 - **FAO EcoCrop**: <https://ecocrop.fao.org/>  
 - CSIRO, AgriFutures, DPIPWE, AgVic, QLD DES publications  
