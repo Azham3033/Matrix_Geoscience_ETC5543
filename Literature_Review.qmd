@@ -211,6 +211,17 @@ Briefly describe **2–3** of the following alternative suitability frameworks, 
 - FAO EcoCrop / GAEZ  
 - USDA Crop Suitability Tools  
 - CSIRO land evaluation frameworks  
+
+## Queensland Land Suitability Guidelines (DES) 
+
+The Queensland Land Suitability Guidelines (2nd edition, 2015), maintained by the Queensland Department of Environment and Science (DES), set out a standardised method for assessing how well land can support agricultural enterprises. Building on the FAO land evaluation framework, the guidelines provide a science-based, sustainable approach for matching land attributes (soil, climate, topography) with the requirements of specific crops or enterprises. The framework is widely used across Queensland for regional planning, environmental impact assessment, irrigation development, and protecting valuable farmland through agricultural land classification.
+
+
+The guidelines assess land as it currently exists and apply the idea of the “most limiting factor,” meaning the worst problem on a site decides the final class. They use three related systems: the Land Suitability Classification (Classes 1–5 for specific crops), the Land Capability Classification (Classes I–VIII for general farming potential), and the Agricultural Land Classification (ALC) (Classes A–D for planning and policy purposes). Rainfall and soil water storage are very important, especially for dryland farming, because the model does not assume irrigation is always available. When irrigation is considered, the guidelines also check how well the soil can absorb water, which is treated as a key factor in performance. Another important feature is the recognition of acid sulfate soils, which can make land unsuitable due to environmental risks. Pests and diseases are also part of the evaluation, as long-term biological problems can lower land quality. In addition, the system considers a wide range of other issues such as erosion, flooding, slope, wetness, salinity, nutrient balance, vegetation regrowth, and rockiness. Unlike some other systems, these hazards are not just shown as extra information but are directly used to decide the final land class.
+
+
+Compared to the Tasmanian Enterprise Suitability Maps (TESM), which provide ready-made crop-specific maps and assume irrigation availability, the Queensland guidelines serve as a flexible framework in which practitioners build rule-sets tailored to each crop and region. While both apply the most limiting factor principle, Queensland covers a broader spectrum of hazards, including irrigation performance, acid sulfate soils, pests, and salinity, all of which can determine final suitability classes. TESM, by contrast, places stronger emphasis on climate metrics such as growing degree days and chill hours, and treats risks like erosion, salinity, and flooding as supplementary information layers. This makes Queensland’s model more comprehensive in hazard integration, while TESM is oriented towards streamlined mapping products that emphasise enterprise planning and future climate scenarios.
+
 \newpage
 
 
