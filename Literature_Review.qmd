@@ -28,7 +28,7 @@ Next, the project will compare the TESM’s methods and crop choices with simila
 
 The Tasmanian Enterprise Suitability Map (TESM) is a comprehensive tool designed to help farmers, investors, and land managers understand what crops or agricultural enterprises are best suited to different parts of Tasmania. It integrates detailed information on soil, climate, and landscape characteristics to assess land suitability for various crops.
 
-TESM combines high-resolution digital soil mapping, climate modeling, and specific crop suitability rules developed in collaboration with industry experts and the Tasmanian Institute of Agriculture (TIA). These maps rate key factors like temperature, rainfall, soil properties, frost risk, drainage, and slope against the requirements of different crops to classify areas into categories such as well suited, suitable, marginally suitable, or unsuitable.
+TESM combines high resolution digital soil mapping, climate modeling, and specific crop suitability rules developed in collaboration with industry experts and the Tasmanian Institute of Agriculture (TIA). These maps rate key factors like temperature, rainfall, soil properties, frost risk, drainage, and slope against the requirements of different crops to classify areas into categories such as well suited, suitable, marginally suitable, or unsuitable.
 
 This mapping supports regional agricultural planning by identifying areas where crops could be introduced, intensified, or diversified and highlights potential risks and management considerations. It also incorporates projected climate change scenarios for 2030 and 2050 to help stakeholders plan for future shifts in suitability.
 
