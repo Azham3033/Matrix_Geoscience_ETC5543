@@ -24,7 +24,7 @@ This project focuses on reviewing the current Tasmanian Enterprise Suitability M
 
 Next, the project will compare the TESM’s methods and crop choices with similar mapping systems from other places to see how they differ and what lessons can be learned. Finally, based on this comparison and understanding, the project will suggest some new and emerging crops that are well-suited to Tasmanian conditions and could be added to the TESM. These suggestions aim to help improve crop diversity, support better land use decisions, and promote sustainable agricultural growth in Tasmania.
 
-------------------------------------------------------------------------
+ 
 
 # Part 1: Review of the Existing Tasmanian Enterprise Suitability Maps (TESM)
 
@@ -288,6 +288,10 @@ Despite the robustness of the spatial inputs and the transparency of the rule-ba
 
 In addition to microclimatic variability, the maps also overlook differences in management practices that strongly influence crop outcomes. Access to water is a clear example: while rainfall and groundwater availability are well mapped, the actual feasibility of irrigation depends on proximity to dams, rivers, or irrigation infrastructure, which is not captured in the current models. Similarly, the effectiveness of pest and disease management can substantially alter yields on land that appears equally suitable in biophysical terms. Crop rotations and seasonal timing also affect soil resilience and productivity in ways that deterministic rules cannot reflect. By standardising these factors, TESM risk portraying land units as uniform when, in reality, farmers’ practices create significant variation in outcomes. This underscores the importance of integrating management related variables such as irrigation access and pest or disease pressure into future suitability frameworks, making them more reflective of real-world agricultural conditions.
 
+### Recommendations for Current TESM Model
+
+Incorporating factors such as **Pest and Disease** and **Irrigation feasibility** would make TESM more accurate, as it would include key management factors that affect results on farms. This would give the model greater value for decision-making and offer more practical guidance for specialty crops. It would also improve the reliability and strength of the assessments, helping to close the gap between mapped suitability and actual farm performance. In the end, these changes would make TESM a more useful tool for both regional planning and farm-level investment.
+
 ## Suggested Comparator Models
 
 ### **New Zealand S‑map & Crop Suitability Layers**
@@ -318,7 +322,7 @@ The FAO Global Agro-Ecological Zones (GAEZ) framework, with its [Agro-MAPS](http
 
 Compared to TESM, GAEZ provides much broader geographic scope and scenario-based foresight, but at coarser resolution and less direct farm-scale applicability.
 
-## Queensland Land Suitability Guidelines (DES)
+### Queensland Land Suitability Guidelines (DES)
 
 The Queensland Land Suitability Guidelines (2nd edition, 2015), maintained by the Queensland Department of Environment and Science (DES), set out a standardised method for assessing how well land can support agricultural enterprises. Building on the FAO land evaluation framework, the guidelines provide a science-based, sustainable approach for matching land attributes (soil, climate, topography) with the requirements of specific crops or enterprises. The framework is widely used across Queensland for regional planning, environmental impact assessment, irrigation development, and protecting valuable farmland through agricultural land classification.
 
@@ -326,17 +330,18 @@ The guidelines assess land as it currently exists and apply the idea of the “m
 
 Compared to the Tasmanian Enterprise Suitability Maps (TESM), which provide ready made crop specific maps and assume irrigation availability, the Queensland guidelines serve as a flexible framework in which practitioners build rule sets tailored to each crop and region. While both apply the most limiting factor principle, Queensland covers a broader spectrum of hazards, including irrigation performance, acid sulfate soils, pests, and salinity, all of which can determine final suitability classes. TESM, by contrast, places stronger emphasis on climate metrics such as growing degree days and chill hours, and treats risks like erosion, salinity, and flooding as supplementary information layers. This makes Queensland’s model more comprehensive in hazard integration, while TESM is oriented towards streamlined mapping products that emphasise enterprise planning and future climate scenarios.
 
+\newpage
+
 ### **Comparator Summary**
 
-| Feature | Tasmania TESM | NZ S-map & Crop Layers | FAO GAEZ / Agro-MAPS |
-|------------------|------------------|--------------------|------------------|
-| **Inputs** | Soil, climate, topography from state datasets; assumes irrigation is available. | Soil attributes (S-map), climate (NIWA Virtual Climate Station), terrain; crop-specific rules. | Global climate (historical + scenarios), soils (HWSD), terrain (SRTM), land cover/use, crop calendars, ag. statistics (Agro-MAPS). |
-| **Methods** | Rule-based, deterministic thresholds; “most limiting factor” approach; outputs 9 suitability classes (with management options). | Rule-based GIS modelling, 4 suitability classes; expert-reviewed iterations; yields expressed as ranges. | Multi-module system (Modules I–VII): agro-climatic analysis, yield modelling, constraints, soil/terrain suitability, integration with national stats, yield gap analysis. |
-| **Uncertainty** | Not explicitly quantified; only “manageable constraints” noted. | Yields given as lower/upper ranges; categorical maps rated “moderate reliability” at national scale. | Explicitly incorporates climate scenarios, CO2 effects, yield ranges, and calibration with national statistics. |
-| **Extensibility** | Crop list fixed but new crops added via rule-sets and consultation; designed for state planning. | Modular; new crops/scenarios can be added; includes specialty crops (e.g. truffles) and management scenarios (irrigation, drainage, liming). | Highly extensible: multiple management levels, irrigated vs rain-fed, climate change scenarios; regularly updated (v5 in development). |
-| **Scale/Resolution** | State of Tasmania; higher resolution (30–80 m); farm to regional planning. | National (NZ); 500 m resolution; suitable for regional benchmarking, not block-level. | Global; coarse (\~5 arc-min, \~10 km); intended for national, regional, and global planning, not local farm scale. |
+| Feature            | Tasmania TESM | NZ S-map & Crop Layers | FAO Agro-MAPS | QLD LSG |
+|--------------------|---------------|------------------------|----------------------|--------------------------------|
+| **Inputs**         | Soil, climate, topography from state datasets; assumes irrigation is available. | Soil attributes (S-map), climate (NIWA Virtual Climate Station), terrain; crop-specific rules. | Global climate (historical + scenarios), soils (HWSD), terrain (SRTM), land cover/use, crop calendars, ag. statistics (Agro-MAPS). | Soil, climate, topography; broader hazards including irrigation performance, acid sulfate soils, pests, salinity. |
+| **Methods**        | Rule-based, deterministic thresholds; “most limiting factor” approach; outputs 9 suitability classes (with management options). | Rule-based GIS modelling, 4 suitability classes; expert-reviewed iterations; yields expressed as ranges. | Multi-module system (Modules I–VII): agro-climatic analysis, yield modelling, constraints, soil/terrain suitability, integration with national stats, yield gap analysis. | FAO land evaluation framework adapted for Queensland; practitioners build tailored rule-sets; applies most limiting factor principle. |
+| **Uncertainty**    | Not explicitly quantified; only “manageable constraints” noted. | Yields given as lower/upper ranges; categorical maps rated “moderate reliability” at national scale. | Explicitly incorporates climate scenarios, CO2 effects, yield ranges, and calibration with national statistics. | Not directly quantified; comprehensiveness comes from inclusion of wider hazard classes. |
+| **Extensibility**  | Crop list fixed but new crops added via rule-sets and consultation; designed for state planning. | Modular; new crops/scenarios can be added; includes specialty crops (e.g. truffles) and management scenarios (irrigation, drainage, liming). | Highly extensible: multiple management levels, irrigated vs rain-fed, climate change scenarios; regularly updated (v5 in development). | Flexible framework; rule-sets built per crop/region by practitioners; applied across regional planning and impact assessment. |
+| **Scale/Resolution** | State of Tasmania; fine resolution (30–80 m); farm to regional planning. | National (NZ); 500 m resolution; suitable for regional benchmarking, not block-level. | Global; coarse (~5 arc-min, ~10 km); intended for national, regional, and global planning, not local farm scale. | Queensland-wide; applied for regional planning, EIA, irrigation development, and farmland protection. |
 
-------------------------------------------------------------------------
 
 # Part 2: Literature Review on Emerging & Climate‑Resilient Crops
 
@@ -370,7 +375,7 @@ For Tasmania, sea buckthorn offers potential as a novel multipurpose crop under 
 
 Mongolian milkvetch *(Astragalus membranaceus var. mongholicus)* is a hardy perennial plant from Mongolia and northern China. It is best known for its root, called *Huang Qi* in Traditional Chinese Medicine, where it has been used for thousands of years to strengthen the body, fight tiredness, and support heart and immune health. Scientists have found that the root contains unique compounds (such as astragalosides and flavonoids) that may help reduce inflammation, protect against stress, and improve recovery (Auyeung et al., 2016). Unlike crops that are grown in bulk for food, Mongolian milkvetch belongs to the group of high-value specialty crops, similar to saffron or truffles. The global market for Traditional Chinese Medicine is worth over USD 130 billion, and Astragalus products make up a significant share. This makes the crop attractive for farmers looking to grow something that is more about quality and value rather than just large volumes (Liu et al., 2020).
 
-From a farming point of view, Mongolian milkvetch is a very resilient plant. It survives in a wide range of climates and soils, which makes it versatile compared to many other crops. It can handle cold winters down to –28 °C, which means frost is not a major threat, and it also tolerates warm summers. The plant needs moderate rainfall (around 500–900 mm each year) and prefers light sandy or loamy soils that drain well, since water logging can damage the roots. It can even grow in salty or less fertile soils, which makes it useful on land that is difficult for other crops. Because it is a legume, it naturally improves soil health by fixing nitrogen from the air. This reduces the need for chemical fertilizers and supports sustainable farming. Its deep roots make the plant drought-tolerant and help prevent erosion by holding the soil together. Farmers usually grow it for 12–15 months before harvesting the roots, which are the most valuable part of the plant (Wang et al., 2018).
+From a farming point of view, Mongolian milkvetch is a very resilient plant. It survives in a wide range of climates and soils, which makes it versatile compared to many other crops. It can handle cold winters down to –28 degrees C, which means frost is not a major threat, and it also tolerates warm summers. The plant needs moderate rainfall (around 500–900 mm each year) and prefers light sandy or loamy soils that drain well, since water logging can damage the roots. It can even grow in salty or less fertile soils, which makes it useful on land that is difficult for other crops. Because it is a legume, it naturally improves soil health by fixing nitrogen from the air. This reduces the need for chemical fertilizers and supports sustainable farming. Its deep roots make the plant drought-tolerant and help prevent erosion by holding the soil together. Farmers usually grow it for 12–15 months before harvesting the roots, which are the most valuable part of the plant (Wang et al., 2018).
 
 In Tasmania, Mongolian milkvetch is still new and not yet a commercial crop. However, the Tasmanian Institute of Agriculture (TIA) has been trialling it since 2019 at research farms like Forthside. These trials are testing how well the plant adapts to Tasmanian soils and weather, how resistant it is to pests and diseases, and whether it can produce roots with high levels of the active medicinal compounds. So far, the results are promising, with good plant growth and root quality being reported. For Tasmania, the crop could be a good fit for several reasons: the cool climate suits its frost tolerance, the soil can be improved for its needs, and the state has a growing interest in niche, high value crops for export. If production challenges such as harvesting methods and efficiency can be solved, Mongolian milkvetch could offer Tasmanian farmers a new way to diversify, tap into the fast-growing herbal medicine market, and contribute to regenerative farming systems by improving soil health (Tasmanian Institute of Agriculture, 2021).
 
@@ -382,19 +387,22 @@ Ecologically, black truffles are demanding yet climate-resilient under the right
 
 For Tasmania, truffles have already proven their novelty crop potential. Since the first harvest in [Deloraine](https://www.afr.com/life-and-luxury/food-and-wine/meet-the-tasmanians-who-started-australia-s-truffle-industry-20250703-p5mcd4) in 1999, the state has emerged as a pioneer of the Australian truffle industry, with conditions in the central north mirroring those of Perigord, France. Early ventures demonstrated that Tasmania’s cool winters, calcareous soils, and temperate rainfall make it highly suited to truffle orchards. Today, farms such as the Terry family’s Deloraine plantation not only supply domestic markets but also drive agritourism through truffle hunts. While establishment requires significant upfront investment, inoculated tree plantations, and patience (first harvests after 5–8 years), truffles represent a distinctive Tasmanian opportunity that blends high-value specialty food production with ecosystem-compatible forestry.
 
-## Crop Summary Requirements
+\newpage 
 
-| Requirement | Quinoa | Ginseng | Sea Buckthorn | Truffle |
-|---------------|---------------|---------------|---------------|---------------|
-| **Climatic** | Optimal 14–18 degrees C; tolerates 2–35 degrees C; rainfall 500–1000 mm (min 250); frost to –8 degrees C; drought/salinity tolerant. | Optimal 12–20 degrees C; tolerates 8–27 degrees C; rainfall 700–1300 mm; requires cold winters and shade. | Hardy to –43 degrees C (dormancy) and up to 40 degrees C; flowers at 10–15 degrees C; fruits with 14.5–17.5 degrees C effective temps. | Optimal mild summers \>=16 degrees C; rainfall 700–1500 mm; unsuitable \<600 or \>2000 mm; sensitive to waterlogging. |
-| **Soil** | Light–medium, well-drained; tolerates poor fertility; pH 5.5–9.5. | Medium to organic; fertile, moist, well-drained; pH 5.5–7. | Sandy loam with organic matter; pH 6.5–7.5; nitrogen-fixing; tolerant of saline/eroded soils. | Calcareous, well-drained; pH 6.5–8.3; low silt, moderate clay; rooting depth \>100 cm. |
-| **Topography** | Sea level–4000 m; plains and valleys. | Forest valleys; \<1200 m elevation. | Slopes, valleys, riverbeds; up to 2000 m; requires full sun. | Slopes \<20 degrees; loose, stony soils aid drainage. |
-| **Water** | Low requirement; dryland tolerant; irrigation improves yield. | Moisture-demanding; intolerant of drought; shade irrigation often needed. | Drought resistant but moisture-sensitive in spring; irrigation helps fruiting. | Supplementary irrigation often required in dry summers. |
-| **Management** | 90–120 day cycle; relatively low pest/disease risk. | 4–6 years to harvest; hand-dug roots; pest- and stress-sensitive. | 4–5 years to fruit; dioecious (male + female); pests include aphids/fruit fly; plantation life \~30 yrs. | 5–8 years to first harvest; requires inoculated oak/hazel hosts; pruning and soil care critical. |
-| **Markets** | High-value superfood; global gluten-free/health demand; limited Tasmanian production. | High-value medicinal/nutraceutical; strong Asian demand; small Tasmanian trials. | High-value berries (vitamin C, oils); nutraceutical/cosmetic/ecological markets; no Tasmanian industry. | Luxury gourmet product (€600–6000/kg); strong export & agritourism; proven Tasmanian success since 1999. |
-| **Model Inputs** | Rainfall, temperature range, frost risk, soil salinity, elevation. | Canopy/shade proxy, winter chill, soil fertility, rainfall distribution. | Temp extremes, soil salinity, slope/erosion risk, nitrogen-fixing potential. | Rainfall, summer temp, slope, soil pH, carbonate, drainage, rooting depth. |
+## Crop Summary Requirements for Emerging & Climate-Resilient Crops
 
-------------------------------------------------------------------------
+
+| Requirement   | Quinoa | Ginseng | Sea Buckthorn | Milkvetch | Truffle |
+|---------------|--------|---------|---------------|-----------|---------|
+| **Climatic** | Optimal 14–18 degrees C; tolerates 2–35 degrees C; rainfall 500–1000 mm (min 250); frost to –8 degrees C; drought and salinity tolerant. | Optimal 12–20 degrees C; tolerates 8–27 degrees C; rainfall 700–1300 mm; requires cold winters and shade. | Hardy to –43 degrees C (dormancy) and up to 40 degrees C; flowers at 10–15 degrees C; fruits with 14.5–17.5 degrees C effective temps. | Tolerates –28 degrees C winters and warm summers; rainfall 500–900 mm; resilient across diverse climates. | Optimal mild summers >=16 degrees C; rainfall 700–1500 mm; unsuitable <600 or >2000 mm; sensitive to waterlogging. |
+| **Soil** | Light–medium, well-drained; tolerates poor fertility; pH 5.5–9.5. | Medium to organic; fertile, moist, well-drained; pH 5.5–7. | Sandy loam with organic matter; pH 6.5–7.5; nitrogen-fixing; tolerant of saline/eroded soils. | Prefers sandy or loamy, well-drained soils; tolerates salinity and poor fertility; nitrogen-fixing legume. | Calcareous, well-drained; pH 6.5–8.3; low silt, moderate clay; rooting depth >100 cm. |
+| **Topography** | Sea level–4000 m; plains and valleys. | Forest valleys; <1200 m elevation. | Slopes, valleys, riverbeds; up to 2000 m; requires full sun. | Broad range; suited to marginal land; deep roots stabilize soil and prevent erosion. | Slopes <20degrees ; loose, stony soils aid drainage. |
+| **Water** | Low requirement; dryland tolerant; irrigation improves yield. | Moisture-demanding; intolerant of drought; shade irrigation often needed. | Drought resistant but moisture-sensitive in spring; irrigation helps fruiting. | Moderate rainfall (500–900 mm); drought-tolerant once established; avoid waterlogging. | Supplementary irrigation often required in dry summers. |
+| **Management** | 90–120 day cycle; relatively low pest/disease risk. | 4–6 years to harvest; hand-dug roots; pest- and stress-sensitive. | 4–5 years to fruit; dioecious (male + female); pests include aphids/fruit fly; plantation life ~30 yrs. | 12–15 months to harvest roots; perennial growth; improves soil nitrogen; relatively hardy but trials ongoing. | 5–8 years to first harvest; requires inoculated oak/hazel hosts; pruning and soil care critical. |
+| **Markets** | High-value superfood; global demand; limited Tasmanian production. | High-value medicinal herb; strong Asian demand; small Tasmanian trials. | High-value berries; nutraceutical/cosmetic uses; no Tasmanian industry. | High-value TCM herb; global demand; Tasmanian trials since 2019. | Luxury gourmet (€600–6000/kg); export & agritourism; Tasmanian success since 1999. |
+| **Model Inputs** | Rainfall, temperature range, frost risk, soil salinity, elevation. | shade proxy, winter chill, soil fertility, rainfall distribution. | Temp extremes, soil salinity, slope/erosion risk, nitrogen-fixing potential. | Rainfall, temperature extremes, soil salinity, soil fertility index, legume nitrogen-fixation potential. | Rainfall, summer temp, slope, soil pH, carbonate, drainage, rooting depth. |
+
+ 
 
 # Resources
 
@@ -406,7 +414,7 @@ For Tasmania, truffles have already proven their novelty crop potential. Since t
 
 -   **FAO EcoCrop**: <https://ecocrop.fao.org/>
 
-------------------------------------------------------------------------
+ 
 
 # Appendix
 
@@ -417,8 +425,9 @@ For Tasmania, truffles have already proven their novelty crop potential. Since t
 head(crops_all,5)
 ```
 
-#### Figure 1. Adding multiple GIS layers in Quarto
+#### Figure 1. Adding multiple GIS layers in Quarto \newline
+
 
 ![](images/adding_layers_GIS.png)
 
-------------------------------------------------------------------------
+ 
