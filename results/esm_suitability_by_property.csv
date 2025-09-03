@@ -1,0 +1,681 @@
+prop_id,crop,class_code,suitability_group,suitability_score,street,suburb,state,postcode,full_address,latitude,longitude
+1,Barley,22639,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Blueberries..nhb.,59898,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Blueberries..shb.,59518,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Carrot.seed,53933,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Carrots,57192,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Cherries,490266,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Cocksfoot.Continental,9048,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Cocksfoot.Mediterranean,9048,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Enterprise.Versatility.Index,17996,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Enterprise.Versatility.Index...Pastures,20,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Eucalyptus.Globulus,244024,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Eucalyptus.Nitens,156298,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Hazelnuts,356174,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Industrial.Hemp,6353,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Linseed,12233,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Lucerne,18197,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Olives,136799,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Onions,309109,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Phalaris,8083,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Pinus.Radiata,9778,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Poppies,46518,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Potatoes,96610,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Pyrethrum,59031,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Raspberries,155235,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Red.Clover,12575,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Rye.Grass,11781,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Sparkling.Wine.Grapes,250,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Strawberries,121252,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Strawberry.Clover,11106,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Table.Wine.Grapes,318,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Tall.Fescue.Continental,12904,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Tall.Fescue.Mediterranean,9048,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,Wheat,27988,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+1,White.Clover,11525,Unsuitable,0,401 Bresnehans Road,Little Swanport,TAS,7190,401 Bresnehans Road Little Swanport TAS 7190 Australia,-42.3179281,147.9330656
+2,Barley,22639,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Blueberries..nhb.,59898,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Blueberries..shb.,59518,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Carrot.seed,53933,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Carrots,57192,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Cherries,490266,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Cocksfoot.Continental,8794,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Cocksfoot.Mediterranean,8794,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Enterprise.Versatility.Index,17996,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Enterprise.Versatility.Index...Pastures,20,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Eucalyptus.Globulus,244024,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Eucalyptus.Nitens,156298,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Hazelnuts,356174,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Industrial.Hemp,6353,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Linseed,12233,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Lucerne,18197,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Olives,136799,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Onions,309109,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Phalaris,7729,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Pinus.Radiata,9778,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Poppies,46518,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Potatoes,96610,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Pyrethrum,59031,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Raspberries,155235,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Red.Clover,12575,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Rye.Grass,11781,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Sparkling.Wine.Grapes,250,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Strawberries,121252,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Strawberry.Clover,11106,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Table.Wine.Grapes,318,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Tall.Fescue.Continental,12746,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Tall.Fescue.Mediterranean,8794,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,Wheat,27988,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+2,White.Clover,11525,Unsuitable,0,111 Nubeena Road,Taranna,TAS,7180,111 Nubeena Road Taranna TAS 7180 Australia,-43.0572548,147.8512975
+3,Barley,2604,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Blueberries..nhb.,1474,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Blueberries..shb.,2174,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Carrot.seed,2236,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Carrots,3163,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Cherries,7908,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Cocksfoot.Continental,475,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Cocksfoot.Mediterranean,2619,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Enterprise.Versatility.Index,17996,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Enterprise.Versatility.Index...Pastures,0,NA,NA,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Eucalyptus.Globulus,10843,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Eucalyptus.Nitens,9325,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Hazelnuts,13068,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Industrial.Hemp,1202,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Linseed,875,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Lucerne,3234,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Olives,6562,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Onions,4650,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Phalaris,2330,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Pinus.Radiata,1619,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Poppies,3090,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Potatoes,8698,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Pyrethrum,548,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Raspberries,3879,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Red.Clover,682,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Rye.Grass,872,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Sparkling.Wine.Grapes,10,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Strawberries,6583,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Strawberry.Clover,1024,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Table.Wine.Grapes,9,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Tall.Fescue.Continental,980,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Tall.Fescue.Mediterranean,2619,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,Wheat,3280,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+3,White.Clover,872,Unsuitable,0,120 Russells Plains Road,Rocherlea,TAS,7248,120 Russells Plains Road Rocherlea TAS 7248 Australia,-41.3815669,147.157962
+4,Barley,2571,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Blueberries..nhb.,8808,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Blueberries..shb.,11377,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Carrot.seed,11692,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Carrots,7736,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Cherries,5027,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Cocksfoot.Continental,445,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Cocksfoot.Mediterranean,2589,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Enterprise.Versatility.Index,17996,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Enterprise.Versatility.Index...Pastures,0,NA,NA,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Eucalyptus.Globulus,51219,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Eucalyptus.Nitens,38608,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Hazelnuts,36365,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Industrial.Hemp,1170,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Linseed,844,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Lucerne,7705,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Olives,5853,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Onions,48690,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Phalaris,2295,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Pinus.Radiata,200,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Poppies,3060,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Potatoes,4501,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Pyrethrum,17646,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Raspberries,3345,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Red.Clover,652,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Rye.Grass,837,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Sparkling.Wine.Grapes,81,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Strawberries,23605,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Strawberry.Clover,989,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Table.Wine.Grapes,127,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Tall.Fescue.Continental,945,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Tall.Fescue.Mediterranean,2589,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,Wheat,3247,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+4,White.Clover,837,Unsuitable,0,19 Central Castra Road,Sprent,TAS,7315,19 Central Castra Road Sprent TAS 7315 Australia,-41.2758139,146.1352199
+5,Barley,22639,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Blueberries..nhb.,59898,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Blueberries..shb.,59518,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Carrot.seed,53933,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Carrots,57192,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Cherries,490266,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Cocksfoot.Continental,8835,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Cocksfoot.Mediterranean,8835,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Enterprise.Versatility.Index,17996,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Enterprise.Versatility.Index...Pastures,0,NA,NA,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Eucalyptus.Globulus,244024,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Eucalyptus.Nitens,156298,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Hazelnuts,356174,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Industrial.Hemp,6353,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Linseed,12233,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Lucerne,18197,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Olives,136799,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Onions,309109,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Phalaris,7775,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Pinus.Radiata,9778,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Poppies,46518,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Potatoes,96610,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Pyrethrum,59031,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Raspberries,155235,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Red.Clover,12575,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Rye.Grass,11781,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Sparkling.Wine.Grapes,250,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Strawberries,121252,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Strawberry.Clover,11106,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Table.Wine.Grapes,318,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Tall.Fescue.Continental,12791,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Tall.Fescue.Mediterranean,8835,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,Wheat,27988,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+5,White.Clover,11525,Unsuitable,0,172 Bridgenorth Road,Legana,TAS,7277,172 Bridgenorth Road Legana TAS 7277 Australia,-41.3769595,147.0107736
+6,Barley,22639,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Blueberries..nhb.,59898,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Blueberries..shb.,59518,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Carrot.seed,53933,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Carrots,57192,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Cherries,490266,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Cocksfoot.Continental,8821,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Cocksfoot.Mediterranean,8821,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Enterprise.Versatility.Index,17996,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Enterprise.Versatility.Index...Pastures,20,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Eucalyptus.Globulus,244024,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Eucalyptus.Nitens,156298,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Hazelnuts,356174,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Industrial.Hemp,6353,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Linseed,12233,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Lucerne,18197,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Olives,136799,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Onions,309109,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Phalaris,7760,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Pinus.Radiata,9778,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Poppies,46518,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Potatoes,96610,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Pyrethrum,59031,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Raspberries,155235,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Red.Clover,12575,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Rye.Grass,11781,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Sparkling.Wine.Grapes,250,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Strawberries,121252,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Strawberry.Clover,11106,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Table.Wine.Grapes,318,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Tall.Fescue.Continental,12776,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Tall.Fescue.Mediterranean,8821,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,Wheat,27988,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+6,White.Clover,11525,Unsuitable,0,78 Cethana Road,Cethana,TAS,7306,78 Cethana Road Cethana TAS 7306 Australia,-41.4686622,146.1437818
+7,Barley,22639,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Blueberries..nhb.,59898,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Blueberries..shb.,59518,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Carrot.seed,53933,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Carrots,57192,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Cherries,490266,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Cocksfoot.Continental,10147,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Cocksfoot.Mediterranean,10147,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Enterprise.Versatility.Index,17996,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Enterprise.Versatility.Index...Pastures,20,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Eucalyptus.Globulus,244024,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Eucalyptus.Nitens,156298,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Hazelnuts,356174,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Industrial.Hemp,6353,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Linseed,12233,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Lucerne,18197,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Olives,136799,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Onions,309109,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Phalaris,8045,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Pinus.Radiata,9778,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Poppies,46518,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Potatoes,96610,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Pyrethrum,59031,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Raspberries,155235,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Red.Clover,12575,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Rye.Grass,11781,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Sparkling.Wine.Grapes,250,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Strawberries,121252,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Strawberry.Clover,11106,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Table.Wine.Grapes,318,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Tall.Fescue.Continental,10201,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Tall.Fescue.Mediterranean,10147,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,Wheat,27988,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+7,White.Clover,11525,Unsuitable,0,1980 Lyell Highway,Hayes,TAS,7140,1980 Lyell Highway Hayes TAS 7140 Australia,-42.7624292,147.0139634
+8,Barley,2556,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Blueberries..nhb.,8793,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Blueberries..shb.,11362,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Carrot.seed,8567,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Carrots,1843,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Cherries,7151,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Cocksfoot.Continental,430,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Cocksfoot.Mediterranean,2574,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Enterprise.Versatility.Index,17996,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Enterprise.Versatility.Index...Pastures,0,NA,NA,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Eucalyptus.Globulus,5169,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Eucalyptus.Nitens,4093,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Hazelnuts,64597,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Industrial.Hemp,1154,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Linseed,829,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Lucerne,3189,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Olives,5839,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Onions,14174,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Phalaris,2278,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Pinus.Radiata,1568,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Poppies,3046,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Potatoes,7531,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Pyrethrum,3398,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Raspberries,4190,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Red.Clover,637,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Rye.Grass,819,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Sparkling.Wine.Grapes,250,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Strawberries,6543,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Strawberry.Clover,971,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Table.Wine.Grapes,318,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Tall.Fescue.Continental,928,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Tall.Fescue.Mediterranean,2574,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,Wheat,3232,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+8,White.Clover,819,Unsuitable,0,120 Tip Road,Nubeena,TAS,7184,120 Tip Road Nubeena TAS 7184 Australia,-43.098367,147.7556929
+9,Barley,637,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Blueberries..nhb.,119,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Blueberries..shb.,119,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Carrot.seed,3160,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Carrots,7557,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Cherries,5276,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Cocksfoot.Continental,423,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Cocksfoot.Mediterranean,2567,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Enterprise.Versatility.Index,17996,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Enterprise.Versatility.Index...Pastures,0,NA,NA,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Eucalyptus.Globulus,21544,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Eucalyptus.Nitens,38,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Hazelnuts,37018,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Industrial.Hemp,472,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Linseed,822,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Lucerne,7682,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Olives,2568,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Onions,33489,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Phalaris,2271,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Pinus.Radiata,173,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Poppies,2642,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Potatoes,66,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Pyrethrum,17530,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Raspberries,3326,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Red.Clover,630,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Rye.Grass,812,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Sparkling.Wine.Grapes,27,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Strawberries,5587,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Strawberry.Clover,964,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Table.Wine.Grapes,100,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Tall.Fescue.Continental,921,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Tall.Fescue.Mediterranean,2567,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,Wheat,605,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+9,White.Clover,812,Unsuitable,0,3 Stevenson Road,Lower Barrington,TAS,7306,3 Stevenson Road Lower Barrington TAS 7306 Australia,-41.2877202,146.3086808
+10,Barley,22639,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Blueberries..nhb.,59898,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Blueberries..shb.,59518,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Carrot.seed,53933,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Carrots,57192,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Cherries,490266,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Cocksfoot.Continental,9084,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Cocksfoot.Mediterranean,9084,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Enterprise.Versatility.Index,17996,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Enterprise.Versatility.Index...Pastures,20,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Eucalyptus.Globulus,244024,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Eucalyptus.Nitens,156298,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Hazelnuts,356174,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Industrial.Hemp,6353,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Linseed,12233,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Lucerne,18197,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Olives,136799,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Onions,309109,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Phalaris,8122,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Pinus.Radiata,9778,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Poppies,46518,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Potatoes,96610,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Pyrethrum,59031,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Raspberries,155235,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Red.Clover,12575,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Rye.Grass,11781,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Sparkling.Wine.Grapes,250,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Strawberries,121252,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Strawberry.Clover,11106,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Table.Wine.Grapes,318,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Tall.Fescue.Continental,13063,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Tall.Fescue.Mediterranean,9084,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,Wheat,27988,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+10,White.Clover,11525,Unsuitable,0,121 Saunders Drive,Hadspen,TAS,7290,121 Saunders Drive Hadspen TAS 7290 Australia,-41.5057565,147.0785763
+11,Barley,460,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Blueberries..nhb.,1937,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Blueberries..shb.,2868,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Carrot.seed,1946,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Carrots,6052,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Cherries,83962,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Cocksfoot.Continental,3751,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Cocksfoot.Mediterranean,3942,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Enterprise.Versatility.Index,17996,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Enterprise.Versatility.Index...Pastures,6,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Eucalyptus.Globulus,130920,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Eucalyptus.Nitens,26455,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Hazelnuts,679,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Industrial.Hemp,1866,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Linseed,1940,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Lucerne,5035,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Olives,26816,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Onions,8628,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Phalaris,1313,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Pinus.Radiata,744,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Poppies,1495,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Potatoes,10791,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Pyrethrum,4517,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Raspberries,87513,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Red.Clover,2414,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Rye.Grass,1960,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Sparkling.Wine.Grapes,250,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Strawberries,48386,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Strawberry.Clover,2214,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Table.Wine.Grapes,318,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Tall.Fescue.Continental,2011,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Tall.Fescue.Mediterranean,3942,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,Wheat,1593,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+11,White.Clover,5010,Unsuitable,0,101 Pateena Road,Travellers Rest,TAS,7250,101 Pateena Road Travellers Rest TAS 7250 Australia,-41.4994418,147.0987821
+12,Barley,2571,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Blueberries..nhb.,8808,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Blueberries..shb.,11377,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Carrot.seed,12296,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Carrots,8622,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Cherries,41325,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Cocksfoot.Continental,445,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Cocksfoot.Mediterranean,2589,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Enterprise.Versatility.Index,17996,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Enterprise.Versatility.Index...Pastures,0,NA,NA,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Eucalyptus.Globulus,7569,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Eucalyptus.Nitens,6132,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Hazelnuts,36365,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Industrial.Hemp,1170,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Linseed,844,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Lucerne,7705,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Olives,32560,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Onions,45748,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Phalaris,2295,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Pinus.Radiata,200,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Poppies,3060,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Potatoes,3186,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Pyrethrum,17646,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Raspberries,3852,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Red.Clover,652,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Rye.Grass,837,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Sparkling.Wine.Grapes,51,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Strawberries,6556,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Strawberry.Clover,989,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Table.Wine.Grapes,112,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Tall.Fescue.Continental,945,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Tall.Fescue.Mediterranean,2589,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,Wheat,3247,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+12,White.Clover,837,Unsuitable,0,85 Bramich Road,Acacia Hills,TAS,7306,85 Bramich Road Acacia Hills TAS 7306 Australia,-41.3031347,146.3345679
+13,Barley,273,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Blueberries..nhb.,17260,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Blueberries..shb.,2562,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Carrot.seed,1716,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Carrots,5304,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Cherries,49205,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Cocksfoot.Continental,3437,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Cocksfoot.Mediterranean,3628,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Enterprise.Versatility.Index,17996,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Enterprise.Versatility.Index...Pastures,20,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Eucalyptus.Globulus,25317,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Eucalyptus.Nitens,17350,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Hazelnuts,65656,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Industrial.Hemp,1866,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Linseed,2414,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Lucerne,5035,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Olives,8684,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Onions,189429,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Phalaris,2326,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Pinus.Radiata,744,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Poppies,880,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Potatoes,10211,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Pyrethrum,4167,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Raspberries,49464,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Red.Clover,1938,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Rye.Grass,313,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Sparkling.Wine.Grapes,250,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Strawberries,3134,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Strawberry.Clover,112,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Table.Wine.Grapes,318,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Tall.Fescue.Continental,156,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Tall.Fescue.Mediterranean,3628,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,Wheat,266,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+13,White.Clover,313,Unsuitable,0,1 Barnard Drive,Bicheno,TAS,7215,1 Barnard Drive Bicheno TAS 7215 Australia,-41.8430573,148.2488157
+14,Barley,3583,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Blueberries..nhb.,12058,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Blueberries..shb.,15581,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Carrot.seed,10376,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Carrots,17440,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Cherries,61908,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Cocksfoot.Continental,810,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Cocksfoot.Mediterranean,2954,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Enterprise.Versatility.Index,17996,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Enterprise.Versatility.Index...Pastures,6,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Eucalyptus.Globulus,11047,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Eucalyptus.Nitens,9552,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Hazelnuts,32860,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Industrial.Hemp,1151,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Linseed,3348,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Lucerne,7686,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Olives,14062,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Onions,42533,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Phalaris,2936,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Pinus.Radiata,177,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Poppies,3043,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Potatoes,7875,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Pyrethrum,17457,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Raspberries,8225,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Red.Clover,3563,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Rye.Grass,4081,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Sparkling.Wine.Grapes,1,Well suited,3,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Strawberries,79165,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Strawberry.Clover,3861,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Table.Wine.Grapes,219,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Tall.Fescue.Continental,2584,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Tall.Fescue.Mediterranean,2954,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,Wheat,4430,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+14,White.Clover,3614,Unsuitable,0,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181
+15,Barley,22639,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Blueberries..nhb.,59898,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Blueberries..shb.,59518,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Carrot.seed,53933,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Carrots,57192,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Cherries,490266,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Cocksfoot.Continental,10791,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Cocksfoot.Mediterranean,10791,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Enterprise.Versatility.Index,17996,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Enterprise.Versatility.Index...Pastures,20,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Eucalyptus.Globulus,244024,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Eucalyptus.Nitens,156298,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Hazelnuts,356174,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Industrial.Hemp,6353,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Linseed,12233,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Lucerne,18197,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Olives,136799,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Onions,309109,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Phalaris,6884,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Pinus.Radiata,9778,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Poppies,46518,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Potatoes,96610,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Pyrethrum,59031,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Raspberries,155235,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Red.Clover,12575,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Rye.Grass,11781,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Sparkling.Wine.Grapes,250,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Strawberries,121252,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Strawberry.Clover,11106,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Table.Wine.Grapes,318,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Tall.Fescue.Continental,11543,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Tall.Fescue.Mediterranean,10791,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,Wheat,27988,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+15,White.Clover,11525,Unsuitable,0,2156 Huon Road,Lower Longley,TAS,7109,2156 Huon Road Lower Longley TAS 7109 Australia,-42.9717568,147.1727961
+16,Barley,673,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Blueberries..nhb.,17646,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Blueberries..shb.,528,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Carrot.seed,2237,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Carrots,3365,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Cherries,6728,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Cocksfoot.Continental,476,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Cocksfoot.Mediterranean,2620,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Enterprise.Versatility.Index,17996,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Enterprise.Versatility.Index...Pastures,0,NA,NA,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Eucalyptus.Globulus,116740,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Eucalyptus.Nitens,81314,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Hazelnuts,64528,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Industrial.Hemp,512,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Linseed,876,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Lucerne,478,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Olives,5694,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Onions,67827,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Phalaris,2331,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Pinus.Radiata,240,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Poppies,2676,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Potatoes,3683,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Pyrethrum,17412,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Raspberries,23227,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Red.Clover,683,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Rye.Grass,873,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Sparkling.Wine.Grapes,7,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Strawberries,19774,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Strawberry.Clover,1025,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Table.Wine.Grapes,88,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Tall.Fescue.Continental,981,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Tall.Fescue.Mediterranean,2620,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,Wheat,639,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+16,White.Clover,873,Unsuitable,0,152 Whitsitts Road,Wynyard,TAS,7325,152 Whitsitts Road Wynyard TAS 7325 Australia,-41.0203079,145.7240586
+17,Barley,6011,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Blueberries..nhb.,1853,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Blueberries..shb.,2711,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Carrot.seed,53454,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Carrots,6079,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Cherries,72002,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Cocksfoot.Continental,3468,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Cocksfoot.Mediterranean,3659,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Enterprise.Versatility.Index,17996,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Enterprise.Versatility.Index...Pastures,0,NA,NA,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Eucalyptus.Globulus,222708,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Eucalyptus.Nitens,150703,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Hazelnuts,110672,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Industrial.Hemp,1903,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Linseed,1985,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Lucerne,5076,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Olives,9403,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Onions,8710,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Phalaris,2398,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Pinus.Radiata,793,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Poppies,45820,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Potatoes,37233,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Pyrethrum,4195,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Raspberries,53404,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Red.Clover,2295,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Rye.Grass,546,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Sparkling.Wine.Grapes,250,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Strawberries,19262,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Strawberry.Clover,1417,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Table.Wine.Grapes,318,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Tall.Fescue.Continental,1045,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Tall.Fescue.Mediterranean,3659,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,Wheat,8622,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+17,White.Clover,546,Unsuitable,0,89 Medeas Cove Road,St Helens,TAS,7216,89 Medeas Cove Road St Helens TAS 7216 Australia,-41.3268154,148.2246568
+18,Barley,17170,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Blueberries..nhb.,51166,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Blueberries..shb.,50009,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Carrot.seed,42632,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Carrots,47330,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Cherries,457561,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Cocksfoot.Continental,844,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Cocksfoot.Mediterranean,2988,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Enterprise.Versatility.Index,17996,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Enterprise.Versatility.Index...Pastures,7,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Eucalyptus.Globulus,202624,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Eucalyptus.Nitens,130562,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Hazelnuts,289671,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Industrial.Hemp,4660,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Linseed,9174,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Lucerne,16043,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Olives,130942,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Onions,285701,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Phalaris,2974,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Pinus.Radiata,8176,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Poppies,35055,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Potatoes,82956,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Pyrethrum,53696,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Raspberries,137548,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Red.Clover,3597,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Rye.Grass,4120,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Sparkling.Wine.Grapes,1,Well suited,3,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Strawberries,65168,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Strawberry.Clover,3900,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Table.Wine.Grapes,97,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Tall.Fescue.Continental,2622,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Tall.Fescue.Mediterranean,2988,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,Wheat,22765,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+18,White.Clover,3653,Unsuitable,0,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431
+19,Barley,22639,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Blueberries..nhb.,59898,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Blueberries..shb.,59518,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Carrot.seed,53933,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Carrots,57192,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Cherries,490266,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Cocksfoot.Continental,8369,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Cocksfoot.Mediterranean,8369,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Enterprise.Versatility.Index,17996,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Enterprise.Versatility.Index...Pastures,20,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Eucalyptus.Globulus,244024,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Eucalyptus.Nitens,156298,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Hazelnuts,356174,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Industrial.Hemp,6353,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Linseed,12233,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Lucerne,18197,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Olives,136799,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Onions,309109,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Phalaris,7779,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Pinus.Radiata,9778,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Poppies,46518,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Potatoes,96610,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Pyrethrum,59031,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Raspberries,155235,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Red.Clover,12575,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Rye.Grass,11781,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Sparkling.Wine.Grapes,33,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Strawberries,121252,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Strawberry.Clover,11106,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Table.Wine.Grapes,103,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Tall.Fescue.Continental,10410,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Tall.Fescue.Mediterranean,8369,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,Wheat,27988,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+19,White.Clover,11525,Unsuitable,0,149 Cloudy Bay Road,Lunawanna,TAS,7150,149 Cloudy Bay Road Lunawanna TAS 7150 Australia,-43.3722137,147.2417698
+20,Barley,2960,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Blueberries..nhb.,1684,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Blueberries..shb.,2452,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Carrot.seed,19405,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Carrots,14716,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Cherries,77249,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Cocksfoot.Continental,4204,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Cocksfoot.Mediterranean,4395,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Enterprise.Versatility.Index,17996,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Enterprise.Versatility.Index...Pastures,7,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Eucalyptus.Globulus,21398,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Eucalyptus.Nitens,378,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Hazelnuts,17705,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Industrial.Hemp,2172,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Linseed,2752,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Lucerne,6048,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Olives,12559,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Onions,28551,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Phalaris,2932,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Pinus.Radiata,443,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Poppies,1890,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Potatoes,28080,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Pyrethrum,4487,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Raspberries,83200,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Red.Clover,2754,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Rye.Grass,3511,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Sparkling.Wine.Grapes,57,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Strawberries,55618,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Strawberry.Clover,2968,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Table.Wine.Grapes,115,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Tall.Fescue.Continental,2580,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Tall.Fescue.Mediterranean,4395,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,Wheat,3985,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535
+20,White.Clover,3140,Unsuitable,0,771 Prossers Road,Underwood,TAS,7268,771 Prossers Road Underwood TAS 7268 Australia,-41.3349584,147.1891535

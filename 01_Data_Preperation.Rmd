@@ -1,0 +1,1108 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+## Prepare data from HTML file
+
+Here is an example of preparing details from a html file downloaded from Domain.com. The html file represnts (the firs 20 results) of a search on all Tasmanian properties >10Ha.
+
+The goal is to prepare the data in tabular format and also determine the spatial location based on the address from the listing details.
+
+A better way will be to use Domain API to return the listing data (I am investigating this) - Kane
+
+```{r}
+# --- Setup --------------------------------------------------------------
+# install.packages(c("rvest","dplyr","stringr","tidyr","readr","purrr","tidygeocoder"))
+library(rvest)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(readr)
+library(purrr)
+library(tidygeocoder)
+
+# --- Path to your saved HTML file --------------------------------------
+file_path <- "./dataset/289 Properties for Sale in tas _ Domain.html"  # <- change if needed
+
+# --- Helpers ------------------------------------------------------------
+
+# Parse the mixed address string into columns
+# Handles forms like: "401 Bresnehans Road, LITTLE SWANPORT TAS 7190"
+# and "401 Bresnehans Road,LITTLE SWANPORTTAS7190"
+parse_address <- function(addr) {
+  addr <- str_squish(addr %||% "")
+  if (addr == "") return(tibble(street = NA, suburb = NA, state = NA, postcode = NA))
+
+  # First try "street, suburb state postcode"
+  m1 <- str_match(addr, "^(.*?),\\s*(.*?)\\s+(TAS)\\s*(\\d{4})$")
+  if (!any(is.na(m1))) {
+    return(tibble(
+      street   = str_squish(m1[,2]),
+      suburb   = str_to_title(str_squish(m1[,3])),
+      state    = str_squish(m1[,4]),
+      postcode = str_squish(m1[,5])
+    ))
+  }
+
+  # Then try "street,suburbSTATEPOSTCODE" (no spaces)
+  m2 <- str_match(addr, "^(.*?),(.*?)(TAS)(\\d{4})$")
+  if (!any(is.na(m2))) {
+    return(tibble(
+      street   = str_squish(m2[,2]),
+      suburb   = str_to_title(str_squish(m2[,3])),
+      state    = str_squish(m2[,4]),
+      postcode = str_squish(m2[,5])
+    ))
+  }
+
+  # Fall back: return raw in street
+  tibble(street = addr, suburb = NA, state = NA, postcode = NA)
+}
+
+# Convert price text to numeric dollars where possible
+# Examples:
+# "$1,295,000" -> 1295000
+# "Offers Over $875k" -> 875000
+# "EOI" / "Expressions of Interest" -> NA
+parse_price_numeric <- function(price_text) {
+  if (is.na(price_text) || str_trim(price_text) == "") return(NA_real_)
+  txt <- str_to_upper(gsub(",", "", price_text))
+
+  # Skip expressions of interest, contact agent, auction guides without numbers
+  if (str_detect(txt, "EOI|EXPRESSION|CONTACT|TENDER|AUCTION|BY NEGOTIATION")) return(NA_real_)
+
+  m <- str_match(txt, "\\$?\\s*([0-9]+(?:\\.[0-9]+)?)\\s*([KM])?")
+  if (any(is.na(m))) return(NA_real_)
+
+  val <- as.numeric(m[,2])
+  suf <- m[,3]
+
+  if (!is.na(suf)) {
+    if (suf == "K") val <- val * 1e3
+    if (suf == "M") val <- val * 1e6
+  }
+  as.numeric(round(val))
+}
+
+`%||%` <- function(a, b) if (is.null(a)) b else a
+
+# --- Parse HTML ---------------------------------------------------------
+
+page <- read_html(file_path)
+
+# Grab each listing "card".
+# These selectors match the structure in your uploaded file.
+# If Domain changes layout, try adjusting the selectors below.
+cards <- html_elements(page, "ul.css-163kh4h > li div.css-qrqvvg")
+
+# Fallback (if needed): try a more generic grab of containers with an H2 and a price-like <p>
+if (length(cards) == 0) {
+  cards <- html_elements(page, xpath = "//li[.//h2]")
+}
+
+extract_one <- function(card) {
+  title_h2  <- card %>% html_element("h2")
+  addr_raw  <- title_h2 %>% html_text2() %||% NA_character_
+
+  # Price: first try the class seen in your file; then fall back to any <p> containing a $ or 'Offer'
+  price_raw <- card %>% html_element("p.css-mgq8yx") %>% html_text2()
+  if (is.null(price_raw)) {
+    price_raw <- card %>% html_elements("p") %>% html_text2() %>% keep(~str_detect(.x, "\\$|OFFER|EOI|EXPRESSION|CONTACT|AUCTION")) %>% first()
+  }
+  price_raw <- price_raw %||% NA_character_
+
+  tibble(Address_raw = addr_raw, Price_raw = price_raw)
+}
+
+raw_df <- map_dfr(cards, extract_one) %>% distinct()
+
+# Keep rows that look like Tasmanian addresses
+raw_df <- raw_df %>%
+  filter(str_detect(Address_raw, "TAS\\s*\\d{4}") | str_detect(Address_raw, "TAS\\d{4}"))
+
+# Split address into fields
+addr_split <- map_dfr(raw_df$Address_raw, parse_address)
+
+df <- bind_cols(raw_df, addr_split) %>%
+  mutate(
+    Price_numeric = map_dbl(Price_raw, parse_price_numeric),
+    full_address  = str_squish(paste(street, suburb, state, postcode, "Australia"))
+  )
+
+# --- Geocoding ----------------------------------------------------------
+# Option A: Free OpenStreetMap/Nominatim via tidygeocoder (no key, but slower; be courteous)
+# Tip: For heavier use, consider setting your email in the query to be polite & improve reliability:
+#      custom_query = list(email = "your_email@example.com")
+#
+# Note: min_time=1 spaces out requests to ~1/sec (respectful to OSM).
+df_geo <- df %>%
+  filter(!is.na(full_address)) %>%
+  geocode(address = full_address,
+          method = "osm",
+          lat = latitude, long = longitude,
+          limit = 1, min_time = 1,
+          custom_query = list(countrycodes = "au"))
+
+# Option B (faster/paid): Google Maps Geocoding
+# library(ggmap)
+# register_google(key = "YOUR_GOOGLE_API_KEY")
+# df_geo <- df %>%
+#   mutate_geocode(full_address, output = "latlon", source = "google") %>%
+#   rename(latitude = lat, longitude = lon)
+
+# Merge geocodes back (in case some rows failed to geocode)
+df_final <- df %>%
+  left_join(select(df_geo, full_address, latitude, longitude), by = "full_address")
+
+# --- Output -------------------------------------------------------------
+# See a preview
+print(df_final, n = 50)
+
+# Save to CSV
+out_csv <- "./results/tas_listings_with_price_and_geocode.csv"
+write_csv(df_final, out_csv)
+message("Saved: ", out_csv)
+
+```
+
+## Determine Crop Suitability for Listig points
+```{r}
+# ======================== LIST ESM overlap for property points (robust) ========================
+# Inputs:
+#   CSV with lower-case columns: latitude, longitude  (plus any other reference columns)
+# Outputs:
+#   esm_suitability_by_property.csv  (long: property x crop)
+#   esm_top_crops_by_property.csv    (filtered to Well/Suitable)
+#   esm_wide_scores.csv              (wide matrix of scores per crop)
+#
+# install.packages(c("dplyr","readr","purrr","stringr","tibble","tidyr","httr2","jsonlite"))
+
+library(dplyr)
+library(readr)
+library(purrr)
+library(stringr)
+library(tibble)
+library(tidyr)
+library(httr2)
+library(jsonlite)
+
+# ------------------------- CONFIG --------------------------------------
+
+in_points_csv     <- "./results/tas_listings_with_price_and_geocode.csv"
+out_full_results  <- "./results/esm_suitability_by_property.csv"
+out_top_crops_csv <- "./results/esm_top_crops_by_property.csv"
+out_wide_scores   <- "./results/esm_wide_scores.csv"
+
+# ESM service (2018 baseline; swap to 2030/2050 if needed)
+esm_base    <- "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/EnterpriseSuitabilityMapping2018/MapServer"
+identify_url<- paste0(esm_base, "/identify")
+layers_url  <- paste0(esm_base, "/layers")
+
+# Identify rendering params (tune if needed)
+buf_m        <- 25000     # half-size of mapExtent (metres); larger helps scale/tolerance
+tolerance_px <- 10        # pixel tolerance
+img_w <- 1024; img_h <- 1024; img_dpi <- 96
+
+# Try modes in this order per layer
+identify_modes <- c("all", "visible", "top")
+
+# Optional: sleep between Identify requests to be polite
+identify_delay_sec <- 0.0
+
+# ------------------------- HELPERS -------------------------------------
+
+`%||%` <- function(a, b) if (is.null(a) || length(a) == 0) b else a
+normalize_key <- function(x) gsub("[^a-z0-9]+", "", tolower(x))
+
+# Vectorized bucketing
+bucket_suitability <- function(val) {
+  if (length(val) == 0) return(character(0))
+  s <- as.character(val)
+  out <- rep(NA_character_, length(s))
+  num <- suppressWarnings(as.numeric(str_extract(s, "^\\d+(?:\\.\\d+)?")))
+  idx_num <- !is.na(num)
+  if (any(idx_num)) {
+    major <- floor(num[idx_num])
+    out[idx_num] <- dplyr::case_when(
+      major == 1 ~ "Well suited",
+      major == 2 ~ "Suitable",
+      major == 3 ~ "Moderately suitable",
+      major >= 4 ~ "Unsuitable",
+      TRUE ~ NA_character_
+    )
+  }
+  idx_txt <- which(is.na(out))
+  if (length(idx_txt)) {
+    su <- toupper(s[idx_txt])
+    out[idx_txt[str_detect(su, "WELL")]]       <- "Well suited"
+    out[idx_txt[str_detect(su, "UNSUIT")]]     <- "Unsuitable"
+    out[idx_txt[str_detect(su, "MODERATE")]]   <- "Moderately suitable"
+    mask_suit <- is.na(out[idx_txt]) & str_detect(su, "\\bSUIT")
+    out[idx_txt[mask_suit]] <- "Suitable"
+  }
+  out
+}
+
+score_suitability <- function(group) {
+  dplyr::case_when(
+    group == "Well suited"         ~ 3,
+    group == "Suitable"            ~ 2,
+    group == "Moderately suitable" ~ 1,
+    group == "Unsuitable"          ~ 0,
+    TRUE                           ~ NA_real_
+  )
+}
+
+# ---- 4326 -> 102100 (Web Mercator) reprojection ----
+to_3857 <- function(lon, lat) {
+  x <- lon * 20037508.34 / 180
+  y <- log(tan((90 + lat) * pi / 360)) * 20037508.34 / pi
+  list(x = x, y = y)
+}
+
+# -------- Robust layer discovery: handles data.frame OR list-of-lists ----
+fetch_layers <- function() {
+  resp <- request(layers_url) |> req_url_query(f = "json") |> req_perform()
+  j <- resp_body_json(resp, simplifyVector = TRUE)
+
+  lyr <- j$layers
+  if (is.null(lyr)) stop("Service response has no 'layers' element.")
+
+  if (is.data.frame(lyr)) {
+    # Already a data frame: columns like id, name, type, minScale may be present
+    df <- as_tibble(lyr) %>%
+      transmute(
+        id       = suppressWarnings(as.integer(id)),
+        name     = as.character(name %||% NA_character_),
+        type     = as.character(type %||% NA_character_),
+        minScale = suppressWarnings(as.numeric(minScale %||% NA_real_))
+      )
+  } else if (is.list(lyr)) {
+    # List of layer objects
+    df <- map_dfr(lyr, function(x) tibble(
+      id       = suppressWarnings(as.integer(x$id %||% NA_integer_)),
+      name     = as.character(x$name %||% NA_character_),
+      type     = as.character(x$type %||% NA_character_),
+      minScale = suppressWarnings(as.numeric(x$minScale %||% NA_real_))
+    ))
+  } else {
+    stop("Unexpected 'layers' type: ", typeof(lyr))
+  }
+
+  df %>%
+    filter(!is.na(id)) %>%
+    arrange(id) %>%
+    # keep the raster enterprise layers
+    filter(grepl("raster", type, ignore.case = TRUE))
+}
+
+# Identify ONE layer at a point, trying modes 'all:', 'visible:', 'top:'
+identify_point_one_layer <- function(lon4326, lat4326, layer_id) {
+  wm <- to_3857(lon4326, lat4326)
+  xmin <- wm$x - buf_m; ymin <- wm$y - buf_m
+  xmax <- wm$x + buf_m; ymax <- wm$y + buf_m
+
+  for (mode in identify_modes) {
+    req <- request(identify_url) |>
+      req_url_query(
+        f = "json",
+        geometry = sprintf('{"x":%.3f,"y":%.3f,"spatialReference":{"wkid":102100}}', wm$x, wm$y),
+        geometryType = "esriGeometryPoint",
+        sr = 102100,
+        layers = paste0(mode, ":", layer_id),
+        tolerance = tolerance_px,
+        mapExtent = paste(xmin, ymin, xmax, ymax, sep = ","),
+        imageDisplay = paste(img_w, img_h, img_dpi, sep = ","),
+        returnGeometry = "false",
+        returnUnformattedValues = "true",
+        returnFieldName = "true"
+      )
+
+    resp <- tryCatch(req_perform(req), error = function(e) NULL)
+    if (is.null(resp)) next
+
+    out <- tryCatch(resp_body_json(resp, simplifyVector = TRUE), error = function(e) NULL)
+    if (is.null(out) || is.null(out$results) || length(out$results) == 0) next
+
+    r <- tibble::as_tibble(out$results)
+    if (nrow(r) == 0) next
+    return(r)
+  }
+  tibble() # no hit
+}
+
+# Extract class value (pixel) from Identify results
+pluck_identify_values <- function(r) {
+  n <- nrow(r)
+  if (n == 0) return(character(0))
+
+  # Case A: top-level 'value'
+  if ("value" %in% names(r) && !all(is.na(r$value))) {
+    return(as.character(r$value))
+  }
+
+  vals <- rep(NA_character_, n)
+  if ("attributes" %in% names(r)) {
+    wanted <- c("pixelvalue","pixel_value","rastervalue","value",
+                "class","classcode","suit","suit_class","suitability")
+    for (i in seq_len(n)) {
+      att <- r$attributes[[i]]
+      if (is.null(att)) next
+
+      # scalar
+      if (is.atomic(att) && length(att) == 1 && is.null(names(att))) {
+        vals[i] <- as.character(att); next
+      }
+      # atomic named vector
+      if (is.atomic(att) && length(att) >= 1 && !is.null(names(att))) {
+        nms <- names(att); norm <- normalize_key(nms)
+        hit <- which(norm %in% wanted)
+        vals[i] <- if (length(hit)) as.character(att[[hit[1]]]) else as.character(att[[1]])
+        next
+      }
+      # list
+      if (is.list(att)) {
+        nms <- names(att)
+        if (!is.null(nms)) {
+          norm <- normalize_key(nms)
+          hit <- which(norm %in% wanted)
+          if (length(hit)) {
+            vals[i] <- as.character(att[[hit[1]]])
+          } else {
+            flat <- unlist(att, recursive = TRUE, use.names = FALSE)
+            if (length(flat)) vals[i] <- as.character(flat[1])
+          }
+        } else {
+          flat <- unlist(att, recursive = TRUE, use.names = FALSE)
+          if (length(flat)) vals[i] <- as.character(flat[1])
+        }
+        next
+      }
+    }
+  }
+  vals
+}
+
+# ------------------------- LOAD POINTS ---------------------------------
+
+pts_in <- read_csv(in_points_csv, show_col_types = FALSE)
+
+if (!all(c("latitude","longitude") %in% names(pts_in))) {
+  stop("Input CSV must have lower-case 'latitude' and 'longitude' columns.")
+}
+
+if (!"prop_id" %in% names(pts_in)) {
+  pts_in <- pts_in %>% mutate(prop_id = row_number())
+} else {
+  pts_in <- pts_in %>% mutate(prop_id = as.integer(factor(prop_id)))
+}
+
+pts <- pts_in %>%
+  filter(!is.na(latitude), !is.na(longitude)) %>%
+  select(prop_id, everything())
+
+message("Properties to query: ", nrow(pts))
+
+# ------------------------- DISCOVER LAYERS -----------------------------
+
+layers_df <- fetch_layers()
+stopifnot(nrow(layers_df) > 0)
+
+layer_ids   <- layers_df$id
+layer_names <- setNames(layers_df$name, as.character(layers_df$id))
+
+message("Layers discovered: ",
+        paste0(layer_ids, ":", layer_names[as.character(layer_ids)], collapse = "; "))
+
+# ------------------------- QUERY ESM -----------------------------------
+
+results <- pts %>%
+  split(.$prop_id) %>%
+  map_dfr(function(df1) {
+    lon <- df1$longitude[1]; lat <- df1$latitude[1]
+
+    per_layer <- map(layer_ids, function(lyr_id) {
+      r <- identify_point_one_layer(lon, lat, lyr_id)
+      if (identify_delay_sec > 0) Sys.sleep(identify_delay_sec)
+      if (nrow(r) == 0) return(tibble())
+      vals <- pluck_identify_values(r)
+      tibble(
+        prop_id    = df1$prop_id[1],
+        layerId    = lyr_id,
+        layerName  = layer_names[as.character(lyr_id)] %||%
+                     if ("layerName" %in% names(r)) r$layerName[1] else NA_character_,
+        class_code = vals
+      )
+    })
+
+    bind_rows(per_layer)
+  })
+
+if (nrow(results) == 0) {
+  stop("Identify returned no results. Increase buf_m, check network/firewall, or try the 2030/2050 service URLs.")
+}
+
+final <- results %>%
+  mutate(
+    suitability_group = bucket_suitability(class_code),
+    suitability_score = score_suitability(suitability_group),
+    crop              = make.names(layerName)
+  ) %>%
+  select(prop_id, crop, class_code, suitability_group, suitability_score) %>%
+  left_join(pts_in %>% select(prop_id, any_of(c(
+    "street","suburb","state","postcode","price_raw","price_numeric",
+    "address_raw","full_address","latitude","longitude"
+  ))), by = "prop_id") %>%
+  arrange(prop_id, crop)
+
+write_csv(final, out_full_results)
+message("Saved: ", out_full_results)
+
+top <- final %>%
+  filter(suitability_group %in% c("Well suited","Suitable")) %>%
+  group_by(prop_id, across(all_of(intersect(names(final), c(
+    "street","suburb","state","postcode","price_raw","price_numeric",
+    "address_raw","full_address","latitude","longitude"
+  ))))) %>%
+  summarise(
+    crops = paste0(crop, " (", suitability_group, ":", class_code, ")", collapse = "; "),
+    best_score = max(suitability_score, na.rm = TRUE),
+    n_crops    = n(),
+    .groups = "drop"
+  )
+
+write_csv(top, out_top_crops_csv)
+message("Saved: ", out_top_crops_csv)
+
+wide_scores <- final %>%
+  select(prop_id, crop, suitability_score) %>%
+  distinct() %>%
+  pivot_wider(names_from = crop, values_from = suitability_score)
+
+write_csv(wide_scores, out_wide_scores)
+message("Saved: ", out_wide_scores)
+
+message("Done.")
+
+```
+
+## Function for determinnig crop suitability at any point
+
+```{r}
+# --- Packages ---
+library(httr2)
+library(jsonlite)
+library(dplyr)
+library(purrr)
+library(tibble)
+library(stringr)
+
+# --- Service chooser: "2018" (baseline) or "2030" (CFT RCP8.5) ---
+esm_base_url <- function(service_year = c("2018","2030")) {
+  service_year <- match.arg(service_year)
+  sprintf(
+    "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/EnterpriseSuitabilityMapping%s/MapServer",
+    service_year
+  )
+}
+
+# --- Helpers ---
+json_get <- function(url, query = list()) {
+  # LIST often serves JSON as text/plain; allow it.
+  request(url) |>
+    req_url_query(!!!query) |>
+    req_perform() |>
+    resp_body_json(check_type = FALSE, simplifyVector = FALSE)
+}
+
+# WGS84 lon/lat -> Web Mercator (EPSG:3857)
+lonlat_to_mercator <- function(lon, lat) {
+  x <- lon * 20037508.34 / 180
+  y <- log(tan((90 + lat) * pi/360)) * 20037508.34 / pi
+  list(x = x, y = y)
+}
+
+# Build readable, unique column names from layer names (preserve bracket tags)
+make_colnames <- function(layer_names, layer_ids) {
+  keep_brackets <- str_replace_all(layer_names, "\\[\\s*([^\\]]+?)\\s*\\]", "_\\1")
+  base <- keep_brackets |>
+    tolower() |>
+    str_replace_all("[^a-z0-9]+", "_") |>
+    str_replace_all("_+", "_") |>
+    str_replace_all("^_|_$", "")
+  unique_names <- make.unique(base, sep = "_")
+  if (any(duplicated(unique_names))) {
+    dup <- duplicated(unique_names) | duplicated(unique_names, fromLast = TRUE)
+    unique_names[dup] <- paste0(unique_names[dup], "_", layer_ids[dup])
+  }
+  unique_names
+}
+
+# --- Get crop layers (exclude versatility index overlays) ---
+get_crop_layers <- function(base_url) {
+  svc <- json_get(base_url, query = list(f = "pjson"))
+  layers <- svc$layers
+  tibble(
+    id   = vapply(layers, function(z) z$id, integer(1)),
+    name = vapply(layers, function(z) z$name, character(1))
+  ) |>
+    filter(!str_detect(tolower(name), "versatility")) |>
+    arrange(id)
+}
+
+# --- Legend (layerId -> named vector code->label); used only as fallback ---
+get_legend_maps <- function(base_url) {
+  leg <- json_get(paste0(base_url, "/legend"), query = list(f = "pjson"))
+  out <- map(leg$layers, function(L) {
+    if (is.null(L$legend)) return(NULL)
+    labs <- vapply(L$legend, function(v) if (is.null(v$label)) "" else as.character(v$label), character(1))
+    labs <- str_squish(labs)
+    code <- str_match(labs, "^([0-9]+(?:\\.[0-9]+)?)")[,2]
+    keep <- !is.na(code)
+    if (!any(keep)) return(NULL)
+    stats::setNames(labs[keep], code[keep])
+  })
+  names(out) <- vapply(leg$layers, function(L) as.character(L$layerId), character(1))
+  out
+}
+
+# --- Convert raw numeric to codes like "1.0","1.1" ... (used in fallback) ---
+normalize_code <- function(x) {
+  if (is.na(x) || x == "") return(NA_character_)
+  x <- str_squish(as.character(x))
+  # If a code appears in the text, grab it
+  m <- str_match(x, "([0-9]+(?:\\.[0-9]+)?)")
+  if (!is.na(m[1,2])) return(m[1,2])
+  # Otherwise try numeric divisions
+  xn <- suppressWarnings(as.numeric(x))
+  if (is.na(xn)) return(NA_character_)
+  for (div in c(1,10,100,1000)) {
+    v <- xn/div
+    code <- sprintf("%.1f", v)
+    if (str_detect(code, "^[0-9]+\\.[0-9]$")) return(code)
+  }
+  NA_character_
+}
+
+# --- Identify and extract both Suitability and a raw value (for fallback) ---
+identify_suitability_and_raw <- function(base_url, lon, lat, layer_ids) {
+  pt <- lonlat_to_mercator(lon, lat)
+  buf <- 1000
+  map_extent <- sprintf("%.3f,%.3f,%.3f,%.3f", pt$x - buf, pt$y - buf, pt$x + buf, pt$y + buf)
+
+  q <- list(
+    f = "json",
+    geometry = jsonlite::toJSON(list(x = pt$x, y = pt$y), auto_unbox = TRUE),
+    geometryType = "esriGeometryPoint",
+    sr = 3857,
+    layers = paste0("all:", paste(layer_ids, collapse = ",")),
+    tolerance = 1,
+    mapExtent = map_extent,
+    imageDisplay = "800,600,96",
+    returnGeometry = "false",
+    returnUnformattedValues = "true",
+    returnFieldName = "false"
+  )
+
+  res <- json_get(paste0(base_url, "/identify"), query = q)
+
+  suit <- rep(NA_character_, length(layer_ids)); names(suit) <- as.character(layer_ids)
+  raw  <- rep(NA_character_, length(layer_ids)); names(raw)  <- as.character(layer_ids)
+
+  if (!is.null(res$results) && length(res$results)) {
+    for (r in res$results) {
+      lid <- as.character(r$layerId)
+      if (!is.null(r$attributes) && length(r$attributes)) {
+        # 1) Pull Suitability (exact field) if present (case/space tolerant)
+        keys <- names(r$attributes)
+        normkey <- function(k) gsub("\\s+", "", tolower(k))
+        idx_suit <- which(normkey(keys) == "suitability")
+        if (length(idx_suit)) {
+          v <- r$attributes[[ idx_suit[1] ]]
+          if (length(v) == 1) suit[lid] <- as.character(v)
+        }
+        # 2) Keep a raw-ish numeric for legend fallback
+        if (is.na(raw[lid])) {
+          # look for a value-like field
+          hit <- which(str_detect(tolower(keys), "(pixel|value|class|classcode|rastervalue|suitcode)"))
+          if (length(hit)) {
+            for (h in hit) {
+              v <- r$attributes[[h]]
+              if (length(v) == 1) { raw[lid] <- as.character(v); break }
+            }
+          } else {
+            first_scalar <- r$attributes[[1]]
+            if (length(first_scalar) == 1) raw[lid] <- as.character(first_scalar)
+          }
+        }
+      }
+    }
+  }
+  list(suitability = suit, raw = raw)
+}
+
+# --- If Suitability missing, use legend to map raw code -> label ---
+decode_with_legend <- function(raw_by_layer, legend_maps) {
+  out <- rep(NA_character_, length(raw_by_layer)); names(out) <- names(raw_by_layer)
+  for (lid in names(raw_by_layer)) {
+    code <- normalize_code(raw_by_layer[[lid]])
+    lm <- legend_maps[[lid]]
+    if (!is.null(lm) && !is.na(code) && code %in% names(lm)) {
+      out[[lid]] <- lm[[code]]
+    } else {
+      out[[lid]] <- code
+    }
+  }
+  out
+}
+
+# --- Main: one-row tibble with lon, lat, and Suitability per crop layer ---
+esm_point_suitability <- function(lon, lat, service_year = c("2018","2030")) {
+  base_url   <- esm_base_url(match.arg(service_year))
+  layers_tbl <- get_crop_layers(base_url)
+  layer_ids  <- layers_tbl$id
+
+  # Identify once
+  id <- identify_suitability_and_raw(base_url, lon, lat, layer_ids)
+
+  # Fallback legend decode only where Suitability is missing
+  need_fallback <- which(is.na(id$suitability) | id$suitability == "")
+  label_fallback <- character(0)
+  if (length(need_fallback)) {
+    legend_maps <- get_legend_maps(base_url)
+    label_fallback <- decode_with_legend(id$raw[need_fallback], legend_maps)
+  }
+
+  labels <- id$suitability
+  if (length(need_fallback)) labels[names(label_fallback)] <- label_fallback
+
+  # Order & name columns
+  labels <- labels[as.character(layer_ids)]
+  col_names <- make_colnames(layers_tbl$name, layer_ids = as.character(layer_ids))
+  names(labels) <- col_names
+
+  tibble(
+    lon = lon,
+    lat = lat,
+    !!!as.list(labels)
+  )
+}
+
+# ---------- Example: your test coordinate ----------
+lon <- 147.8070861
+lat <- -39.9014742
+
+lon <- 147.9450
+lat <- -42.32671
+
+# Baseline 2018 ESM; values come from the 'Suitability' attribute where available
+df_2018 <- esm_point_suitability(lon, lat, service_year = "2018")
+print(df_2018)
+
+# If you also want the 2030 projection (CFT RCP8.5), use:
+# df_2030 <- esm_point_suitability(lon, lat, service_year = "2030")
+# print(df_2030)
+
+
+```
+
+
+## Check the layer and point location
+```{r}
+# install.packages(c("leaflet"), dependencies = TRUE)  # if needed
+library(leaflet)
+
+esm_wms_base <- function(service_year = c("2018","2030","2050")) {
+  service_year <- match.arg(service_year)
+  sprintf("https://services.thelist.tas.gov.au/arcgis/services/Public/EnterpriseSuitabilityMapping%s/MapServer/WMSServer",
+          service_year)
+}
+
+# Quick interactive preview of ONE crop layer at your point
+esm_leaflet_preview <- function(lon, lat, layer_id = 0, service_year = c("2018","2030"), zoom = 12, opacity = 0.75) {
+  service_year <- match.arg(service_year)
+  base <- esm_wms_base(service_year)
+  leaflet() |>
+    addProviderTiles("CartoDB.Positron") |>
+    addWMSTiles(
+      baseUrl = base,
+      layers = as.character(layer_id),   # e.g. 0=Barley, 19=Potatoes, 24=Sparkling wine grapes
+      options = WMSTileOptions(format = "image/png", transparent = TRUE),
+      group = paste0("ESM ", service_year, " layer ", layer_id)
+    ) |>
+    addCircleMarkers(lng = lon, lat = lat, radius = 6, weight = 2, fillOpacity = 0.9,
+                     popup = paste0("Lon: ", lon, "<br>Lat: ", lat)) |>
+    setView(lng = lon, lat = lat, zoom = zoom) |>
+    addLayersControl(overlayGroups = paste0("ESM ", service_year, " layer ", layer_id), options = layersControlOptions(collapsed = FALSE))
+}
+
+# Example at your point — try a few layer IDs:
+#lon <- 147.8070861
+#lat <- -39.9014742
+
+lon <- 147.9450
+lat <- -42.32671
+
+
+#esm_leaflet_preview(lon, lat, layer_id = 0,  service_year = "2018")  # Barley (0)
+# esm_leaflet_preview(lon, lat, layer_id = 19, service_year = "2018") # Potatoes (19)
+# esm_leaflet_preview(lon, lat, layer_id = 24, service_year = "2018") # Sparkling Wine Grapes (24)
+```
+
+
+## Issues I have identified
+
+Using a geolocated single point - sometimes falls on a roadway (e.g the post box of the address) - making the entire property 'unsuitable' for all crops. What we need to do is get the actual parcel/polygon from the cadaster for the adress and then use this to find the majority pixel value inside the parcel for each crop 
+
+## Using Cadaster PID
+
+In this section I give an example of how to query the ListMap WMS address layer to get the property ID (PID) -> This links to the cadaster polygon. Then we compute (by majority pixel) the crop suitability inside the cadaster polygon.
+
+### Function for returning ESM majorities by parcel
+
+**Purpose**  
+Resolve a street address to its cadastral parcel (PID) using LIST web services, then compute **majority crop suitability** for that parcel from the Enterprise Suitability Mapping (ESM) **without downloading rasters**.
+
+**How it works**
+1. **Address → PID** via LIST Address Points (tolerant to minor typos).
+2. **PID → parcel polygon** from LIST Cadastral Parcels (projected to EPSG:3857).
+3. **Crop layers**: if `crop_names = NULL`, queries **all** leaf ESM raster layers; otherwise resolves partial, case-insensitive names (e.g., `"potato"`).
+4. **Sampling**: builds a point grid inside the parcel (`cellsize_m` metres), calls the MapServer **Identify** at each point, reads numeric class **and** text **Suitability** (falls back to the layer legend if needed).
+5. **Aggregation**: tallies samples per (code, label) and reports the **majority class** per crop.
+
+**Signature**
+```{r}
+esm_majority_for_address(
+  address_text,
+  crop_names = NULL,   # NULL = all crops
+  cellsize_m = 60,     # grid spacing in metres (speed/accuracy trade-off)
+  max_pts   = 2000     # cap on identify requests
+)
+```
+
+**Returns** (named list)
+- `pid` — matched LIST PID  
+- `address` — human-readable address string  
+- `address_record` — LIST Address Points feature (`sf`)  
+- `parcel` — parcel polygon (`sf`, EPSG:3857)  
+- `crops` — tibble mapping `layer_id ↔ crop`  
+- `summary` — tibble with:
+  - `address`, `pid`, `crop`, `layer_id`, `code`, `label`, `pct`, `n`, `rank`  
+  - `rank == 1` marks the majority class for that crop
+
+**Typical use**
+```{r}
+out <- esm_majority_for_address(
+  "850 West End Rd, Leeka 7255, TAS",
+  crop_names = NULL,     # all crops
+  cellsize_m = 60,
+  max_pts = 1200
+)
+
+dplyr::filter(out$summary, rank == 1) |>
+  dplyr::select(crop, code, label, pct, n, address, pid) |>
+  dplyr::arrange(crop)
+```
+
+**Notes**
+- Results are **sample-count majorities** (proxy for area). Exact area-weighted classes would require server-side zonal stats or local rasters.  
+- Keep `cellsize_m` reasonable (e.g., 60–100 m) and `max_pts` capped to avoid hammering the service.  
+- Labels come from each layer’s `Suitability` attribute when present; the legend is used as a fallback.
+
+### Actual code
+
+```{r}
+# ================== LIST REST → PID → Parcel → ESM majority (by crop name) ==================
+# Requirements: sf, dplyr, stringr, httr2, jsonlite, purrr, tidyr
+
+library(sf)
+library(dplyr)
+library(stringr)
+library(httr2)
+library(jsonlite)
+library(purrr)
+library(tidyr)
+
+# --- Endpoints (LIST Tas) -----------------------------------------------------
+addr_layer <- "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/OpenDataWFS/MapServer/9"
+parc_layer <- "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/OpenDataWFS/MapServer/14"
+esm_ms     <- "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/EnterpriseSuitabilityMapping2018/MapServer"
+sr_epsg    <- 3857
+
+# --- Helper: safe URL builder (handles vector params) -------------------------
+url_query <- function(base, params) {
+  kv <- vapply(names(params), function(k){
+    val <- params[[k]]
+    if (length(val) > 1) val <- paste(val, collapse = ",")
+    paste0(k, "=", URLencode(as.character(val), reserved = TRUE))
+  }, "")
+  paste0(base, "?", paste(kv, collapse = "&"))
+}
+
+# --- Helper: robust JSON fetcher (tolerates text/plain JSON) ------------------
+get_json <- function(url) {
+  resp <- request(url) |>
+    req_headers("Accept" = "application/json, text/plain, */*") |>
+    req_perform()
+  txt <- resp_body_string(resp)
+  jsonlite::fromJSON(txt, simplifyVector = FALSE)
+}
+
+# --- 1) Address → PID (tolerant to "Lekka" vs "Leeka") ------------------------
+address_to_pid <- function(address_text){
+  x  <- toupper(address_text)
+  pc <- stringr::str_extract(x, "\\b\\d{4}\\b")
+  hn <- suppressWarnings(as.integer(stringr::str_extract(x, "\\b\\d+\\b")))
+  street_all <- stringr::str_match(x, "\\b\\d+\\s+(.+?),\\s*[A-Z ]+\\s*\\d{4}")[,2] |> stringr::str_squish()
+  if (is.na(street_all)) stop("Could not parse street from address: ", address_text)
+
+  tokens <- unlist(strsplit(street_all, "\\s+"))
+  st_type_guess <- tail(tokens, 1)
+  street_guess  <- stringr::str_squish(gsub(paste0("\\s+", st_type_guess, "$"), "", street_all))
+
+  base <- paste0(addr_layer, "/query")
+
+  # First pass: number + postcode + street LIKE
+  q1 <- url_query(base, list(
+    where = paste0("ST_NO_FROM=", hn,
+                   " AND POSTCODE=", pc,
+                   " AND UPPER(STREET) LIKE '", street_guess, "%'"),
+    outFields="*", returnGeometry="true", outSR=sr_epsg, f="geojson"
+  ))
+  ap <- suppressWarnings(sf::st_read(q1, quiet = TRUE))
+
+  if (nrow(ap) == 0) {
+    # Fallback: drop house number, pick closest by number afterwards
+    q2 <- url_query(base, list(
+      where = paste0("POSTCODE=", pc,
+                     " AND UPPER(STREET) LIKE '", street_guess, "%'"),
+      outFields="*", returnGeometry="true", outSR=sr_epsg, f="geojson"
+    ))
+    ap <- suppressWarnings(sf::st_read(q2, quiet = TRUE))
+    if (nrow(ap) == 0) stop("No LIST address match for: ", address_text)
+    ap$NO <- suppressWarnings(as.integer(ap$ST_NO_FROM))
+    ap <- ap[order(abs(ap$NO - hn)), ][1, ]
+  } else {
+    ap <- ap[1, ]
+  }
+
+  if (!"PID" %in% names(ap)) stop("LIST Address Points response lacks PID field.")
+  ap
+}
+
+# Build a tidy, human-readable address string from the Address Points record
+pretty_address <- function(ap_row){
+  if ("FULL_ADDRESS" %in% names(ap_row) && !is.na(ap_row$FULL_ADDRESS[1])) {
+    return(as.character(ap_row$FULL_ADDRESS[1]))
+  }
+  parts <- c(
+    ap_row$ST_NO_FROM, ap_row$STREET, ap_row$ST_TYPE,
+    ap_row$LOCALITY, ap_row$POSTCODE
+  )
+  paste(na.omit(as.character(parts)), collapse = " ")
+}
+
+# --- 2) PID → Parcel polygon --------------------------------------------------
+parcel_by_pid <- function(pid){
+  q <- url_query(paste0(parc_layer,"/query"), list(
+    where = paste0("PID=", pid),
+    outFields="PID,COMP_AREA,CAD_TYPE1,TENURE_TY",
+    returnGeometry="true", outSR=sr_epsg, f="geojson"
+  ))
+  p <- suppressWarnings(sf::st_read(q, quiet = TRUE))
+  if (nrow(p) == 0) stop("No parcel found for PID: ", pid)
+  p[1,]
+}
+
+# --- 3) Discover crop layers (id ↔ name) -------------------------------------
+esm_layers <- function(){
+  lyr <- get_json(url_query(paste0(esm_ms, "/layers"), list(f="pjson")))
+  layers <- lyr$layers
+  tibble(
+    layer_id = vapply(layers, function(x) x$id, 0),
+    crop     = vapply(layers, function(x) x$name, ""),
+    type     = vapply(layers, function(x) x$type %||% "", "")
+  ) |>
+    # keep leaf raster layers (ignore group/annotation/etc.)
+    filter(!grepl("Group", type, ignore.case = TRUE)) |>
+    filter(grepl("Raster|Mosaic", type, ignore.case = TRUE))
+}
+
+# Resolve user-provided crop names (partial, case-insensitive) to layer ids
+resolve_crops <- function(crop_names = NULL){
+  tbl <- esm_layers()
+  if (is.null(crop_names) || length(crop_names) == 0) return(tbl)  # all crops
+  pats <- paste0("(", paste0(stringr::str_replace_all(crop_names, "[^A-Za-z0-9]+", ".*"), collapse = "|"), ")")
+  tbl |> filter(grepl(pats, crop, ignore.case = TRUE))
+}
+
+# --- 4) Legend lookup (code → label) for an ESM layer ------------------------
+esm_legend_lookup <- function(layer_id){
+  leg <- get_json(url_query(paste0(esm_ms, "/legend"), list(f="pjson")))
+  ids <- vapply(leg$layers, function(x) x$layerId, 0)
+  idx <- which(ids == layer_id)
+  if (!length(idx)) return(tibble(code = numeric(), label = character()))
+  lyr <- leg$layers[[idx]]
+  labs <- vapply(lyr$legend, `[[`, "", "label")
+  codes <- stringr::str_match(labs, "^(\\d+(?:\\.\\d+)?)")[,2]
+  names <- stringr::str_match(labs, "^(?:\\d+(?:\\.\\d+)?)\\s+(.+)$")[,2]
+  tibble(code = as.numeric(codes), label = names) |> distinct()
+}
+
+# --- Helpers to pick code/label from Identify attributes ----------------------
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
+.pick_numeric_code <- function(atts){
+  nums <- atts[vapply(atts, is.numeric, TRUE)]
+  if (!length(nums)) return(NA_real_)
+  nms <- names(nums)
+  pref <- grepl("(?i)(code|class|value|suit)", nms)
+  idx <- if (any(pref)) which(pref)[1] else 1
+  as.numeric(nums[[idx]])
+}
+.pick_label <- function(atts){
+  chars <- atts[vapply(atts, is.character, TRUE)]
+  if (!length(chars)) return(NA_character_)
+  nms <- names(chars)
+  # prefer "Suitability" or anything containing 'suit'
+  exact <- which(grepl("(?i)^suit(ability)?$", nms))
+  if (length(exact)) return(as.character(chars[[ exact[1] ]]))
+  soft  <- which(grepl("(?i)suit", nms))
+  if (length(soft))  return(as.character(chars[[ soft[1] ]]))
+  # fallback: first longest-looking string value
+  as.character(chars[[ which.max(nchar(unlist(chars))) ]])
+}
+
+# --- 5) Identify: return BOTH code and label for one point --------------------
+esm_identify_point <- function(xy_3857, layer_id, map_extent_3857, img_px = c(1000,1000,96)){
+  id_url <- paste0(esm_ms, "/identify")
+  geom_json <- jsonlite::toJSON(
+    list(x = xy_3857[1], y = xy_3857[2], spatialReference = list(wkid=sr_epsg)),
+    auto_unbox = TRUE
+  )
+  params <- list(
+    f="json",
+    geometry = geom_json,
+    geometryType = "esriGeometryPoint",
+    sr = as.character(sr_epsg),
+    layers = paste0("all:", layer_id),
+    tolerance = 1,
+    mapExtent = paste(map_extent_3857, collapse=","),
+    imageDisplay = paste(img_px, collapse=","),
+    returnGeometry = "false"
+  )
+  r <- get_json(url_query(id_url, params))
+  if (length(r$results)==0) return(tibble(code=NA_real_, label=NA_character_))
+  atts <- r$results[[1]]$attributes
+
+  code  <- .pick_numeric_code(atts)
+  label <- .pick_label(atts)
+
+  if (!is.finite(code) && is.character(label)) {
+    code <- suppressWarnings(as.numeric(stringr::str_match(label, "^(\\d+(?:\\.\\d+)?)")[,2]))
+  }
+
+  tibble(code = as.numeric(code), label = ifelse(is.na(label), NA_character_, as.character(label)))
+}
+
+# --- 6) Sample grid → identify → aggregate by (code,label) --------------------
+parcel_majority_for_layer <- function(parcel_3857, layer_id, crop_name, cellsize_m = 60, max_pts = 2000){
+  bbox <- sf::st_bbox(parcel_3857)
+  map_extent <- c(bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"])
+
+  grid <- sf::st_make_grid(parcel_3857, cellsize = cellsize_m, what = "centers", square = TRUE)
+  pts  <- sf::st_as_sf(grid, crs = sr_epsg) |> suppressMessages(sf::st_filter(parcel_3857))
+  if (nrow(pts) == 0) {
+    return(tibble(crop=crop_name, layer_id=layer_id, code=NA_real_, label=NA_character_, pct=NA_real_, n=0))
+  }
+  if (nrow(pts) > max_pts) {
+    set.seed(1)
+    pts <- pts[sample.int(nrow(pts), max_pts), , drop = FALSE]
+  }
+  xy  <- sf::st_coordinates(pts)
+
+  vals <- map(seq_len(nrow(xy)), ~ esm_identify_point(xy[.x,], layer_id, map_extent))
+  df   <- dplyr::bind_rows(vals) |> mutate(code = round(as.numeric(code), 1))
+
+  # Fill missing labels using the layer legend
+  if (any(is.na(df$label))) {
+    lut <- esm_legend_lookup(layer_id)
+    if (nrow(lut)) {
+      df <- df |> left_join(lut, by = "code", suffix = c("", "_lut")) |>
+        mutate(label = coalesce(label, label_lut)) |>
+        select(-label_lut)
+    }
+  }
+
+  tab <- df |>
+    filter(is.finite(code) | !is.na(label)) |>
+    count(code, label, name = "n") |>
+    mutate(pct = n / sum(n)) |>
+    arrange(desc(pct)) |>
+    mutate(crop = crop_name, layer_id = layer_id, .before = 1)
+
+  if (!nrow(tab)) tab <- tibble(crop=crop_name, layer_id=layer_id, code=NA_real_, label=NA_character_, pct=NA_real_, n=0)
+  tab
+}
+
+# --- 7) Wrapper: Address → PID → Parcel → Majority per crop -------------------
+esm_majority_for_address <- function(address_text,
+                                     crop_names = NULL,      # NULL = all crops
+                                     cellsize_m = 60, max_pts = 2000) {
+  adr  <- address_to_pid(address_text)
+  pid  <- adr$PID[1]
+  addr_str <- pretty_address(adr)
+
+  parc <- parcel_by_pid(pid) |> sf::st_transform(sr_epsg)
+
+  # Resolve crops to layer_ids
+  crops_tbl <- resolve_crops(crop_names)
+  if (!nrow(crops_tbl)) stop("No ESM layers matched your crop names.")
+
+  res_list <- purrr::pmap(
+    list(crops_tbl$layer_id, crops_tbl$crop),
+    ~ parcel_majority_for_layer(parc, layer_id = ..1, crop_name = ..2, cellsize_m = cellsize_m, max_pts = max_pts)
+  )
+  res <- dplyr::bind_rows(res_list) |>
+    group_by(crop) |>
+    mutate(rank = row_number(desc(pct))) |>
+    ungroup() |>
+    mutate(address = addr_str, pid = pid, .before = 1)
+
+  list(pid = pid, address = addr_str, address_record = adr, parcel = parc, summary = res, crops = crops_tbl)
+}
+
+# ============================= Example runs ===================================
+
+# 1) Default: ALL crops from the service
+# out_all <- esm_majority_for_address(
+#   "850 West End Rd, Lekka 7255, TAS",
+#   crop_names = NULL,           # NULL → all crops
+#   cellsize_m = 60,
+#   max_pts = 1200
+# )
+
+# Inspect majority per crop (human-readable)
+# out_all$summary %>%
+#   filter(rank == 1) %>%
+#   select(crop, code, label, pct, n, address, pid) %>%
+#   arrange(crop)
+
+# 2) Or choose specific crops by name (partial matches ok)
+out_some <- esm_majority_for_address(
+  "401 Bresnehans Road, LITTLE SWANPORT TAS 7190",
+  crop_names = c("barley", "potato", "sparkling wine"),
+  cellsize_m = 60,
+  max_pts = 1200
+)
+
+out_some$summary %>%
+  filter(rank == 1) %>%
+  select(crop, code, label, pct, n, address, pid)
+
+plot(out_some$parcel["PID"])
+
+```
+

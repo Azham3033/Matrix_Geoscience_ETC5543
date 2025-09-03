@@ -1,0 +1,3 @@
+prop_id,street,suburb,state,postcode,full_address,latitude,longitude,crops,best_score,n_crops
+14,75 Coppermine Road,Frankford,TAS,7275,75 Coppermine Road Frankford TAS 7275 Australia,-41.2986624,146.7544181,Sparkling.Wine.Grapes (Well suited:1),3,1
+18,423 Slab Road,Cygnet,TAS,7112,423 Slab Road Cygnet TAS 7112 Australia,-43.1189765,147.0744431,Sparkling.Wine.Grapes (Well suited:1),3,1
