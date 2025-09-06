@@ -6,7 +6,7 @@ output: html_notebook
 
 ## Prepare data from HTML file
 
-Here is an example of preparing details from a html file downloaded from Domain.com. The html file represnts (the firs 20 results) of a search on all Tasmanian properties >10Ha.
+Here is an example of preparing details from a html file downloaded from Domain.com. The html file represents (the firs 20 results) of a search on all Tasmanian properties >10Ha.
 
 The goal is to prepare the data in tabular format and also determine the spatial location based on the address from the listing details.
 
@@ -1105,4 +1105,5 @@ out_some$summary %>%
 plot(out_some$parcel["PID"])
 
 ```
+
 
