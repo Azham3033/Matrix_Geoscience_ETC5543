@@ -1,0 +1,136 @@
+---
+title: "shp"
+format: html
+editor: visual
+---
+
+```{r}
+library(sf)
+parcels_west_tamar <- st_read("dataset/LIST_PARCELS_WEST_TAMAR/LIST_PARCELS_WEST_TAMAR.shp")
+address <- st_read("dataset/LIST_ADDRESS_POINTS_STATEWIDE/list_address_points_statewide.shp") 
+
+address %>% filter(PID=="1481512") %>% select(PID,ST_NO_FROM,STREET,ST_TY_CODE,LOCALITY,POSTCODE)
+```
+
+
+
+
+
+```{r}
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(sf)
+
+req <- c("ST_NO_FROM","STREET","ST_TYPE","LOCALITY","POSTCODE")
+
+# treat blanks as NA
+address <- address %>%
+  mutate(
+    STREET_NO_FROM = na_if(str_squish(as.character(ST_NO_FROM)), ""),
+    STREET     = na_if(str_squish(as.character(STREET)), ""),
+    ST_TYPE = na_if(str_squish(as.character(ST_TYPE)), ""),
+    LOCALITY   = na_if(str_squish(as.character(LOCALITY)), ""),
+    POSTCODE   = na_if(as.character(POSTCODE), "")
+  )
+
+na_summary <- address %>%
+  st_drop_geometry() %>%                                  # <<< drop geometry here
+  summarise(across(all_of(req), ~ sum(is.na(.)),
+                   .names = "na_{.col}")) %>%
+  pivot_longer(starts_with("na_"),                        # <<< pivot only NA columns
+               names_to = "field", values_to = "n_na") %>%
+  mutate(pct = round(100 * n_na / nrow(address), 2))
+na_summary
+
+```
+
+```{r}
+library(dplyr)
+library(stringr)
+
+address <- address %>%
+  mutate(
+    full_address = str_squish(
+      paste0(ST_NO_FROM, " ", STREET, " ", ST_TY_CODE, " ",
+             LOCALITY, " TAS ", POSTCODE, " ","Australia")
+    )
+  )
+address %>% filter(PID=="1481512") %>% select(PID,full_address)
+
+```
+
+
+
+
+
+```{r}
+address_clean <- address %>%
+  st_drop_geometry() %>%   # drop geometry for faster joins
+  select(PID, full_address)
+  
+parcels_with_address <- parcels_west_tamar %>%
+  left_join(address_clean, by = "PID") %>%     # use inner_join() if you only want PIDs that match
+  select(PID, full_address, geometry)   
+
+
+parcels_with_address %>% filter(PID=="1481512") %>% select(PID,full_address)
+```
+
+```{r}
+property_listing<-read_csv("results/tas_listings_with_price_and_geocode.csv")
+View(property_listing)
+```
+
+```{r}
+library(dplyr)
+library(stringr)
+library(sf)
+
+# Helper: drop geometry if an object is sf
+drop_geom <- function(x) if (inherits(x, "sf")) sf::st_drop_geometry(x) else x
+
+# 1) Normalise address strings into a join key
+norm_addr <- function(x) {
+  x %>%
+    str_to_upper() %>%
+    str_replace_all(",", " ") %>%                      # remove commas
+    str_replace_all("\\bAUSTRALIA\\b|\\bTASMANIA\\b", "") %>%
+    str_replace_all("\\bROAD\\b|\\bRD\\.?\\b", "RD") %>%
+    str_replace_all("\\bSTREET\\b|\\bST\\.?\\b", "ST") %>%
+    str_replace_all("\\bAVENUE\\b|\\bAVE\\.?\\b", "AVE") %>%
+    str_replace_all("\\bDRIVE\\b|\\bDR\\.?\\b", "DR") %>%
+    str_replace_all("\\bLANE\\b|\\bLN\\.?\\b", "LN") %>%
+    str_replace_all("\\bCRESCENT\\b|\\bCRES\\.?\\b", "CRES") %>%
+    str_replace_all("\\bHIGHWAY\\b|\\bHWY\\.?\\b", "HWY") %>%
+    str_squish()
+}
+
+# 2) Prepare both datasets with a common key
+parcels_std <- parcels_with_address %>%
+  mutate(addr_key = norm_addr(full_address),
+         PID = as.character(PID)) %>%
+  rename(parcel_full_address = full_address)
+
+props_std <- property_listing %>%
+  mutate(addr_key = norm_addr(full_address)) %>%
+  rename(listing_full_address = full_address)
+
+# 3) Join (keep parcel geometry). Use left_join to retain all parcels.
+joined_exact <- parcels_std %>%
+  left_join(drop_geom(props_std), by = "addr_key")
+
+# Keep only the columns you care about (geometry, PID, address(es) + any listing fields you want)
+result_exact <- joined_exact %>%
+  select(PID, parcel_full_address, listing_full_address, addr_key, geometry, everything())
+
+# (optional) quick match-rate check
+match_rate <- mean(!is.na(result_exact$listing_full_address))
+cat("Exact-match rate:", round(100*match_rate, 1), "%\n")
+View(result_exact)
+
+
+```
