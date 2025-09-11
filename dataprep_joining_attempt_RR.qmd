@@ -2,8 +2,8 @@
 title: "dataprep_joining_datasets"
 author: "RR"
 format:
-  html:
-    code-fold: true
+  pdf:
+    code: false
 ---
 
 ## Quarto
@@ -29,12 +29,12 @@ shapefile_paths <- file.path(
   paste0(basename(municipality_folders), ".shp"))
 
 # Read all shapefiles into a named list
-parcels_list <- shapefile_paths %>%
-  set_names(basename(municipality_folders)) %>% 
+parcels_list <- shapefile_paths |>
+  set_names(basename(municipality_folders)) |> 
   map(~ st_read(.x, quiet = TRUE)) 
 
 # Combine and filter all municipalities into one single sf object
-parcels_all <- bind_rows(parcels_list, .id = "Municipality") %>%
+parcels_all <- bind_rows(parcels_list, .id = "Municipality") |>
   filter(PID != "0", TENURE_TY != "Crown Land")
 
 ```
@@ -43,18 +43,18 @@ parcels_all <- bind_rows(parcels_list, .id = "Municipality") %>%
 
 ```{r}
 # 6. Rename Municipality to numeric codes (alphabetical order)
-parcels_all <- parcels_all %>%
+parcels_all <- parcels_all |>
 mutate(Municipality = factor(Municipality, 
                              levels = sort(unique(Municipality))),
        Municipality = as.integer(Municipality))
 
 # 7. Drop irrelevant columns
-parcels_all <- parcels_all %>%
+parcels_all <- parcels_all |>
   select(-VOLUME, -FEAT_NAME, -STRATA_LEV, -COMP_AREA, -MEAS_AREA, -UFI, -FMP, 
          -CREATED_ON, -SHAPE_AREA, -SHAPE_LEN)
 
 # 8. Retain one PID from any PID Dupes
-parcels_all <- parcels_all %>%
+parcels_all <- parcels_all |>
   distinct(PID, .keep_all = TRUE)
 ```
 
@@ -68,16 +68,16 @@ address_points <- st_read("LIST_ADDRESS_POINTS_STATEWIDE/list_address_points_sta
                           quiet = TRUE)
 
 # Remove irrelevant Variables
-address_points <- address_points %>%
+address_points <- address_points |>
   select(PID, ST_NO_FROM, STREET, ST_TYPE, LOCALITY, STATE, POSTCODE, geometry)
 
 # Join them into a full address
-address_points <- address_points %>%
+address_points <- address_points |>
   mutate(
     FULL_ADDRESS = str_c(
       ST_NO_FROM, STREET, ST_TYPE, LOCALITY, STATE, POSTCODE,
-      sep = " ") %>%
-      str_squish()) %>%
+      sep = " ") |>
+      str_squish()) |>
   select(-ST_NO_FROM, -STREET, -ST_TYPE, -LOCALITY, -STATE, -POSTCODE)
 
 ```
@@ -86,7 +86,7 @@ address_points <- address_points %>%
 ```{r}
 # Join parcels_all and address_points
 
-joined_data <- parcels_all %>%
+joined_data <- parcels_all |>
   inner_join(st_drop_geometry(address_points), by = "PID")
 
 ```
@@ -121,13 +121,13 @@ levels(r) <- data.frame(ID = vat[[val_col]], Category = vat[[lab_col]])
 target_addr <- "401 BRESNEHANS ROAD LITTLE SWANPORT TAS 7190"
 
 # robust, case-insensitive match on FULL_ADDRESS
-cand <- joined_data %>%
-  mutate(FULL_ADDRESS_UP = str_squish(str_to_upper(FULL_ADDRESS))) %>%
+cand <- joined_data |>
+  mutate(FULL_ADDRESS_UP = str_squish(str_to_upper(FULL_ADDRESS))) |>
   filter(FULL_ADDRESS_UP == str_squish(str_to_upper(target_addr)))
 
 if (nrow(cand) == 0L) stop("Address not found in joined_data$FULL_ADDRESS. Check spelling/format.")
 # If multiple matches, take the first
-ap <- cand %>% slice(1)
+ap <- cand |> slice(1)
 
 # Align CRS and extract raster value at the point
 ap_rcrs <- st_transform(ap, st_crs(r))
@@ -197,9 +197,9 @@ if (has_rgb) {
 # Select the address polygon from `joined_data` 
 target_addr <- "401 BRESNEHANS ROAD LITTLE SWANPORT TAS 7190"
 
-parcel <- joined_data %>%
-  mutate(FULL_ADDRESS_UP = str_squish(str_to_upper(FULL_ADDRESS))) %>%
-  filter(FULL_ADDRESS_UP == str_squish(str_to_upper(target_addr))) %>%
+parcel <- joined_data |>
+  mutate(FULL_ADDRESS_UP = str_squish(str_to_upper(FULL_ADDRESS))) |>
+  filter(FULL_ADDRESS_UP == str_squish(str_to_upper(target_addr))) |>
   slice(1)  # take first if has multiple PIDs
 
 if (nrow(parcel) == 0L) stop("Address not found in joined_data$FULL_ADDRESS.")
@@ -214,15 +214,15 @@ cell_df <- exact_extract(r, parcel_r, fun = NULL, progress = FALSE)[[1]]
 # Standardize the value column name to 'value'
 val_name <- setdiff(names(cell_df), c("coverage_fraction"))
 if (length(val_name) != 1L) stop("Unexpected columns from exact_extract().")
-cell_df <- cell_df %>% rename(value = !!val_name)
+cell_df <- cell_df |> rename(value = !!val_name)
 
 # Majority rule (>= 50% covered) + tabulate by class 
-majority_tab <- cell_df %>%
-  filter(!is.na(value), coverage_fraction >= 0.5) %>%  # 50% threshold
-  group_by(value) %>%
-  summarise(pixels = n(), .groups = "drop") %>%
-  left_join(vat_lu, by = c("value" = "code")) %>%
-  arrange(desc(pixels)) %>%
+majority_tab <- cell_df |>
+  filter(!is.na(value), coverage_fraction >= 0.5) |>  # 50% threshold
+  group_by(value) |>
+  summarise(pixels = n(), .groups = "drop") |>
+  left_join(vat_lu, by = c("value" = "code")) |>
+  arrange(desc(pixels)) |>
   select(class_code = value, class_label = label, color, pixels)
 
 # Identify VAT keys (already loaded: `vat`, `cell_df`)
@@ -237,18 +237,18 @@ if (is.na(lab_col)) {
 }
 
 # Ensure the extraction's raster column is named 'value'
-cell_df <- cell_df %>% rename(value = !!val_name)
+cell_df <- cell_df |> rename(value = !!val_name)
 
 # Join to VAT to map internal codes -> logical class 
-cell_df2 <- cell_df %>%
-  dplyr::left_join(vat %>% dplyr::select(all_of(c(val_col, lab_col))),
+cell_df2 <- cell_df |>
+  dplyr::left_join(vat |> dplyr::select(all_of(c(val_col, lab_col))),
                    by = c("value" = val_col))
 
 # Majority rule (>= 50% covered) & collapse by class label
-majority_tab <- cell_df2 %>%
-  dplyr::filter(!is.na(.data[[lab_col]]), coverage_fraction >= 0.5) %>%
-  dplyr::group_by(class_label = .data[[lab_col]]) %>%
-  dplyr::summarise(pixels = dplyr::n(), .groups = "drop") %>%
+majority_tab <- cell_df2 |>
+  dplyr::filter(!is.na(.data[[lab_col]]), coverage_fraction >= 0.5) |>
+  dplyr::group_by(class_label = .data[[lab_col]]) |>
+  dplyr::summarise(pixels = dplyr::n(), .groups = "drop") |>
   dplyr::arrange(dplyr::desc(pixels))
 
 # print
