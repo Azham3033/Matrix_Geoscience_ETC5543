@@ -1,0 +1,245 @@
+---
+title: "Data_pipeline"
+format: html
+editor: visual
+---
+
+```{r}
+library(DBI)
+library(RSQLite)
+library(tidyverse)
+library(dplyr)
+library(dbplyr)
+library(lubridate)
+library(sf)
+library(duckdb)
+```
+
+-   Reading the cadstral data for each municipality in Tasmania
+
+```{r}
+parcels_break_o_day <- st_read("dataset/LIST_PARCELS_BREAK_O_DAY/list_parcels_break_o_day.shp")
+parcels_brighton<- st_read("dataset/LIST_PARCELS_BRIGHTON/list_parcels_brighton.shp")
+parcels_burnie <- st_read("dataset/LIST_PARCELS_BURNIE/list_parcels_burnie.shp")
+parcels_central_coast <- st_read("dataset/LIST_PARCELS_CENTRAL_COAST/list_parcels_central_coast.shp")
+parcels_central_highlands <- st_read("dataset/LIST_PARCELS_CENTRAL_HIGHLANDS/list_parcels_central_highlands.shp")
+parcels_circular_head <- st_read("dataset/LIST_PARCELS_CIRCULAR_HEAD/list_parcels_circular_head.shp")
+parcels_clarence <- st_read("dataset/LIST_PARCELS_CLARENCE/list_parcels_CLARENCE.shp")
+parcels_derwent_valley <- st_read("dataset/LIST_PARCELS_DERWENT_VALLEY/list_parcels_derwent_valley.shp")
+parcels_devonport <- st_read("dataset/LIST_PARCELS_DEVONPORT/list_parcels_devonport.shp")
+parcels_dorset<- st_read("dataset/LIST_PARCELS_DORSET/list_parcels_dorset.shp")
+parcels_flinders<- st_read("dataset/LIST_PARCELS_FLINDERS/list_parcels_flinders.shp")
+parcels_george_town <- st_read("dataset/LIST_PARCELS_GEORGE_TOWN/list_parcels_george_town.shp")
+parcels_glamorgan_spring_bay <- st_read("dataset/LIST_PARCELS_GLAMORGAN_SPRING_BAY/list_parcels_glamorgan_spring_bay.shp")
+parcels_glenorchy <- st_read("dataset/LIST_PARCELS_glenorchy/list_parcels_glenorchy.shp")
+parcels_hobart <- st_read("dataset/LIST_PARCELS_HOBART/list_parcels_hobart.shp")
+parcels_huon_valley <- st_read("dataset/LIST_PARCELS_HUON_VALLEY/list_parcels_huon_valley.shp")
+parcels_kentish <- st_read("dataset/LIST_PARCELS_KENTISH/list_parcels_kentish.shp")
+parcels_kingborough <- st_read("dataset/LIST_PARCELS_KINGBOROUGH/list_parcels_kingborough.shp")
+parcels_king_island <- st_read("dataset/LIST_PARCELS_KING_ISLAND/list_parcels_king_island.shp")
+parcels_latrobe <- st_read("dataset/LIST_PARCELS_LATROBE/list_parcels_latrobe.shp")
+parcels_launceston <- st_read("dataset/LIST_PARCELS_LAUNCESTON/list_parcels_launceston.shp")
+parcels_meander_valley <- st_read("dataset/LIST_PARCELS_MEANDER_VALLEY/list_parcels_meander_valley.shp")
+parcels_northern_midlands <- st_read("dataset/LIST_PARCELS_NORTHERN_MIDLANDS/list_parcels_northern_midlands.shp")
+parcels_sorell <- st_read("dataset/LIST_PARCELS_SORELL/list_parcels_sorell.shp")
+parcels_southern_midlands <- st_read("dataset/LIST_PARCELS_SOUTHERN_MIDLANDS/list_parcels_southern_midlands.shp")
+parcels_tasman <- st_read("dataset/LIST_PARCELS_TASMAN/list_parcels_tasman.shp")
+parcels_waratah_wynyard <- st_read("dataset/LIST_PARCELS_WARATAH_WYNYARD/list_parcels_waratah_wynyard.shp")
+parcels_west_coast <- st_read("dataset/LIST_PARCELS_WEST_COAST/list_parcels_west_coast.shp")
+parcels_west_tamar <- st_read("dataset/LIST_PARCELS_WEST_TAMAR/list_parcels_west_tamar.shp")
+```
+
+-   Reading the Address Master data and property listing datax
+
+```{r}
+Address_Master <- st_read("dataset/LIST_ADDRESS_POINTS_STATEWIDE/list_address_points_statewide.shp")
+view(Address_Master)
+property_listing_domain<- read_csv("dataset/tas_listings_with_price_and_geocode.csv")
+view(property_listing_domain)
+
+Address_Master$ST_NO_FROM <- as.character(Address_Master$ST_NO_FROM)
+Address_Master$POSTCODE <- as.character(Address_Master$POSTCODE)
+```
+
+-   Creating / opening a database file
+
+```{r}
+con <- dbConnect(duckdb(), dbdir = "my_data.duckdb", read_only = FALSE)
+```
+
+-   Writing the municipality data to DuckDB as tables.
+
+```{r}
+dbExecute(con, "INSTALL spatial; LOAD spatial;")
+
+# List of municipality object names already in R
+muni_names <- c(
+  "parcels_break_o_day",
+  "parcels_brighton",
+  "parcels_burnie",
+  "parcels_central_coast",
+  "parcels_central_highlands",
+  "parcels_circular_head",
+  "parcels_clarence",
+  "parcels_derwent_valley",
+  "parcels_devonport",
+  "parcels_dorset",
+  "parcels_flinders",
+  "parcels_george_town",
+  "parcels_glamorgan_spring_bay",
+  "parcels_glenorchy",
+  "parcels_hobart",
+  "parcels_huon_valley",
+  "parcels_kentish",
+  "parcels_kingborough",
+  "parcels_king_island",
+  "parcels_latrobe",
+  "parcels_launceston",
+  "parcels_meander_valley",
+  "parcels_northern_midlands",
+  "parcels_sorell",
+  "parcels_southern_midlands",
+  "parcels_tasman",
+  "parcels_waratah_wynyard",
+  "parcels_west_coast",
+  "parcels_west_tamar"
+)
+
+# Loop through each object, convert + write to DuckDB
+for (muni in muni_names) {
+  message("Processing: ", muni)
+  
+  # Get the sf object from environment
+  sf_obj <- get(muni, envir = .GlobalEnv)
+  
+  # Convert to plain data frame with WKB geometry
+  df <- sf_obj |>
+    st_drop_geometry() |>
+    as.data.frame()
+  df$geometry <- st_as_binary(sf_obj$geometry)
+  
+  # Write to DuckDB with same name as in R
+  dbWriteTable(con, muni, df, overwrite = TRUE)
+}
+
+```
+
+-   Writing the Address Master and property listing data to DuckDB as tables.
+
+```{r}
+# Build SQL string with UNION ALL
+sql_parts <- lapply(muni_names, function(tbl) {
+  muni_name <- toupper(gsub("^parcels_", "", tbl))   # e.g. "parcels_hobart" -> "HOBART"
+  
+  paste0(
+    "SELECT PID, * EXCLUDE(PID), '", muni_name, "' AS MUNICIPALITY ",
+    "FROM ", tbl, " ",
+    "WHERE PID <> 0"
+  )
+})
+
+master_sql <- paste(sql_parts, collapse = "\nUNION ALL\n")
+
+# Wrap into CREATE TABLE
+create_master_sql <- paste0(
+  "CREATE OR REPLACE TABLE parcels_master AS\n",
+  master_sql,
+  ";"
+)
+
+# Run in DuckDB
+dbExecute(con, create_master_sql)
+```
+
+-   Checking the data in DuckDB
+
+```{sql, connection=con}
+select count(*) from parcels_master;
+select count(distinct(PID)) from parcels_master where TENURE_TY !='Crown Land';
+```
+
+```{sql, connection=con}
+select * from parcels_master limit 5;
+```
+
+-   Addding index and set geometry column as binary.
+
+```{r}
+# `{sql, connection=con}Explicitly coerce to data.frame after dropping geometry
+address_master_tbl <- Address_Master |>
+  st_drop_geometry() |>
+  as.data.frame()
+
+# Then add a WKB geometry column from the original sf object
+address_master_tbl$geometry <- st_as_binary(Address_Master$geometry)
+
+
+dbWriteTable(con, "address_master",address_master_tbl, overwrite = TRUE)
+
+dbWriteTable(con, "property_listing_domain", property_listing_domain, overwrite = TRUE)
+
+# (optional) useful indexes
+dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_parcels_pid ON parcels_master(PID)")
+dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_parcels_muncipality ON parcels_master(MUNICIPALITY)")
+dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_addr_pid    ON address_master(PID)")
+dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_listing_pid ON property_listing_domain(full_address)")
+```
+
+-   Checking for duplicate PIDs in parcels_master
+
+```{sql, connection=con}
+
+select distinct(PID), count(*) from parcels_master group by PID having count(*)>1 limit 5;
+
+
+select * from parcels_master where PID='6585214';
+```
+
+-   Dropping the view if it exists.
+
+```{sql, connection=con}
+drop view if exists PARCEL_ADDRESS_MASTER;
+```
+
+-   creating a view that joins parcels_master and address_master on PID to create a comprehensive parcel address master view.
+-   we eliminate P.PID=0 because it is either a water body or any kind of road.
+
+```{sql, connection=con}
+CREATE VIEW PARCEL_ADDRESS_MASTER AS select distinct(P.PID
+),P.MUNICIPALITY, concat(
+    cast(A.ST_NO_FROM as varchar), ' ', A.STREET, ' ', A.ST_TYPE, ' ', A.LOCALITY, ' TAS ', A.POSTCODE, ' Australia'
+) as FULL_ADDRESS,ANY_VALUE(P.geometry) as parcel_geometry,P.POT_PID, ANY_VALUE(A.geometry) as address_geometry
+from parcels_master P inner join address_master A on P.PID = A.PID where P.PID !='0' group by P.PID,P.MUNICIPALITY, FULL_ADDRESS,P.POT_PID;
+```
+
+```{sql, connection=con}
+select * from PARCEL_ADDRESS_MASTER where PID='6003587';
+```
+
+-   Joining the property listing data with the parcel address master view on full_address to get a combined dataset with parcel and address geometries.
+
+```{sql, connection=con}
+SELECT p.PID ,p.POT_PID,d.full_address,d.latitude,d.longitude,ST_AsText(ST_GeomFromWKB(p.parcel_geometry))   AS parcel_wkt,
+  ST_AsText(ST_GeomFromWKB(p.address_geometry))  AS address_wkt
+FROM property_listing_domain d
+JOIN PARCEL_ADDRESS_MASTER p
+  ON upper(trim(replace(d.full_address, chr(160), ' '))) =
+     upper(trim(replace(p.full_address, chr(160), ' ')));
+```
+```{sql, connection=con}
+select * from PARCEL_ADDRESS_MASTER where PID='5273454';
+```
+
+```{r}
+# `con` is your DBI connection (already open)
+dbWriteTable(con, "tesm_majority", majority_tab_with_pid, overwrite = TRUE)
+```
+
+
+```{sql, connection=con}
+select * from tesm_majority limit 5;
+```
+
+```{sql, connection=con}
+select p.PID,FULL_ADDRESS,CLASS_LABEL,PIXELS,ST_AsText(ST_GeomFromWKB(p.parcel_geometry))   AS parcel_wkt from tesm_majority m join PARCEL_ADDRESS_MASTER p on m.PID=p.PID;
+```
