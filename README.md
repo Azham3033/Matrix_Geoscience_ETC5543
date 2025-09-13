@@ -8,8 +8,11 @@ The data files are as follows:
 
 
 Once the files are downloaded , please follow this path structure in order it run successfully. 
+
 cadastral_data: dataset/LIST_PARCELS_BREAK_O_DAY/list_parcels_break_o_day.shp
+
 address data: dataset/LIST_ADDRESS_POINTS_STATEWIDE/list_address_points_statewide.shp
+
 property listing: dataset/tas_listings_with_price_and_geocode.csv
 
  
