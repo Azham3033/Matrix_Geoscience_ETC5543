@@ -1,0 +1,278 @@
+---
+title: "datapreprr"
+format: 
+  html:
+    code-fold: true
+---
+
+```{r, warning=FALSE, message=FALSE}
+# Load Libraries
+library(sf)
+library(terra)
+library(dplyr)
+library(purrr)
+library(stringr)
+library(exactextractr)
+library(foreign)
+library(glue)
+```
+
+
+```{r}
+# Define Paths 
+cad_root <- "000_CADASTRAL_FIXXX"
+addr_path <- "LIST_ADDRESS_POINTS_STATEWIDE/list_address_points_statewide.shp"
+esm_dir <- "ESM_Tiff/ESM_Tiff"
+
+# Crop layer to analyse
+crop_name <- "Barley"
+r_path <- file.path(esm_dir, paste0(crop_name, ".tif"))
+vat_path <- paste0(r_path, ".vat.dbf")
+
+# Target address (hard-coded for prototype)
+target_addr   <- "401 BRESNEHANS ROAD LITTLE SWANPORT TAS 7190"
+
+# Map zoom buffer (in meters)
+zoom_buffer_m <- 150
+
+# Load parcels for all municipality shapefiles
+municipality_dirs <- list.dirs(cad_root, recursive = FALSE, full.names = TRUE)
+
+# Each dir must contain a shapefile named "<folder>.shp"
+shp_paths <- file.path(municipality_dirs, paste0(basename(municipality_dirs), ".shp"))
+shp_paths <- shp_paths[file.exists(shp_paths)]
+
+# Name each path by its municipality (no dot pronoun with base pipe)
+names(shp_paths) <- basename(municipality_dirs)[file.exists(file.path(municipality_dirs, paste0(basename(municipality_dirs), ".shp")))]
+
+# Read all shapefiles into a named list (use \(p) for base pipe)
+parcels_list <- shp_paths |>
+  map(\(p) st_read(p, quiet = TRUE))
+
+# Combine & filter parcels data
+parcels_all <- bind_rows(parcels_list, .id = "Municipality") |>
+  filter(PID != "0", TENURE_TY != "Crown Land", MEAS_AREA >= 100000) |>
+  mutate(
+    Municipality = factor(Municipality, levels = sort(unique(Municipality))),
+    Municipality = as.integer(Municipality)
+  ) |>
+  select(-any_of(c("VOLUME","FEAT_NAME","STRATA_LEV","COMP_AREA","MEAS_AREA",
+                   "UFI","FMP","CREATED_ON","SHAPE_AREA","SHAPE_LEN"))) |>
+  distinct(PID, .keep_all = TRUE)
+
+# Load LIST address points and build FULL_ADDRESS
+address_points <- st_read(addr_path, quiet = TRUE) |>
+  select(PID, ST_NO_FROM, STREET, ST_TYPE, LOCALITY, STATE, POSTCODE, geometry) |>
+  mutate(FULL_ADDRESS = str_squish(str_c(ST_NO_FROM, STREET, ST_TYPE, LOCALITY, STATE, POSTCODE, sep = " "))) |>
+  select(PID, FULL_ADDRESS, geometry)
+
+# Join parcels with address points on PID
+joined_data <- parcels_all |>
+  inner_join(st_drop_geometry(address_points), by = "PID")
+
+# Load ESM raster & VAT
+r   <- rast(r_path)
+vat <- read.dbf(vat_path, as.is = TRUE)
+
+val_col <- grep("^value$", names(vat), ignore.case = TRUE, value = TRUE)
+if (length(val_col) != 1L) stop("Could not identify VAT 'Value' column.")
+lab_col <- grep("(suitab|class|label|cat)", names(vat), ignore.case = TRUE, value = TRUE)
+if (length(lab_col) == 0L) lab_col <- val_col
+
+vat_lu <- tibble(
+  code  = vat[[val_col]],
+  label = as.character(vat[[lab_col]])
+)
+
+# Bind RAT (categorical legend) for plotting
+levels(r) <- data.frame(ID = vat[[val_col]], Category = as.character(vat[[lab_col]]))
+
+# Select parcel by target address
+parcel <- joined_data |>
+  mutate(FULL_ADDRESS_UP = str_squish(str_to_upper(FULL_ADDRESS))) |>
+  filter(FULL_ADDRESS_UP == str_squish(str_to_upper(target_addr))) |>
+  slice(1)
+
+if (nrow(parcel) == 0L) stop("Address not found in joined_data$FULL_ADDRESS.")
+
+# Show the target address (confirmation)
+cat(glue("Address: {target_addr}\n"))
+
+```
+
+```{r}
+# Reproject parcel to raster CRS
+parcel_r <- st_transform(parcel, st_crs(r))
+
+# Exact extract over parcel with majority rule (>= 50% coverage)
+cell_df  <- exact_extract(r, parcel_r, fun = NULL, progress = FALSE)[[1]]
+val_name <- setdiff(names(cell_df), "coverage_fraction")
+if (length(val_name) != 1L) stop("Unexpected raster columns from exact_extract().")
+cell_df  <- rename(cell_df, value = !!val_name)
+
+vat_lu_dedup <- distinct(vat_lu, code, label)
+
+majority_tab <- cell_df |>
+  ungroup() |>                                        # ensure no residual grouping
+  filter(!is.na(value), coverage_fraction >= 0.5) |>
+  count(value, name = "COUNT") |>                     # count by raster code
+  left_join(vat_lu_dedup, by = c("value" = "code")) |>
+  group_by(CLASS_LABEL = label) |>                    # collapse to human-readable class
+  summarise(COUNT = sum(COUNT), .groups = "drop") |>
+  mutate(
+    PID          = parcel$PID,
+    FULL_ADDRESS = parcel$FULL_ADDRESS,
+    CROP         = crop_name
+  ) |>
+  select(PID, FULL_ADDRESS, COUNT, CLASS_LABEL, CROP) |>
+  arrange(desc(COUNT))
+
+# Show total pixels (majority-rule)
+cat(glue::glue("Total pixels (majority-rule): {sum(majority_tab$COUNT)}\n\n"))
+
+# Show majority_tab (PID, FULL_ADDRESS, COUNT, CLASS_LABEL, CROP)
+print(majority_tab, n = nrow(majority_tab), width = Inf)
+
+```
+
+
+```{r, warning=FALSE}
+# Map: full scene with parcel outline + pinpoint 
+pt_sf <- st_point_on_surface(parcel_r)     # representative point within polygon
+
+plot(r, main = glue("{crop_name} suitability (ESM) – with address point"))
+plot(st_geometry(parcel_r), add = TRUE, border = "black", lwd = 1.5)
+points(st_coordinates(pt_sf), pch = 19, cex = 1.3)
+
+```
+
+
+```{r}
+# Zoomed map around parcel with 150m buffer
+bbox <- st_bbox(parcel_r)
+xlim <- c(bbox["xmin"] - zoom_buffer_m, bbox["xmax"] + zoom_buffer_m)
+ylim <- c(bbox["ymin"] - zoom_buffer_m, bbox["ymax"] + zoom_buffer_m)
+
+plot(r, main = glue("{crop_name} suitability (zoomed on parcel)"),
+     xlim = xlim, ylim = ylim)
+plot(st_geometry(parcel_r), add = TRUE, border = "black", lwd = 2)
+plot(st_geometry(parcel_r), add = TRUE,
+     col = adjustcolor("black", alpha.f = 0.2), border = NA)
+points(st_coordinates(pt_sf), pch = 19, col = "black", cex = 1.3)
+```
+
+
+# E-mail Notification Code Block Logic
+
+```{r, warning=FALSE, message=FALSE}
+library(blastula)
+
+# Build a compact list of "matches" to email (top per class, example rule)
+matches <- majority_tab %>%
+  filter(grepl("well|suit", CLASS_LABEL, ignore.case = TRUE)) %>%
+  group_by(PID, FULL_ADDRESS, CROP) %>%
+  summarise(TOTAL_PIX = sum(COUNT), .groups = "drop") %>%
+  arrange(desc(TOTAL_PIX)) %>%
+  slice_head(n = 10)
+
+send_match_email <- function(matches, to, crop_name = unique(matches$CROP),
+                             shiny_base = "https://your-shiny.app/parcel",
+                             dry_run = TRUE) {
+  if (nrow(matches) == 0) { message("No matches → no email."); return(invisible(NULL)) }
+
+  table_md <- paste0(
+    "| Address | PID | Pixels | Link |\n|:--|--:|--:|:--|\n",
+    paste0(
+      "| ", matches$FULL_ADDRESS, " | ", matches$PID, " | ", matches$TOTAL_PIX,
+      " | [Open](", shiny_base, "?pid=", matches$PID, "&crop=", crop_name, ") |",
+      collapse = "\n"
+    )
+  )
+  msg <- compose_email(
+    body = md(glue("
+**New {crop_name} matches ({nrow(matches)})**
+
+{table_md}
+
+Generated {format(Sys.time(), '%Y-%m-%d %H:%M %Z')}
+"))
+  )
+
+  if (dry_run) { print(msg); return(invisible(msg)) }
+
+  smtp <- smtp_server(
+    host = Sys.getenv("EMAIL_SMTP_HOST"),
+    port = as.integer(Sys.getenv("EMAIL_SMTP_PORT")),
+    username = Sys.getenv("EMAIL_USER"),
+    password = Sys.getenv("EMAIL_PASS"),
+    use_ssl = TRUE
+  )
+  smtp_send(
+    email = msg,
+    from  = Sys.getenv("EMAIL_FROM"),
+    to    = to,
+    subject = sprintf("New %s matches (%d)", crop_name[1], nrow(matches)),
+    credentials = smtp
+  )
+}
+
+# Hard-coded test recipient; start with dry_run = TRUE to preview
+send_match_email(matches, to = "you@example.com", dry_run = TRUE)
+
+```
+
+
+
+# Telegram Notification Code Block Logic
+
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+library(telegram.bot)
+
+escape_html <- function(x) {
+  x <- gsub("&","&amp;",x,fixed=TRUE); x <- gsub("<","&lt;",x,fixed=TRUE); gsub(">","&gt;",x,fixed=TRUE)
+}
+
+# REQUIRE real creds (no defaults)
+tg_token <- Sys.getenv("TG_TOKEN")
+tg_chat  <- Sys.getenv("TG_CHAT")
+
+if (!nzchar(tg_token)) stop("TG_TOKEN not set. Put your bot token in ~/.Renviron or set via Sys.setenv().")
+if (!nzchar(tg_chat))  stop("TG_CHAT not set. Use your real chat/channel ID.")
+
+
+user_crop_pref <- "Barley"
+shiny_base_url <- "https://your-shiny.app/parcel"
+
+is_suitable <- grepl("well|suit", majority_tab$CLASS_LABEL, ignore.case = TRUE)
+suitable_px <- sum(majority_tab$COUNT[is_suitable], na.rm = TRUE)
+
+if (identical(user_crop_pref, crop_name) && suitable_px > 0) {
+  bot <- Bot(token = tg_token)
+
+  top_rows <- majority_tab %>% dplyr::arrange(dplyr::desc(COUNT)) %>% utils::head(5)
+  body <- paste0(
+    "<b>New match for ", escape_html(user_crop_pref), "</b>\n",
+    "Address: ", escape_html(parcel$FULL_ADDRESS), "\n",
+    "PID: ", escape_html(as.character(parcel$PID)), "\n",
+    "Crop: ", escape_html(crop_name), "\n\n",
+    paste0("• ", escape_html(top_rows$CLASS_LABEL), " — ", top_rows$COUNT, " px", collapse = "\n")
+  )
+
+  shiny_url <- paste0(shiny_base_url, "?pid=", parcel$PID, "&crop=", utils::URLencode(user_crop_pref))
+  maps_url  <- paste0("https://www.google.com/maps/search/?api=1&query=",
+                      utils::URLencode(parcel$FULL_ADDRESS))
+
+  kb <- InlineKeyboardMarkup(list(list(
+    InlineKeyboardButton("Open in Shiny", url = shiny_url),
+    InlineKeyboardButton("Open in Maps",  url = maps_url)
+  )))
+
+  bot$sendMessage(chat_id = tg_chat, text = body, parse_mode = "HTML", reply_markup = kb)
+  cat("Telegram notification sent to chat:", tg_chat, "\n")
+} else {
+  cat("No matching parcel for crop preference — Telegram not sent.\n")
+}
+
+
+```
+
