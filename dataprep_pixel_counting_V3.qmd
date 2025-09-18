@@ -1,0 +1,269 @@
+---
+title: "Pixel Counting V3"
+  html:
+    code-fold: true
+---
+
+
+
+```{r}
+# ====== CONFIG ======
+esm_dir      <- "ESM_Tiff/ESM_Tiff"                # folder with all crop .tif
+prop_csv     <- "cadastral_master.csv"             # 20 rows
+initial_crs  <- 28355                               # set to your WKT CRS if different
+majority_thr <- 0.5                                 # majority-rule threshold
+drop_variants <- TRUE                               # ignore *_1.tif variants
+
+# ---------- Helpers (same logic as your prototype) ----------
+# Read ESRI VAT DBF, find value & label cols like your code did
+build_vat_lookup <- function(vat_path) {
+  if (!file.exists(vat_path)) {
+    return(tibble::tibble(code = integer(), label = character()))
+  }
+  vat  <- foreign::read.dbf(vat_path, as.is = TRUE)
+  vcol <- grep("^value$", names(vat), ignore.case = TRUE, value = TRUE)
+  if (length(vcol) != 1L) stop("No VAT 'Value' column in: ", vat_path)
+
+  lcol <- grep("(suitab|class|label|cat|legend|desc|category)",
+               names(vat), ignore.case = TRUE, value = TRUE)
+  if (!length(lcol)) lcol <- vcol
+
+  tibble::tibble(
+    code  = vat[[vcol]],
+    label = trimws(as.character(vat[[lcol]]))
+  )
+}
+
+attach_levels <- function(r, vat_lu) {
+  if (nrow(vat_lu) > 0) {
+    r <- as.factor(r)
+    # IMPORTANT: no terra:: prefix on a replacement function
+    levels(r) <- data.frame(ID = vat_lu$code, class = vat_lu$label)
+  }
+  r
+}
+
+# Preload all crops once: read .tif, read VAT, attach levels, keep in memory
+preload_all_crops <- function(esm_dir, drop_variants = TRUE) {
+  crop_tifs <- list.files(esm_dir, pattern = "\\.tif$", full.names = TRUE)
+  if (drop_variants) {
+    crop_tifs <- crop_tifs[!grepl("_1\\.tif$", basename(crop_tifs), ignore.case = TRUE)]
+  }
+  rl <- purrr::map(crop_tifs, function(tif) {
+    r <- terra::rast(tif)
+    vat_lu <- build_vat_lookup(paste0(tif, ".vat.dbf"))
+    r <- attach_levels(r, vat_lu)
+    list(
+      name   = tools::file_path_sans_ext(basename(tif)),
+      r      = r,
+      vat_lu = vat_lu
+    )
+  })
+  names(rl) <- vapply(rl, `[[`, character(1), "name")
+  rl
+}
+
+```
+
+
+
+```{r}
+summarise_one_property_one_crop <- function(prop_row, tif_path) {
+  # 1) read raster & VAT, attach levels (your logic)
+  r <- terra::rast(tif_path)
+  vat_path <- paste0(tif_path, ".vat.dbf")
+  vat_lu <- build_vat_lookup(vat_path)
+  r <- attach_levels(r, vat_lu)
+
+  # 2) parcel/address geometry from WKT (from your CSV)
+  parcel_sf  <- sf::st_sf(
+    PID          = prop_row$PID,
+    POT_PID      = prop_row$POT_PID,
+    FULL_ADDRESS = prop_row$full_address,
+    LATITUDE     = prop_row$latitude,
+    LONGITUDE    = prop_row$longitude,
+    geometry     = sf::st_as_sfc(prop_row$parcel_wkt, crs = initial_crs)
+  )
+  addr_sf <- sf::st_sf(geometry = sf::st_as_sfc(prop_row$address_wkt, crs = initial_crs))
+
+  # (Optional) fix invalid geometries
+  if (!all(sf::st_is_valid(parcel_sf))) parcel_sf <- sf::st_make_valid(parcel_sf)
+
+  # 3) reproject parcel to raster CRS (same as you did)
+  parcel_r <- sf::st_transform(parcel_sf, sf::st_crs(r))
+  # addr_r   <- sf::st_transform(addr_sf,   sf::st_crs(r))  # not used downstream
+
+  # 4) optional speed-up: crop raster to parcel bbox
+  r_crop <- terra::crop(r, terra::vect(parcel_r))
+
+  # 5) exactextractr prefers RasterLayer; NO include_cell_area (like your prototype)
+  r_rl <- raster::raster(r_crop)
+  cell_df <- exactextractr::exact_extract(r_rl, parcel_r, fun = NULL, progress = FALSE)[[1]]
+  if (is.null(cell_df) || nrow(cell_df) == 0) return(NULL)
+
+  # 6) detect the raster value column name (your method)
+  val_name <- setdiff(names(cell_df), c("coverage_fraction", "cell_area"))
+  if (length(val_name) != 1L) stop("Unexpected raster columns from exact_extract().")
+  cell_df <- dplyr::rename(cell_df, value = !!val_name)
+
+  # 7) majority-rule COUNT by raster code -> join to VAT labels (your logic)
+  vat_lu_dedup <- dplyr::distinct(vat_lu, code, label)
+
+  out <- cell_df |>
+    dplyr::filter(!is.na(value), coverage_fraction >= majority_thr) |>
+    dplyr::count(value, name = "COUNT") |>
+    dplyr::left_join(vat_lu_dedup, by = c("value" = "code")) |>
+    dplyr::mutate(
+      CLASS_LABEL = dplyr::coalesce(label, as.character(value)),
+      CROP        = tools::file_path_sans_ext(basename(tif_path))
+    ) |>
+    dplyr::transmute(
+      PID          = prop_row$PID,
+      POT_PID      = prop_row$POT_PID,
+      FULL_ADDRESS = prop_row$full_address,
+      COUNT,
+      CLASS_LABEL,
+      CROP,
+      LATITUDE     = prop_row$latitude,
+      LONGITUDE    = prop_row$longitude,
+      GEOMETRY     = prop_row$parcel_wkt,
+      ADDRESS_WKT  = prop_row$address_wkt
+    ) |>
+    dplyr::arrange(dplyr::desc(COUNT))
+
+  out
+}
+
+
+summarise_one_property_one_crop_preloaded <- function(prop_row, r_pre, vat_lu, crop_name) {
+  # Parcel/address from CSV WKT (unchanged logic)
+  parcel_sf <- sf::st_sf(
+    PID          = prop_row$PID,
+    POT_PID      = prop_row$POT_PID,
+    FULL_ADDRESS = prop_row$full_address,
+    LATITUDE     = prop_row$latitude,
+    LONGITUDE    = prop_row$longitude,
+    geometry     = sf::st_as_sfc(prop_row$parcel_wkt, crs = initial_crs)
+  )
+  if (!all(sf::st_is_valid(parcel_sf))) parcel_sf <- sf::st_make_valid(parcel_sf)
+
+  # Reproject parcel to raster CRS & crop (unchanged logic)
+  parcel_r <- sf::st_transform(parcel_sf, sf::st_crs(r_pre))
+  r_crop   <- terra::crop(r_pre, terra::vect(parcel_r))
+
+  # exactextractr prefers RasterLayer; NO include_cell_area (same as your working code)
+  r_rl   <- raster::raster(r_crop)
+  cell_df <- exactextractr::exact_extract(r_rl, parcel_r, fun = NULL, progress = FALSE)[[1]]
+  if (is.null(cell_df) || nrow(cell_df) == 0) return(NULL)
+
+  # Detect the raster value column (unchanged)
+  val_name <- setdiff(names(cell_df), c("coverage_fraction", "cell_area"))
+  if (length(val_name) != 1L) stop("Unexpected raster columns from exact_extract().")
+  cell_df <- dplyr::rename(cell_df, value = !!val_name)
+
+  # Majority-rule COUNT by code; label via VAT if present, else numeric code
+  vat_lu_dedup <- dplyr::distinct(vat_lu, code, label)
+
+  out <- cell_df |>
+    dplyr::filter(!is.na(value), coverage_fraction >= majority_thr) |>
+    dplyr::count(value, name = "COUNT") |>
+    dplyr::left_join(vat_lu_dedup, by = c("value" = "code")) |>
+    dplyr::mutate(
+      CLASS_LABEL = dplyr::coalesce(label, as.character(value)),
+      CROP        = crop_name
+    ) |>
+    dplyr::transmute(
+      PID          = prop_row$PID,
+      POT_PID      = prop_row$POT_PID,
+      FULL_ADDRESS = prop_row$full_address,
+      COUNT,
+      CLASS_LABEL,
+      CROP,
+      LATITUDE     = prop_row$latitude,
+      LONGITUDE    = prop_row$longitude,
+      GEOMETRY     = prop_row$parcel_wkt,
+      ADDRESS_WKT  = prop_row$address_wkt
+    ) |>
+    dplyr::arrange(dplyr::desc(COUNT))
+
+  out
+}
+```
+
+
+```{r}
+# ---------- DRIVER (preloaded rasters) ----------
+library(readr)
+library(dplyr)
+library(purrr)
+library(sf)
+library(terra)
+library(foreign)
+library(exactextractr) 
+library(stringr)
+
+# Read and deduplicate by PID (keep one per parcel)
+props_raw <- readr::read_csv(prop_csv, show_col_types = FALSE)
+stopifnot(all(c("PID","POT_PID","full_address","latitude","longitude","parcel_wkt","address_wkt") %in% names(props_raw)))
+
+props <- props_raw |>
+  dplyr::mutate(PID = as.character(PID)) |>
+  dplyr::arrange(PID) |>
+  dplyr::distinct(PID, .keep_all = TRUE)
+
+# Preload all crops ONCE
+raster_list <- preload_all_crops(esm_dir, drop_variants = drop_variants)
+
+# Compute: each property × each preloaded crop (no more per-iteration disk reads)
+results_master <- purrr::map_dfr(seq_len(nrow(props)), function(i) {
+  prop_i <- props[i, ]
+  purrr::map_dfr(raster_list, function(rr) {
+    tryCatch(
+      summarise_one_property_one_crop_preloaded(
+        prop_row  = prop_i,
+        r_pre     = rr$r,
+        vat_lu    = rr$vat_lu,
+        crop_name = rr$name
+      ),
+      error = function(e) {
+        message("PID=", prop_i$PID, " | CROP=", rr$name, " -> ", e$message)
+        NULL
+      }
+    )
+  })
+})
+
+# Split into per-PID tables (list of 20 tibbles)
+tables_by_pid <- split(results_master, results_master$PID)
+
+# Optionally write CSVs
+# dir.create("property_tables", showWarnings = FALSE)
+# purrr::iwalk(tables_by_pid, ~ readr::write_csv(.x, file.path("property_tables", paste0(.y, ".csv"))))
+# readr::write_csv(results_master, "parcel_crop_suitability_counts_master.csv")
+
+print(results_master, n = min(30, nrow(results_master)))
+```
+
+
+```{r}
+# Master files
+write_csv(results_master, 
+          file.path("parcel_crop_suitability_counts_master.csv"))
+
+saveRDS(results_master, 
+        file.path("parcel_crop_suitability_counts_master.rds"))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

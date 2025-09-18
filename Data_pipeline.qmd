@@ -226,6 +226,7 @@ JOIN PARCEL_ADDRESS_MASTER p
   ON upper(trim(replace(d.full_address, chr(160), ' '))) =
      upper(trim(replace(p.full_address, chr(160), ' ')));
 ```
+
 ```{sql, connection=con}
 select * from PARCEL_ADDRESS_MASTER where PID='5273454';
 ```
@@ -234,7 +235,6 @@ select * from PARCEL_ADDRESS_MASTER where PID='5273454';
 # `con` is your DBI connection (already open)
 dbWriteTable(con, "tesm_majority", majority_tab_with_pid, overwrite = TRUE)
 ```
-
 
 ```{sql, connection=con}
 select * from tesm_majority limit 5;
