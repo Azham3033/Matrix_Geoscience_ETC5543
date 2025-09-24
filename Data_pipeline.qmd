@@ -54,9 +54,8 @@ parcels_west_tamar <- st_read("dataset/LIST_PARCELS_WEST_TAMAR/list_parcels_west
 ```{r}
 Address_Master <- st_read("dataset/LIST_ADDRESS_POINTS_STATEWIDE/list_address_points_statewide.shp")
 view(Address_Master)
-property_listing_domain<- read_csv("dataset/tas_listings_with_price_and_geocode.csv")
+property_listing_domain<- read_csv("dataset/property_listing.csv")
 view(property_listing_domain)
-
 Address_Master$ST_NO_FROM <- as.character(Address_Master$ST_NO_FROM)
 Address_Master$POSTCODE <- as.character(Address_Master$POSTCODE)
 ```
@@ -191,8 +190,6 @@ dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_listing_pid ON property_listing_d
 
 select distinct(PID), count(*) from parcels_master group by PID having count(*)>1 limit 5;
 
-
-select * from parcels_master where PID='6585214';
 ```
 
 -   Dropping the view if it exists.
@@ -214,27 +211,47 @@ from parcels_master P inner join address_master A on P.PID = A.PID where P.PID !
 
 ```{sql, connection=con}
 select * from PARCEL_ADDRESS_MASTER where PID='6003587';
+desc property_listing_domain;
 ```
 
 -   Joining the property listing data with the parcel address master view on full_address to get a combined dataset with parcel and address geometries.
 
 ```{sql, connection=con}
-SELECT p.PID ,p.POT_PID,d.full_address,d.latitude,d.longitude,ST_AsText(ST_GeomFromWKB(p.parcel_geometry))   AS parcel_wkt,
-  ST_AsText(ST_GeomFromWKB(p.address_geometry))  AS address_wkt
+CREATE OR REPLACE TABLE CADASTRAL_MASTER AS
+SELECT
+  p.PID,
+  p.POT_PID,                 -- check this column name is correct
+  d.full_address,
+  ST_AsText(ST_GeomFromWKB(p.parcel_geometry))  AS parcel_wkt,
+  ST_AsText(ST_GeomFromWKB(p.address_geometry)) AS address_wkt
 FROM property_listing_domain d
 JOIN PARCEL_ADDRESS_MASTER p
   ON upper(trim(replace(d.full_address, chr(160), ' '))) =
      upper(trim(replace(p.full_address, chr(160), ' ')));
 ```
 
+
+
+```{r}
+# Load the table into an R data frame
+cadastral_df <- dbGetQuery(con, "SELECT * FROM CADASTRAL_MASTER")
+
+# Check it
+str(cadastral_df)
+head(cadastral_df)
+write_csv(cadastral_df, "dataset/cadastral_master.csv")
+```
+
+
 ```{sql, connection=con}
-select * from PARCEL_ADDRESS_MASTER where PID='5273454';
+select * from CADASTRAL_MASTER where PID='5273454';
 ```
 
 ```{r}
 # `con` is your DBI connection (already open)
 dbWriteTable(con, "tesm_majority", majority_tab_with_pid, overwrite = TRUE)
 ```
+
 
 ```{sql, connection=con}
 select * from tesm_majority limit 5;
@@ -243,3 +260,4 @@ select * from tesm_majority limit 5;
 ```{sql, connection=con}
 select p.PID,FULL_ADDRESS,CLASS_LABEL,PIXELS,ST_AsText(ST_GeomFromWKB(p.parcel_geometry))   AS parcel_wkt from tesm_majority m join PARCEL_ADDRESS_MASTER p on m.PID=p.PID;
 ```
+
