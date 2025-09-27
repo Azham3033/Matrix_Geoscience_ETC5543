@@ -1,0 +1,398 @@
+---
+title: "Pixel Count Mapping V2.1"
+author: "RR"
+format: html
+---
+
+# 0) Libraries
+
+```{r, warning=F, message=F}
+library(readr)
+library(dplyr)
+library(sf)
+library(leaflet)
+library(stringr)
+library(terra)
+library(foreign)       # read.dbf
+library(exactextractr) # majority pixels
+library(glue)
+```
+
+
+# 1) Target Input
+
+```{r}
+# Selection (already defined earlier in your doc; shown here for completeness)
+target_address <- NA_character_
+target_pid     <- "1700922"
+target_crop    <- "Carrot_seed"     # value taken from your dataset column CROP
+```
+
+
+# 2) Config
+
+```{r}
+# Paths & CRS
+csv_path    <- "parcel_crop_suitability_counts_master.csv"   # your saved file
+initial_crs <- 28355                                         # WKT CRS used in the CSV
+
+# --- LIST WMS (for backdrop) ---
+wms_url <- "https://services.thelist.tas.gov.au/arcgis/services/Public/EnterpriseSuitabilityMapping2018/MapServer/WMSServer"
+
+# Canonicaliser
+canon <- function(s) tolower(gsub("\\s+", " ", trimws(s)))
+
+# --- define these *outside* the function ---
+esm_layers <- c(
+  "Barley" = "0",
+  "Blueberries [nhb]" = "1",
+  "Blueberries [shb]" = "2",
+  "Carrots" = "3",
+  "Carrot seed" = "4",
+  "Cherries" = "5",
+  "Cocksfoot Continental" = "6",
+  "Cocksfoot Mediterranean" = "7",
+  "Eucalyptus Globulus" = "8",
+  "Eucalyptus Nitens" = "9",
+  "Hazelnuts" = "10",
+  "Industrial Hemp" = "11",
+  "Linseed" = "12",
+  "Lucerne" = "13",
+  "Olives" = "14",
+  "Onions" = "15",
+  "Phalaris" = "16",
+  "Pinus Radiata" = "17",
+  "Poppies" = "18",
+  "Potatoes" = "19",
+  "Pyrethrum" = "20",
+  "Raspberries" = "21",
+  "Red Clover" = "22",
+  "Rye Grass" = "23",
+  "Sparkling Wine Grapes" = "24",
+  "Strawberries" = "25",
+  "Strawberry Clover" = "26",
+  "Table Wine Grapes" = "27",
+  "Tall Fescue Continental" = "28",
+  "Tall Fescue Mediterranean" = "29",
+  "Wheat" = "30",
+  "White Clover" = "31",
+  "Enterprise Versatility Index" = "32",
+  "Enterprise Versatility Index - Pastures" = "33"
+)
+
+# Your dataset -> WMS title aliases (keys are canonicalised/lowercase)
+aliases <- c(
+  "carrot_seed"             = "Carrot seed",
+  "cocksfootcontinental"    = "Cocksfoot Continental",
+  "cocksfootmediterranean"  = "Cocksfoot Mediterranean",
+  "eucglobulus"             = "Eucalyptus Globulus",
+  "eucnitens"               = "Eucalyptus Nitens",
+  "industrialhemp"          = "Industrial Hemp",
+  "ryegrass"                = "Rye Grass",
+  "sparklingwine"           = "Sparkling Wine Grapes",
+  "strawberryclover"        = "Strawberry Clover",
+  "tablewine"               = "Table Wine Grapes",
+  "tallfescuecontinental"   = "Tall Fescue Continental",
+  "tallfescuemediterranean" = "Tall Fescue Mediterranean",
+  "redclover"               = "Red Clover",
+  "whiteclover"             = "White Clover"
+)
+
+# --- corrected resolver (rename the parameter to avoid self-reference) ---
+resolve_wms_layer <- function(crop, layers = esm_layers, alias_map = aliases) {
+  k <- canon(crop)
+  # use alias if present
+  title <- if (!is.null(alias_map) && length(alias_map) && k %in% names(alias_map)) {
+    alias_map[[k]]
+  } else {
+    crop
+  }
+  idx <- match(canon(title), canon(names(layers)))
+  if (is.na(idx)) {
+    stop("No WMS layer id for crop label: '", crop,
+         "'. Check `alias_map` or `esm_layers`.", call. = FALSE)
+  }
+  unname(layers[idx])
+}
+
+# --- usage ---
+# target_crop <- "Cherries"   # or "RyeGrass", "Carrot_seed", etc.
+esm_layer_id <- resolve_wms_layer(target_crop, esm_layers, aliases)
+
+# --- Fixed legend (same order/colors you’ve been using) ---
+classes <- c(
+  "1.0 Well suited",
+  "1.1 Well suited (with soil mgmt)",
+  "2.0 Suitable",
+  "2.1 Suitable (with soil mgmt)",
+  "3.0 Moderately suitable",
+  "3.1 Moderately suitable (with soil mgmt)",
+  "4.0 Unsuitable"
+)
+cols <- c("#4B0082","#5A4CB2","#62C6D4","#8CD1B6","#58C39D","#A3D98A","#FFE550")
+```
+
+
+# 3) Load CSV → make geometries (no cleaning)
+
+```{r}
+# Read the master CSV that already contains: PID, POT_PID, MUNICIPALITY, FULL_ADDRESS,
+# COUNT, CLASS_LABEL, CROP, GEOMETRY (parcel WKT), ADDRESS_WKT (point WKT).
+master <- readr::read_csv(csv_path, show_col_types = FALSE)
+
+# One geometry per PID (geometry is duplicated across class rows)
+geom_per_pid <- master %>%
+  distinct(PID, .keep_all = TRUE) %>%
+  mutate(
+    parcel_sfc  = sf::st_as_sfc(GEOMETRY, crs = initial_crs),
+    address_sfc = sf::st_as_sfc(ADDRESS_WKT, crs = initial_crs)
+  )
+
+# Helpers to fetch a single parcel row by address or PID
+pick_row <- function(df, addr = NA_character_, pid = NA_character_) {
+  if (!is.na(addr)) {
+    hit <- df %>% filter(str_squish(str_to_upper(FULL_ADDRESS)) == str_squish(str_to_upper(addr)))
+    if (nrow(hit) > 0) return(hit %>% slice(1))
+  }
+  if (!is.na(pid)) {
+    hit <- df %>% filter(PID == pid)
+    if (nrow(hit) > 0) return(hit %>% slice(1))
+  }
+  stop("No matching parcel found for given address/PID.")
+}
+
+row1 <- pick_row(geom_per_pid, addr = target_address, pid = target_pid)
+
+parcel_sf <- row1 %>%
+  dplyr::select(PID, FULL_ADDRESS, GEOMETRY) %>%
+  sf::st_as_sf(wkt = "GEOMETRY", crs = initial_crs)
+
+addr_sf <- row1 %>%
+  dplyr::select(PID, FULL_ADDRESS, ADDRESS_WKT) %>%
+  sf::st_as_sf(wkt = "ADDRESS_WKT", crs = initial_crs)
+
+# safety: fix invalid parcel geom; fallback address point if needed
+if (!all(sf::st_is_valid(parcel_sf))) parcel_sf <- sf::st_make_valid(parcel_sf)
+if (nrow(addr_sf) == 0 || any(sf::st_is_empty(addr_sf))) {
+  addr_sf <- sf::st_point_on_surface(parcel_sf)
+}
+
+```
+
+
+# 4) Summarize counts for the selected PID + crop (from CSV only)
+
+```{r}
+majority_tab <- master %>%
+  filter(PID == row1$PID, CROP == target_crop) %>%
+  group_by(CLASS_LABEL) %>%
+  summarise(COUNT = sum(COUNT), .groups = "drop") %>%
+  arrange(desc(COUNT))
+
+# Print a compact summary
+print(majority_tab, n = nrow(majority_tab), width = Inf)
+cat("Total pixels (majority-rule):", sum(majority_tab$COUNT), "\n")
+```
+
+
+
+# 5) Leaflet map with WMS backdrop + parcel + address marker
+
+```{r}
+# Reproject geometries (as you had)
+parcel_4326 <- sf::st_transform(parcel_sf, 4326)
+addr_4326   <- sf::st_transform(addr_sf,   4326)
+
+# Compute bbox and center
+bb   <- sf::st_bbox(parcel_4326)
+ctr  <- sf::st_coordinates(sf::st_centroid(sf::st_union(parcel_4326)))[1, ]
+
+# Build the map
+leaflet(options = leafletOptions(worldCopyJump = FALSE)) |>
+  addProviderTiles("CartoDB.Positron") |>
+  addWMSTiles(
+    baseUrl = wms_url,
+    layers  = esm_layer_id,
+    options = WMSTileOptions(
+      version     = "1.1.1",
+      styles      = "",
+      format      = "image/png",
+      transparent = TRUE,
+      tiled       = TRUE
+    ),
+    attribution = "© theLIST, State of Tasmania"
+  ) |>
+  addPolygons(data = parcel_4326, color = "black", weight = 2, fill = FALSE,
+              popup = ~FULL_ADDRESS) |>
+  addCircleMarkers(data = addr_4326, radius = 6, stroke = TRUE, weight = 1,
+                   fillOpacity = 1, popup = ~FULL_ADDRESS) |>
+  addLegend("topright", colors = cols, labels = classes,
+            title = paste0("ESM (", target_crop, ")")) |>
+  # --- IMPORTANT: strip names or use [[ ]] so these are plain numerics
+  fitBounds(lng1 = as.numeric(bb["xmin"]),
+            lat1 = as.numeric(bb["ymin"]),
+            lng2 = as.numeric(bb["xmax"]),
+            lat2 = as.numeric(bb["ymax"]))
+  # If fitBounds ever fails (e.g., bbox is a point), replace with:
+  # |> setView(lng = ctr[1], lat = ctr[2], zoom = 14)
+
+```
+
+
+
+
+
+```{r}
+#| fig.width: 8
+#| fig.height: 5
+
+# ---- config ----
+csv_path      <- "parcel_crop_suitability_counts_master.csv"
+esm_dir       <- "ESM_Tiff/ESM_Tiff"          # folder with your local .tif
+initial_crs   <- 28355
+zoom_buffer_m <- 150
+
+# ---- read one parcel from CSV (no cleaning) ----
+master <- readr::read_csv(csv_path, show_col_types = FALSE)
+
+# choose a PID/address beforehand; we use PID here
+# target_pid   <- "1700922"
+# target_crop  <- "Carrot_seed"   # EXACT local basename (no extension)
+
+row1 <- master %>%
+  distinct(PID, .keep_all = TRUE) %>%
+  filter(PID == target_pid) %>%
+  slice(1)
+stopifnot(nrow(row1) == 1)
+
+parcel_sf <- sf::st_as_sf(row1 %>% select(PID, FULL_ADDRESS, GEOMETRY),
+                          wkt = "GEOMETRY", crs = initial_crs)
+if (!all(sf::st_is_valid(parcel_sf))) parcel_sf <- sf::st_make_valid(parcel_sf)
+
+# ---- open local GeoTIFF for target crop (no name munging) ----
+tif_path <- file.path(esm_dir, paste0(target_crop, ".tif"))
+if (!file.exists(tif_path)) stop("Missing GeoTIFF: ", tif_path)
+r <- terra::rast(tif_path)
+
+# ---- crop FIRST (fast), then (optionally) attach VAT to the cutout ----
+bb <- sf::st_bbox(sf::st_transform(parcel_sf, sf::st_crs(r)))
+ext_zoom <- terra::ext(as.numeric(bb["xmin"]) - zoom_buffer_m,
+                       as.numeric(bb["xmax"]) + zoom_buffer_m,
+                       as.numeric(bb["ymin"]) - zoom_buffer_m,
+                       as.numeric(bb["ymax"]) + zoom_buffer_m)
+r_cut <- terra::crop(r, ext_zoom)
+
+# Optional VAT → levels (attach to the small cutout only)
+vat_path <- paste0(tif_path, ".vat.dbf")
+vat_lu <- NULL
+if (file.exists(vat_path)) {
+  vat  <- foreign::read.dbf(vat_path, as.is = TRUE)
+  vcol <- grep("^value$", names(vat), ignore.case = TRUE, value = TRUE)
+  if (length(vcol) == 1L) {
+    lcol <- grep("(suitab|class|label|cat|legend|desc|category)",
+                 names(vat), ignore.case = TRUE, value = TRUE)
+    if (!length(lcol)) lcol <- vcol
+    vat_lu <- tibble::tibble(code = vat[[vcol]],
+                             label = trimws(as.character(vat[[lcol]]))) %>%
+              distinct(code, label)
+    r_cut <- as.factor(r_cut)
+    levels(r_cut) <- data.frame(ID = vat_lu$code, class = vat_lu$label)
+  }
+}
+
+# ---- exactextract majority over parcel ----
+parcel_r <- sf::st_transform(parcel_sf, sf::st_crs(r_cut))
+r_rl     <- raster::raster(r_cut)
+cell_df  <- exactextractr::exact_extract(r_rl, parcel_r, fun = NULL, progress = FALSE)[[1]]
+stopifnot(!is.null(cell_df), nrow(cell_df) > 0)
+
+val_col  <- setdiff(names(cell_df), c("coverage_fraction", "cell_area"))
+stopifnot(length(val_col) == 1L)
+cell_df  <- dplyr::rename(cell_df, value = !!val_col)
+
+majority_tab <- cell_df %>%
+  filter(!is.na(value), coverage_fraction >= 0.5) %>%
+  count(value, name = "COUNT") %>%
+  left_join(vat_lu %||% tibble(code=integer(),label=character()),
+            by = c("value" = "code")) %>%
+  transmute(PID = parcel_sf$PID,
+            FULL_ADDRESS = parcel_sf$FULL_ADDRESS,
+            CROP = target_crop,
+            CLASS_LABEL = coalesce(label, as.character(value)),
+            COUNT) %>%
+  arrange(desc(COUNT))
+
+cat(glue("Total pixels (majority-rule): {sum(majority_tab$COUNT)}\n\n"))
+#print(majority_tab, n = nrow(majority_tab), width = Inf)
+
+# ---- zoomed static map with clean legend on the RIGHT ----
+{
+  # 1) classify / palette prep (same as before, but silent)
+  classes <- c(
+    "1.0 Well suited",
+    "1.1 Well suited (with soil mgmt)",
+    "2.0 Suitable",
+    "2.1 Suitable (with soil mgmt)",
+    "3.0 Moderately suitable",
+    "3.1 Moderately suitable (with soil mgmt)",
+    "4.0 Unsuitable"
+  )
+  cols <- c("#4B0082","#5A4CB2","#62C6D4","#8CD1B6","#58C39D","#A3D98A","#FFE550")
+
+  canon <- function(s) {
+    s <- trimws(s)
+    s <- gsub("management","mgmt", s, ignore.case = TRUE)
+    s <- gsub("\\s+"," ", s)
+    tolower(s)
+  }
+
+  cat_tbl <- try(terra::cats(r_cut, 1)[[1]], silent = TRUE)
+
+  op <- par(no.readonly = TRUE); on.exit(par(op), add = TRUE)
+  # two panels: map (wide) | legend (narrow) — captured as ONE image
+  layout(matrix(c(1,2), nrow = 1), widths = c(3, 1))
+
+  ## --- left panel: the map ---
+  par(mar = c(5,5,4,2) + 0.1, xpd = NA)
+  if (!inherits(cat_tbl, "try-error") && !is.null(cat_tbl)) {
+    labcol <- setdiff(names(cat_tbl), c("ID","Value","value","CODE","code"))[1]
+    levs   <- as.character(cat_tbl[[labcol]])
+    idx    <- match(canon(levs), canon(classes))
+    pal    <- rep("lightgray", length(levs))
+    pal[!is.na(idx)] <- cols[idx[!is.na(idx)]]
+
+    terra::plot(r_cut, col = pal, legend = FALSE,
+                main = glue("{target_crop} suitability (zoomed on parcel)"))
+  } else {
+    terra::plot(r_cut, legend = FALSE,
+                main = glue("{target_crop} suitability (zoomed on parcel)"))
+  }
+  plot(sf::st_geometry(parcel_r), add = TRUE, border = "black", lwd = 2)
+  plot(sf::st_geometry(parcel_r), add = TRUE,
+       col = grDevices::adjustcolor("black", alpha.f = 0.18), border = NA)
+  pt <- sf::st_point_on_surface(parcel_r)
+  points(sf::st_coordinates(pt), pch = 19, cex = 1.2)
+
+  ## --- right panel: the legend only ---
+  par(mar = c(5,1,4,2) + 0.1)
+  plot.new()
+  legend("left",
+         legend = classes,
+         fill   = cols,
+         bty    = "n",
+         cex    = 0.95,
+         title  = "ESM")
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+

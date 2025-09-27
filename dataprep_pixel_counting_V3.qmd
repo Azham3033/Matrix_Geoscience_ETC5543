@@ -1,18 +1,20 @@
 ---
 title: "Pixel Counting V3"
+author: "RR"
   html:
     code-fold: true
 ---
 
 
+# Config & Helper
 
 ```{r}
 # ====== CONFIG ======
 esm_dir      <- "ESM_Tiff/ESM_Tiff"                # folder with all crop .tif
-prop_csv     <- "cadastral_master.csv"             # 20 rows
-initial_crs  <- 28355                               # set to your WKT CRS if different
-majority_thr <- 0.5                                 # majority-rule threshold
-drop_variants <- TRUE                               # ignore *_1.tif variants
+prop_csv     <- "cadastral_master_26925.csv"       # 70 rows
+initial_crs  <- 28355                              # set to your WKT CRS if different
+majority_thr <- 0.5                                # majority-rule threshold
+drop_variants <- TRUE                              # ignore *_1.tif variants
 
 # ---------- Helpers (same logic as your prototype) ----------
 # Read ESRI VAT DBF, find value & label cols like your code did
@@ -66,47 +68,39 @@ preload_all_crops <- function(esm_dir, drop_variants = TRUE) {
 ```
 
 
+# Summariser
 
 ```{r}
+# ---- Summariser ----
+
 summarise_one_property_one_crop <- function(prop_row, tif_path) {
-  # 1) read raster & VAT, attach levels (your logic)
   r <- terra::rast(tif_path)
   vat_path <- paste0(tif_path, ".vat.dbf")
   vat_lu <- build_vat_lookup(vat_path)
   r <- attach_levels(r, vat_lu)
 
-  # 2) parcel/address geometry from WKT (from your CSV)
   parcel_sf  <- sf::st_sf(
     PID          = prop_row$PID,
     POT_PID      = prop_row$POT_PID,
+    MUNICIPALITY = prop_row$MUNICIPALITY,
     FULL_ADDRESS = prop_row$full_address,
-    LATITUDE     = prop_row$latitude,
-    LONGITUDE    = prop_row$longitude,
     geometry     = sf::st_as_sfc(prop_row$parcel_wkt, crs = initial_crs)
   )
   addr_sf <- sf::st_sf(geometry = sf::st_as_sfc(prop_row$address_wkt, crs = initial_crs))
 
-  # (Optional) fix invalid geometries
   if (!all(sf::st_is_valid(parcel_sf))) parcel_sf <- sf::st_make_valid(parcel_sf)
 
-  # 3) reproject parcel to raster CRS (same as you did)
   parcel_r <- sf::st_transform(parcel_sf, sf::st_crs(r))
-  # addr_r   <- sf::st_transform(addr_sf,   sf::st_crs(r))  # not used downstream
-
-  # 4) optional speed-up: crop raster to parcel bbox
   r_crop <- terra::crop(r, terra::vect(parcel_r))
 
-  # 5) exactextractr prefers RasterLayer; NO include_cell_area (like your prototype)
   r_rl <- raster::raster(r_crop)
   cell_df <- exactextractr::exact_extract(r_rl, parcel_r, fun = NULL, progress = FALSE)[[1]]
   if (is.null(cell_df) || nrow(cell_df) == 0) return(NULL)
 
-  # 6) detect the raster value column name (your method)
   val_name <- setdiff(names(cell_df), c("coverage_fraction", "cell_area"))
   if (length(val_name) != 1L) stop("Unexpected raster columns from exact_extract().")
   cell_df <- dplyr::rename(cell_df, value = !!val_name)
 
-  # 7) majority-rule COUNT by raster code -> join to VAT labels (your logic)
   vat_lu_dedup <- dplyr::distinct(vat_lu, code, label)
 
   out <- cell_df |>
@@ -120,12 +114,11 @@ summarise_one_property_one_crop <- function(prop_row, tif_path) {
     dplyr::transmute(
       PID          = prop_row$PID,
       POT_PID      = prop_row$POT_PID,
+      MUNICIPALITY = prop_row$MUNICIPALITY,
       FULL_ADDRESS = prop_row$full_address,
       COUNT,
       CLASS_LABEL,
       CROP,
-      LATITUDE     = prop_row$latitude,
-      LONGITUDE    = prop_row$longitude,
       GEOMETRY     = prop_row$parcel_wkt,
       ADDRESS_WKT  = prop_row$address_wkt
     ) |>
@@ -134,34 +127,27 @@ summarise_one_property_one_crop <- function(prop_row, tif_path) {
   out
 }
 
-
 summarise_one_property_one_crop_preloaded <- function(prop_row, r_pre, vat_lu, crop_name) {
-  # Parcel/address from CSV WKT (unchanged logic)
   parcel_sf <- sf::st_sf(
     PID          = prop_row$PID,
     POT_PID      = prop_row$POT_PID,
+    MUNICIPALITY = prop_row$MUNICIPALITY,
     FULL_ADDRESS = prop_row$full_address,
-    LATITUDE     = prop_row$latitude,
-    LONGITUDE    = prop_row$longitude,
     geometry     = sf::st_as_sfc(prop_row$parcel_wkt, crs = initial_crs)
   )
   if (!all(sf::st_is_valid(parcel_sf))) parcel_sf <- sf::st_make_valid(parcel_sf)
 
-  # Reproject parcel to raster CRS & crop (unchanged logic)
   parcel_r <- sf::st_transform(parcel_sf, sf::st_crs(r_pre))
   r_crop   <- terra::crop(r_pre, terra::vect(parcel_r))
 
-  # exactextractr prefers RasterLayer; NO include_cell_area (same as your working code)
   r_rl   <- raster::raster(r_crop)
   cell_df <- exactextractr::exact_extract(r_rl, parcel_r, fun = NULL, progress = FALSE)[[1]]
   if (is.null(cell_df) || nrow(cell_df) == 0) return(NULL)
 
-  # Detect the raster value column (unchanged)
   val_name <- setdiff(names(cell_df), c("coverage_fraction", "cell_area"))
   if (length(val_name) != 1L) stop("Unexpected raster columns from exact_extract().")
   cell_df <- dplyr::rename(cell_df, value = !!val_name)
 
-  # Majority-rule COUNT by code; label via VAT if present, else numeric code
   vat_lu_dedup <- dplyr::distinct(vat_lu, code, label)
 
   out <- cell_df |>
@@ -175,18 +161,69 @@ summarise_one_property_one_crop_preloaded <- function(prop_row, r_pre, vat_lu, c
     dplyr::transmute(
       PID          = prop_row$PID,
       POT_PID      = prop_row$POT_PID,
+      MUNICIPALITY = prop_row$MUNICIPALITY,
       FULL_ADDRESS = prop_row$full_address,
       COUNT,
       CLASS_LABEL,
       CROP,
-      LATITUDE     = prop_row$latitude,
-      LONGITUDE    = prop_row$longitude,
       GEOMETRY     = prop_row$parcel_wkt,
       ADDRESS_WKT  = prop_row$address_wkt
     ) |>
     dplyr::arrange(dplyr::desc(COUNT))
 
   out
+}
+
+```
+
+
+# load props
+
+```{r}
+# ---- 2) load_props(): NO lat/long processing; keep address_wkt only ----
+load_props <- function(path, crs = 28355) {
+  library(readr); library(dplyr); library(janitor); library(tibble)
+  df <- suppressMessages(readr::read_csv(path, show_col_types = FALSE))
+  if (ncol(df) > 1 && all(c("PID","POT_PID","full_address","parcel_wkt","address_wkt") %in% names(df))) {
+    df <- df %>%
+      janitor::clean_names() %>%
+      rename(
+        PID          = any_of(c("pid","PID")),
+        POT_PID      = any_of(c("pot_pid","POT_PID")),
+        MUNICIPALITY = any_of(c("municipality","MUNICIPALITY","council","lga")),
+        full_address = any_of(c("full_address","address","FULL_ADDRESS")),
+        parcel_wkt   = any_of(c("parcel_wkt","geometry_wkt","wkt","PARCEL_WKT")),
+        address_wkt  = any_of(c("address_wkt","addr_wkt","ADDRESS_WKT"))
+        # NOTE: no latitude/longitude renaming here
+      )
+  } else {
+    raw_lines <- readr::read_lines(path)
+    raw_lines <- raw_lines[nzchar(trimws(raw_lines))]
+    cols    <- c("row_index","PID","POT_PID","MUNICIPALITY",
+                 "full_address","parcel_wkt","address_wkt","latitude","longitude")
+    rec_len <- length(cols)
+    if (length(raw_lines) %% rec_len != 0)
+      stop("File does not contain a whole number of 9-line records. Check formatting.")
+    mat <- matrix(raw_lines, ncol = rec_len, byrow = TRUE)
+    df  <- as_tibble(mat, .name_repair = "minimal")
+    names(df) <- cols
+    df <- df %>%
+      select(-row_index) %>%
+      mutate(
+        PID          = as.character(PID),
+        POT_PID      = as.character(POT_PID),
+        MUNICIPALITY = as.character(MUNICIPALITY),
+        full_address = as.character(full_address),
+        parcel_wkt   = as.character(parcel_wkt),
+        address_wkt  = as.character(address_wkt)
+        # NOTE: we intentionally ignore latitude/longitude even if present
+      )
+  }
+  # Required schema: NO latitude/longitude required anymore
+  required <- c("PID","POT_PID","MUNICIPALITY","full_address","parcel_wkt","address_wkt")
+  missing <- setdiff(required, names(df))
+  if (length(missing)) stop("Missing required columns: ", paste(missing, collapse = ", "))
+  df
 }
 ```
 
@@ -201,15 +238,15 @@ library(terra)
 library(foreign)
 library(exactextractr) 
 library(stringr)
+library(janitor)
 
 # Read and deduplicate by PID (keep one per parcel)
-props_raw <- readr::read_csv(prop_csv, show_col_types = FALSE)
-stopifnot(all(c("PID","POT_PID","full_address","latitude","longitude","parcel_wkt","address_wkt") %in% names(props_raw)))
+props_raw <- load_props(prop_csv, crs = initial_crs)
 
-props <- props_raw |>
-  dplyr::mutate(PID = as.character(PID)) |>
-  dplyr::arrange(PID) |>
-  dplyr::distinct(PID, .keep_all = TRUE)
+props <- props_raw %>%
+  mutate(PID = as.character(PID)) %>%
+  arrange(PID) %>%
+  distinct(PID, .keep_all = TRUE)
 
 # Preload all crops ONCE
 raster_list <- preload_all_crops(esm_dir, drop_variants = drop_variants)
