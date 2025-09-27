@@ -1,0 +1,185 @@
+---
+title: "test_scrapping"
+format: html
+editor: visual
+---
+
+```{r}
+# --- Packages ------------------------------------------------------------
+# install.packages(c("rvest","dplyr","stringr","tidyr","readr","purrr","tidygeocoder"))
+library(rvest)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(readr)
+library(purrr)
+library(tidygeocoder)
+
+# --- Config: where your saved HTML pages live ----------------------------
+# Folder containing domain_tas_page_1.html, domain_tas_page_2.html, ...
+pages_dir <- "./dataset/domain"
+
+# Helper to order files numerically if they're named like ..._page_12.html
+extract_page_num <- function(x) {
+  m <- str_match(basename(x), "page_(\\d+)\\.html$")
+  as.integer(m[,2])
+}
+
+# --- Helpers -------------------------------------------------------------
+`%||%` <- function(a, b) if (is.null(a)) b else a
+
+# Parse TAS address into columns (street, suburb, state, postcode)
+parse_address <- function(addr) {
+  addr <- str_squish(addr %||% "")
+  if (addr == "") return(tibble(street = NA, suburb = NA, state = NA, postcode = NA))
+
+  # "street, suburb TAS 7xxx"
+  m1 <- str_match(addr, "^(.*?),\\s*(.*?)\\s+(TAS)\\s*(\\d{4})$")
+  if (!any(is.na(m1))) {
+    return(tibble(
+      street   = str_squish(m1[,2]),
+      suburb   = str_to_title(str_squish(m1[,3])),
+      state    = "TAS",
+      postcode = str_squish(m1[,5])
+    ))
+  }
+  # "street,suburbTAS7xxx"
+  m2 <- str_match(addr, "^(.*?),(.*?)(TAS)(\\d{4})$")
+  if (!any(is.na(m2))) {
+    return(tibble(
+      street   = str_squish(m2[,2]),
+      suburb   = str_to_title(str_squish(m2[,3])),
+      state    = "TAS",
+      postcode = str_squish(m2[,5])
+    ))
+  }
+
+  tibble(street = addr, suburb = NA, state = NA, postcode = NA)
+}
+
+# Convert price text to numeric dollars where possible
+parse_price_numeric <- function(price_text) {
+  if (is.na(price_text) || str_trim(price_text) == "") return(NA_real_)
+  txt <- str_to_upper(gsub(",", "", price_text))
+  if (str_detect(txt, "EOI|EXPRESSION|CONTACT|TENDER|AUCTION|BY NEGOTIATION|PRICE ON APPLICATION|POA"))
+    return(NA_real_)
+  m <- str_match(txt, "\\$?\\s*([0-9]+(?:\\.[0-9]+)?)\\s*([KM])?")
+  if (any(is.na(m))) return(NA_real_)
+  val <- as.numeric(m[,2]); suf <- m[,3]
+  if (!is.na(suf)) {
+    if (suf == "K") val <- val * 1e3
+    if (suf == "M") val <- val * 1e6
+  }
+  as.numeric(round(val))
+}
+
+# Extract listing "cards" from a page (robust CSS; XPath fallback)
+extract_cards <- function(page_doc) {
+  sels <- c(
+    "ul.css-163kh4h > li div.css-qrqvvg",                    # specific (may change)
+    "li[data-testid='search-results__listing'] article",     # common Domain pattern
+    "[data-testid='search-results'] li article",
+    "ul li article",
+    "ul li div"
+  )
+  for (s in sels) {
+    cards <- html_elements(page_doc, s)
+    if (length(cards) > 0) return(cards)
+  }
+  # Fallback: any <li> containing an <h2>
+  html_elements(page_doc, xpath = "//li[.//h2]")
+}
+
+# Extract one row (Address_raw, Price_raw) from a single card
+extract_one <- function(card) {
+  # Address candidates
+  addr_raw <- NA_character_
+  for (el in list(
+    card %>% html_element("h2"),
+    card %>% html_element("[data-testid='listing-details__title'] h2"),
+    card %>% html_element("[data-testid='listing-details__title']"),
+    card %>% html_element("a h2"),
+    card %>% html_element("a[title]")
+  )) {
+    if (!is.null(el)) {
+      txt <- html_text2(el)
+      if (!is.null(txt) && nzchar(str_squish(txt))) { addr_raw <- str_squish(txt); break }
+    }
+  }
+
+  # Price candidates
+  price_raw <- NA_character_
+  for (el in list(
+    card %>% html_element("p.css-mgq8yx"),
+    card %>% html_element("[data-testid='listing-details__price']"),
+    card %>% html_element("span[aria-label='price']")
+  )) {
+    if (!is.null(el)) {
+      txt <- html_text2(el)
+      if (!is.null(txt) && nzchar(str_squish(txt))) { price_raw <- str_squish(txt); break }
+    }
+  }
+  if (is.na(price_raw)) {
+    txts <- c(
+      card %>% html_elements("p") %>% html_text2(),
+      card %>% html_elements("span") %>% html_text2()
+    )
+    txts <- txts[!is.na(txts)]
+    hits <- keep(txts, ~ str_detect(.x, "\\$|OFFER|EOI|EXPRESSION|CONTACT|AUCTION|TENDER"))
+    if (length(hits) > 0) price_raw <- str_squish(hits[[1]])
+  }
+
+  tibble(Address_raw = addr_raw %||% NA_character_,
+         Price_raw   = price_raw %||% NA_character_)
+}
+
+# Scrape ONE saved HTML file into a tibble of rows
+scrape_local_file <- function(filepath) {
+  pg <- tryCatch(read_html(filepath), error = function(e) NULL)
+  if (is.null(pg)) return(tibble())
+  cards <- extract_cards(pg)
+  if (length(cards) == 0) return(tibble())
+  map_dfr(cards, extract_one) %>% distinct()
+}
+
+# --- Load all files, combine, filter TAS, parse, finalize ----------------
+files <- list.files(pages_dir, pattern = "\\.html?$", full.names = TRUE)
+if (length(files) == 0) stop("No HTML files found in: ", pages_dir)
+
+# If files are named with page numbers, sort them numerically (optional)
+nums <- extract_page_num(files)
+if (all(!is.na(nums))) files <- files[order(nums)]
+
+raw_df <- map_dfr(files, scrape_local_file) %>% distinct()
+
+if (nrow(raw_df) == 0) stop("Scrape returned 0 rows. Check that your saved HTML pages contain the listings.")
+
+# We only want TAS (your search already is TAS-only; this double-checks)
+tas_df <- raw_df %>%
+  filter(
+    str_detect(Address_raw, "\\bTAS\\b") |
+    str_detect(Address_raw, "TAS\\s*\\d{4}") |
+    str_detect(Address_raw, "TAS\\d{4}")
+  )
+
+if (nrow(tas_df) == 0) {
+  message("No explicit 'TAS' detected in addresses; proceeding with all rows (since your search is TAS-only).")
+  tas_df <- raw_df
+}
+
+addr_split <- map_dfr(tas_df$Address_raw, parse_address)
+
+df <- bind_cols(tas_df, addr_split) %>%
+  mutate(
+    Price_numeric = map_dbl(Price_raw, parse_price_numeric),
+    full_address  = str_squish(paste(street, suburb, state, postcode, "Australia"))
+  )
+
+# --- Save and preview ----------------------------------------------------
+write_csv(df, "results/domain_tas_listings_all_pages.csv")  # <- uncomment to save
+write_csv(df, "dataset/property_listing.csv") 
+print(df, n = 25)
+cat("\nTotal TAS listings combined from saved pages: ", nrow(df), "\n")
+
+```
+

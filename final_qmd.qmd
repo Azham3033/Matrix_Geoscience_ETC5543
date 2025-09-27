@@ -1,0 +1,141 @@
+---
+title: "final_table_processing"
+format: html
+editor: visual
+---
+
+```{r}
+library(DBI)
+library(RSQLite)
+library(tidyverse)
+library(dplyr)
+library(dbplyr)
+library(lubridate)
+library(sf)
+library(duckdb)
+```
+
+```{r}
+final_data<- read_csv("dataset/parcel_crop_suitability_counts_master.csv")
+```
+
+
+```{sql, connection=con}
+CREATE  OR REPLACE TABLE CROP_MASTER (
+    CROP_ID INTEGER,
+    CROP_NAME TEXT NOT NULL,
+    CROP_CATEGORY TEXT NOT NULL
+);
+
+
+```
+
+
+
+
+```{sql, connection=con}
+INSERT INTO CROP_MASTER (CROP_ID, CROP_NAME, CROP_CATEGORY) VALUES
+-- cereals
+(1000, 'barley', 'cereals'),
+(1001, 'linseed', 'cereals'),
+(1002, 'wheat', 'cereals'),
+
+-- perennial horticulture
+(1003, 'blueberriesNHB', 'perennial horticulture'),
+(1004, 'blueberriesSHB', 'perennial horticulture'),
+(1005, 'cherries', 'perennial horticulture'),
+(1006, 'hazelnuts', 'perennial horticulture'),
+(1007, 'olives', 'perennial horticulture'),
+(1008, 'raspberries', 'perennial horticulture'),
+(1009, 'sparklingwg', 'perennial horticulture'),
+(1010, 'strawberries', 'perennial horticulture'),
+(1011, 'tablewg', 'perennial horticulture'),
+
+-- vegetables
+(1012, 'carrots', 'vegetables'),
+(1013, 'carrotseed', 'vegetables'),
+(1014, 'onions', 'vegetables'),
+(1015, 'potatoes', 'vegetables'),
+
+-- pharmaceuticals
+(1016, 'hemp', 'pharmaceuticals'),
+(1017, 'poppies', 'pharmaceuticals'),
+(1018, 'pyrethrum', 'pharmaceuticals'),
+
+-- pastures
+(1019, 'cocksfootcontinental', 'pastures'),
+(1020, 'cocksfootmediterranean', 'pastures'),
+(1021, 'lucerne', 'pastures'),
+(1022, 'phalaris', 'pastures'),
+(1023, 'redclover', 'pastures'),
+(1024, 'ryegrass', 'pastures'),
+(1025, 'strawberryclover', 'pastures'),
+(1026, 'tallfescuecontinental', 'pastures'),
+(1027, 'tallfescuemediterranean', 'pastures'),
+(1028, 'whiteclover', 'pastures'),
+
+-- forestry
+(1029, 'E_globulus_tree', 'forestry'),
+(1030, 'E_nitens_tree', 'forestry'),
+(1031, 'P_radiata_tree', 'forestry');
+
+```
+
+```{sql, connection=con}
+select * from CROP_MASTER;
+```
+
+```{r}
+dbWriteTable(con, "final_data", final_data, overwrite = TRUE)
+```
+
+
+```{sql, connection=con}
+desc final_data;
+```
+
+```{sql, connection=con}
+
+CREATE INDEX IF NOT EXISTS idx_parcels_pid ON final_data(PID);
+CREATE INDEX IF NOT EXISTS idx_crop ON final_data(CROP);
+CREATE INDEX IF NOT EXISTS idx_full_adreess ON final_data(FULL_ADDRESS);
+CREATE INDEX IF NOT EXISTS idx_class_labels ON final_data(CLASS_LABEL);
+
+```
+
+```{sql, connection=con}
+
+CREATE OR REPLACE TABLE CROP_PROPERTY_COUNT_MASTER AS select F.PID,F.FULL_ADDRESS ,F.CROP,C.CROP_CATEGORY, F.CLASS_LABEL,ANY_VALUE(F.GEOMETRY) POLYGON_COORD, ANY_VALUE(F.ADDRESS_WKT) ADDRESS_COORD, SUM(COUNT) as COUNT from final_data F join CROP_MASTER C ON UPPER(C.CROP_NAME)=UPPER(F.CROP) group by F.PID,F.FULL_ADDRESS, F.CROP,C.CROP_CATEGORY, F.CLASS_LABEL;
+    ```  
+
+
+```{sql, connection=con}
+select count(*) from CROP_PROPERTY_COUNT_MASTER;
+```
+
+
+```{sql, connection=con}
+
+select CROP,count(*) CNT from CROP_PROPERTY_COUNT_MASTER group by CROP ORDER BY CNT DESC;
+```
+
+```{sql, connection=con}
+select count(distinct(PID)) from CROP_PROPERTY_COUNT_MASTER;
+```
+
+```{sql, connection=con}
+
+select PID,CLASS_LABEL,COUNT,POLYGON_COORD from CROP_PROPERTY_COUNT_MASTER where CROP='Raspberries' ORDER BY COUNT DESC LIMIT 20;
+```
+
+```{sql, connection=con}
+select * from final_data  where POT_PID is not null and POT_PID != 0 LIMIT 10;
+```
+
+```{sql, connection=con}
+```
+
+```{sql, connection=con}
+desc final_data;
+```
+
