@@ -1,8 +1,4 @@
 # ---- Shiny + DuckDB + Two Maps (fit-to-screen layout) ----
-# Banner: layered backgrounds (logo over backdrop), full-bleed only for banner.
-# Everything (filters, rules, table, both maps) fits within the viewport height
-# without page scrolling by dynamically allocating heights.
-
 suppressPackageStartupMessages({
   library(shiny); library(shinyjs)
   library(DBI); library(duckdb); library(DT); library(dplyr)
@@ -15,9 +11,9 @@ MAIN_TABLE         <- "CROP_PROPERTY_COUNT_MASTER"
 CROP_MASTER        <- "CROP_MASTER"
 ROW_LIMIT_DEFAULT  <- 1000
 
-# --- Static cutout assets ---
+# --- Static cutout assets (for the right-hand maps) ---
 csv_path      <- "parcel_crop_suitability_counts_master.csv"  # CSV with GEOMETRY + FULL_ADDRESS
-esm_dir       <- "ESM_Tiff/ESM_Tiff"                          # folder containing <crop>.tif
+esm_dir       <- "ESM_Tiff"                                   # folder containing <crop>.tif
 initial_crs   <- 28355                                        # EPSG of WKT in CSV
 zoom_buffer_m <- 150
 
@@ -66,69 +62,70 @@ tas_fallback <- function(proxy) proxy |> setView(lng=146.7, lat=-41.7, zoom=7)
 ui <- fluidPage(
   useShinyjs(),
   
-  # ---------- Banner (logo over backdrop; full-bleed only for banner) ----------
   tags$head(
-    # CSS variables for fit-to-screen heights; JS will update them.
+    # -------- CSS (maps bigger; table fills remaining height) --------
     tags$style(HTML("
-      :root { --mapH: 260px; --tableH: 420px; } /* defaults before JS runs */
+      :root { --mapH1: 360px; --mapH2: 260px; --tableH: 420px; } /* defaults before JS runs */
 
-      /* Banner strip (halved height; logo at 35% of strip height) */
       .app-banner-strip {
-        margin: 0 -15px 8px -15px;                /* remove gutters ONLY for banner */
-        height: 60px;                             /* was 120px */
-        background-image: url('agrisuit_logo3.png'), url('agrisuit_backdrop.png'); /* logo on top */
-        background-repeat: no-repeat, repeat-x;   /* logo once; backdrop tiled horizontally */
+        margin: 0 -15px 8px -15px;
+        height: 60px;
+        background-image: url('agrisuit_logo.png'), url('agrisuit_backdrop.png');
+        background-repeat: no-repeat, repeat-x;
         background-position: 24px center, left top;
-        background-size: auto 60%, auto 100%;     /* was auto 70% → now 35% (50% smaller) */
-        background-color: #e0e0e0;                /* fallback if backdrop missing */
+        background-size: auto 60%, auto 100%;
+        background-color: #e0e0e0;
       }
-      @media (max-height: 900px) { .app-banner-strip { height: 48px; } }  /* was 96px */
+      @media (max-height: 900px) { .app-banner-strip { height: 48px; } }
 
       /* Filters layout (responsive grid) */
       .filter-bar {
         display: grid;
         grid-template-columns: repeat(6, minmax(220px, 1fr));
-        column-gap: 16px;
-        row-gap: 10px;
-        align-items: end;
+        column-gap: 16px; row-gap: 10px; align-items: end;
       }
-      @media (max-width: 1400px) { .filter-bar { grid-template-columns: repeat(4, minmax(220px, 1fr)); } }
-      @media (max-width: 992px)  { .filter-bar { grid-template-columns: repeat(2, minmax(220px, 1fr)); } }
-      @media (max-width: 576px)  { .filter-bar { grid-template-columns: 1fr; } }
-
+      @media (max-width:1400px){ .filter-bar { grid-template-columns: repeat(4, minmax(220px,1fr)); } }
+      @media (max-width: 992px){ .filter-bar { grid-template-columns: repeat(2, minmax(220px,1fr)); } }
+      @media (max-width: 576px){ .filter-bar { grid-template-columns: 1fr; } }
       .filter-bar .form-group, .filter-bar .shiny-input-container { margin-bottom: 4px; }
       .filter-bar input, .filter-bar .selectize-input { min-height: 30px; }
       #addr { min-width: 260px; }  #limit { width: 120px; }
 
-      /* Fit-to-screen: map and table heights driven by CSS vars */
-      #map_wms, #map_static { height: var(--mapH) !important; }
-      #tbl-wrap .dataTables_scrollBody { max-height: var(--tableH) !important; }
+      /* Fit-to-screen heights (JS sets the vars) */
+      #map_wms    { height: var(--mapH1) !important; min-height: 360px; }
+      #map_static { height: var(--mapH2) !important; min-height: 260px; }
+      #tbl-wrap .dataTables_scrollBody { height: var(--tableH) !important; max-height: none !important; }
+
+      /* DT export buttons bottom-right */
+      div.dt-buttons { float: right; margin-top: 10px; }
 
       /* Table UX */
       table.dataTable tbody td { cursor: pointer; }
       table.dataTable tbody { user-select: none; -webkit-user-select: none; }
     ")),
-    # JS: compute available height and set CSS variables; rerun on resize and when R asks.
+    
+    # -------- JS: compute available height & allocate map/table sizes --------
     tags$script(HTML("
       (function() {
         function fitHeights() {
           var vh = window.innerHeight || document.documentElement.clientHeight || 900;
-          var banner = document.querySelector('.app-banner-strip');
+          var banner   = document.querySelector('.app-banner-strip');
           var controls = document.getElementById('controls');
-          var b = banner ? banner.getBoundingClientRect().height : 0;
+          var b = banner   ? banner.getBoundingClientRect().height   : 0;
           var c = controls ? controls.getBoundingClientRect().height : 0;
-          var buffer = 40;                                     // small breathing room
-          var avail = Math.max(300, vh - b - c - buffer);      // space for table + maps
+          var buffer = 40;
+          var avail  = Math.max(300, vh - b - c - buffer); // space for table + maps
 
-          // Allocate ~52% to maps (split across two stacked panels), rest to table.
-          var mapsTotal = Math.max(220, Math.floor(avail * 0.52));
-          var mapH = Math.max(200, Math.floor(mapsTotal / 2));
-          var tableH = Math.max(220, avail - mapsTotal);
+          // ~72% to maps (combined). Split 65/35 between WMS and Static.
+          var mapsTotal = Math.max(420, Math.floor(avail * 0.72));
+          var map1H     = Math.max(360, Math.floor(mapsTotal * 0.65)); // WMS (bigger)
+          var map2H     = Math.max(260, mapsTotal - map1H);            // Static
+          var tableH    = Math.max(220, avail - mapsTotal);
 
-          document.documentElement.style.setProperty('--mapH', mapH + 'px');
+          document.documentElement.style.setProperty('--mapH1',  map1H + 'px');
+          document.documentElement.style.setProperty('--mapH2',  map2H + 'px');
           document.documentElement.style.setProperty('--tableH', tableH + 'px');
 
-          // Tell Leaflet to recalc sizes if present
           if (window.dispatchEvent) window.dispatchEvent(new Event('resize'));
         }
         window.addEventListener('load', fitHeights);
@@ -137,12 +134,19 @@ ui <- fluidPage(
           Shiny.addCustomMessageHandler('reflow', function(_) { setTimeout(fitHeights, 0); });
         }
       })();
+    ")),
+    
+    # Reset → full reload
+    tags$script(HTML("
+      Shiny.addCustomMessageHandler('reload_page', function(x) {
+        location.reload();
+      });
     "))
   ),
   
   div(class = "app-banner-strip", role = "img", `aria-label` = "AgriSuit"),
   
-  # ---------- Controls (wrapped for measurement by JS) ----------
+  # ---------- Controls ----------
   div(id = "controls",
       div(class = "filter-bar",
           uiOutput("cropcat_ui"),
@@ -151,7 +155,8 @@ ui <- fluidPage(
           uiOutput("muni_ui"),
           textInput("addr", "Full Address contains", placeholder = "e.g., 12 Smith St"),
           numericInput("limit", "Max rows", ROW_LIMIT_DEFAULT, min = 100, step = 500),
-          actionButton("run", "Run", class = "btn btn-primary")
+          actionButton("run", "Run", class = "btn btn-primary"),
+          actionButton("reset", "Reset", class = "btn btn-secondary")
       ),
       div(style="font-size:12px;color:#666;margin-top:6px;",
           tags$b("Rule:"), tags$br(),
@@ -163,16 +168,16 @@ ui <- fluidPage(
   # ---------- Table & Maps (JS sets their heights) ----------
   fluidRow(
     column(
-      width = 7,
-      div(id = "tbl-wrap", DTOutput("tbl")),   # DT scroller height controlled by CSS variable
-      br(), verbatimTextOutput("sql_preview")
+      width = 6,   # maps get more width (6/6 split)
+      div(id = "tbl-wrap", DTOutput("tbl")),
+      br()
     ),
     column(
-      width = 5,
+      width = 6,
       h5("LIST WMS (crop layer)"), uiOutput("map_hint"),
-      leafletOutput("map_wms", height = 100),  # placeholder; overridden by CSS var
+      leafletOutput("map_wms", height = 100),  # placeholder; CSS overrides height
       br(), h5("Static zoomed parcel"),
-      plotOutput("map_static", height = 100)   # placeholder; overridden by CSS var
+      plotOutput("map_static", height = 100)   # placeholder; CSS overrides height
     )
   )
 )
@@ -182,34 +187,43 @@ server <- function(input, output, session) {
   con <- dbConnect(duckdb::duckdb(), dbdir = DB_PATH, read_only = FALSE)
   onStop(function() try(dbDisconnect(con, shutdown = TRUE), silent = TRUE))
   
-  # ---- Choices ----
+  # ---- Choice builders ----
   cropcat_choices <- reactive({
     req(dbExistsTable(con, CROP_MASTER))
     vals <- dbGetQuery(con, sprintf("SELECT DISTINCT CROP_CATEGORY FROM %s ORDER BY 1", dbQuoteIdentifier(con, CROP_MASTER)))
     c("All", vals[[1]])
   })
-  output$cropcat_ui <- renderUI({ selectInput("crop_category", "Crop Category", choices = cropcat_choices(), selected = "All") })
+  output$cropcat_ui <- renderUI({
+    selectInput("crop_category", "Crop Category", choices = cropcat_choices(), selected = "All")
+  })
   
   crop_choices <- reactive({
     req(dbExistsTable(con, CROP_MASTER))
     if (!is.null(input$crop_category) && input$crop_category != "All") {
-      vals <- dbGetQuery(con,
-                         sqlInterpolate(con,
-                                        "SELECT DISTINCT CROP_NAME FROM CROP_MASTER WHERE UPPER(CROP_CATEGORY) = UPPER(?cat) ORDER BY 1",
-                                        cat = input$crop_category))
+      vals <- dbGetQuery(
+        con,
+        sqlInterpolate(con,
+                       "SELECT DISTINCT CROP_NAME FROM CROP_MASTER WHERE UPPER(CROP_CATEGORY) = UPPER(?cat) ORDER BY 1",
+                       cat = input$crop_category
+        )
+      )
     } else {
       vals <- dbGetQuery(con, "SELECT DISTINCT CROP_NAME FROM CROP_MASTER ORDER BY 1")
     }
     c("All", vals[[1]])
   })
-  output$crop_ui <- renderUI({ selectInput("crop", "Crop", choices = crop_choices(), selected = "All") })
+  output$crop_ui <- renderUI({
+    selectInput("crop", "Crop", choices = crop_choices(), selected = "All")
+  })
   
   class_choices <- reactive({
     req(dbExistsTable(con, MAIN_TABLE))
     vals <- dbGetQuery(con, sprintf("SELECT DISTINCT CLASS_LABEL FROM %s ORDER BY 1", dbQuoteIdentifier(con, MAIN_TABLE)))
     c("All", vals[[1]])
   })
-  output$class_ui <- renderUI({ selectInput("class", "Class label", choices = class_choices(), selected = "All") })
+  output$class_ui <- renderUI({
+    selectInput("class", "Class label", choices = class_choices(), selected = "All")
+  })
   
   muni_choices <- reactive({
     req(dbExistsTable(con, MAIN_TABLE))
@@ -224,16 +238,18 @@ server <- function(input, output, session) {
   has_loc_filter    <- reactive({ is_present(input$municipality) || is_present(input$addr) })
   has_target_filter <- reactive({ selected_not_all(input$crop) || selected_not_all(input$class) })
   
-  # ---- Build SQL ----
+  # ---- Build SQL (UPPER everywhere) ----
   build_sql <- reactive({
     req(input$limit)
     where <- c(); params <- list()
+    
     if (selected_not_all(input$crop)) {
       where <- c(where, sprintf("UPPER(%s) = UPPER(?crop)", dbQuoteIdentifier(con, "CROP"))); params$crop <- input$crop
     } else if (!is.null(input$crop_category) && input$crop_category != "All") {
       where <- c(where, sprintf(
         "UPPER(%s) IN (SELECT UPPER(CROP_NAME) FROM %s WHERE UPPER(CROP_CATEGORY) = UPPER(?cat))",
-        dbQuoteIdentifier(con, "CROP"), dbQuoteIdentifier(con, CROP_MASTER))); params$cat <- input$crop_category
+        dbQuoteIdentifier(con, "CROP"), dbQuoteIdentifier(con, CROP_MASTER)
+      )); params$cat <- input$crop_category
     }
     if (!is.null(input$class) && input$class != "All") {
       where <- c(where, sprintf("UPPER(%s) = UPPER(?class_label)", dbQuoteIdentifier(con, "CLASS_LABEL"))); params$class_label <- input$class
@@ -244,13 +260,14 @@ server <- function(input, output, session) {
     if (is_present(input$addr)) {
       where <- c(where, sprintf("UPPER(%s) ILIKE '%%' || UPPER(?addr) || '%%'", dbQuoteIdentifier(con, "FULL_ADDRESS"))); params$addr <- input$addr
     }
+    
     where_sql   <- if (length(where)) paste("WHERE", paste(where, collapse = " AND ")) else ""
     select_cols <- paste(dbQuoteIdentifier(con, c("FULL_ADDRESS","MUNICIPALITY","CROP","CLASS_LABEL","COUNT")), collapse = ", ")
+    
     sql <- sprintf("SELECT %s FROM %s %s ORDER BY FULL_ADDRESS LIMIT %d",
                    select_cols, dbQuoteIdentifier(con, MAIN_TABLE), where_sql, as.integer(input$limit))
     list(sql = sql, params = params)
   })
-  output$sql_preview <- renderText({ build_sql()$sql })
   
   # ---- Run query ----
   data_reactive <- eventReactive(input$run, {
@@ -268,17 +285,31 @@ server <- function(input, output, session) {
       df,
       extensions = c("Buttons","Scroller"),
       options = list(
-        deferRender = TRUE, scrollX = TRUE, scroller = TRUE,
-        scrollY = 300,                           # placeholder; overridden via CSS var
-        dom = 'Bfrtip', buttons = c('copy','csv','excel'),
+        deferRender = TRUE,
+        scrollX = TRUE,
+        scroller  = TRUE,
+        scrollY   = 1,               # enable Scroller; CSS controls real height
+        dom       = 'frtipB',        # buttons at the bottom
         drawCallback = JS(
           "function(){ setTimeout(function(){ if (window.Shiny) Shiny.onInputChange('tbl_draw', Date.now()); }, 0); }"
+        ),
+        initComplete = JS(
+          "function(settings, json){",
+          "  var $container = $(settings.nTableWrapper);",
+          "  $container.find('div.dt-buttons').css({ float: 'right', marginTop: '10px' });",
+          "}"
+        ),
+        buttons = list(
+          list(extend = "copy",  className = "btn btn-secondary"),
+          list(extend = "csv",   className = "btn btn-secondary"),
+          list(extend = "excel", className = "btn btn-secondary")
         )
       ),
-      rownames = FALSE, filter = "top", selection = "single"
+      rownames  = FALSE,
+      filter    = "top",
+      selection = "single"
     )
   })
-  # Ask JS to recompute heights whenever DT draws or Run is clicked
   observe({ input$tbl_draw; session$sendCustomMessage('reflow', 0) })
   observeEvent(input$run, { session$sendCustomMessage('reflow', 0) })
   
@@ -294,7 +325,7 @@ server <- function(input, output, session) {
     shinyjs::click("run")
   })
   
-  # ---- Hints ----
+  # ---- Hints for maps ----
   output$map_hint <- renderUI({
     if (!selected_not_all(input$crop) || !is_present(input$addr)) {
       tags$div(style="color:#B35C00;font-size:12px;margin:2px 0 6px;",
@@ -310,10 +341,8 @@ server <- function(input, output, session) {
   output$map_wms <- renderLeaflet({
     leaflet(options = leafletOptions(minZoom = 5)) |> addProviderTiles("CartoDB.Positron")
   })
-  
   ready_for_maps <- reactive({ selected_not_all(input$crop) && is_present(input$addr) })
   
-  # --- WMS: draw crop layer + zoom to parcel from CSV using input$addr ---
   observeEvent(list(input$crop, input$addr, input$run), {
     if (!ready_for_maps()) return()
     
@@ -330,11 +359,9 @@ server <- function(input, output, session) {
     
     if (!file.exists(csv_path)) { tas_fallback(proxy); return() }
     master <- tryCatch(read.csv(csv_path, check.names = FALSE), error = function(e) NULL)
-    if (is.null(master) || !all(c("FULL_ADDRESS","GEOMETRY") %in% names(master))) {
-      tas_fallback(proxy); return()
-    }
-    key <- str_squish(toupper(input$addr))
-    hit <- master[str_squish(toupper(master$FULL_ADDRESS)) == key, , drop = FALSE]
+    if (is.null(master) || !all(c("FULL_ADDRESS","GEOMETRY") %in% names(master))) { tas_fallback(proxy); return() }
+    key <- stringr::str_squish(toupper(input$addr))
+    hit <- master[stringr::str_squish(toupper(master$FULL_ADDRESS)) == key, , drop = FALSE]
     if (nrow(hit) < 1) { tas_fallback(proxy); return() }
     
     parcel_sf <- st_as_sf(hit[1, c("FULL_ADDRESS","GEOMETRY")], wkt = "GEOMETRY", crs = initial_crs)
@@ -345,11 +372,9 @@ server <- function(input, output, session) {
       addPolygons(data = parcel_4326, color = "black", weight = 2, fill = FALSE, popup = ~FULL_ADDRESS) |>
       fitBounds(as.numeric(bb["xmin"]), as.numeric(bb["ymin"]),
                 as.numeric(bb["xmax"]), as.numeric(bb["ymax"]))
-    
-    session$sendCustomMessage('reflow', 0)  # ensure map height applied after draw
+    session$sendCustomMessage('reflow', 0)
   }, ignoreInit = TRUE)
   
-  # --- Static: draw cutout using input$addr (robust match) ---
   output$map_static <- renderPlot({
     req(ready_for_maps())
     
@@ -409,7 +434,7 @@ server <- function(input, output, session) {
                  "2.1 Suitable (with soil mgmt)","3.0 Moderately suitable",
                  "3.1 Moderately suitable (with soil mgmt)","4.0 Unsuitable")
     cols <- c("#4B0082","#5A4CB2","#62C6D4","#8CD1B6","#58C39D","#A3D98A","#FFE550")
-    canon2 <- function(s) { s <- trimws(s); s <- gsub("management","mgmt", s, ignore.case=TRUE); s <- gsub("\\s+"," ", s); tolower(s) }
+    canon2 <- function(s) { s <- trimws(s); s <- gsub('management','mgmt', s, ignore.case=TRUE); s <- gsub('\\s+',' ', s); tolower(s) }
     
     op <- par(no.readonly = TRUE); on.exit(par(op), add = TRUE)
     layout(matrix(c(1,2), nrow = 1), widths = c(3, 1))
@@ -417,21 +442,21 @@ server <- function(input, output, session) {
     if (!is.null(cat_tbl)) {
       idx <- match(canon2(cat_tbl$label), canon2(classes))
       pal <- rep("lightgray", nrow(cat_tbl)); pal[!is.na(idx)] <- cols[idx[!is.na(idx)]]
-      terra::plot(r_cut, col = pal, legend = FALSE,
-                  main = paste(input$crop, "suitability (zoomed on parcel)"))
+      terra::plot(r_cut, col = pal, legend = FALSE, main = paste(input$crop, "suitability (zoomed on parcel)"))
     } else {
-      terra::plot(r_cut, legend = FALSE,
-                  main = paste(input$crop, "suitability (zoomed on parcel)"))
+      terra::plot(r_cut, legend = FALSE, main = paste(input$crop, "suitability (zoomed on parcel)"))
     }
     parcel_r <- st_transform(parcel_sf, st_crs(r_cut))
     plot(st_geometry(parcel_r), add = TRUE, border = "black", lwd = 2)
-    plot(st_geometry(parcel_r), add = TRUE,
-         col = grDevices::adjustcolor("black", alpha.f = 0.18), border = NA)
+    plot(st_geometry(parcel_r), add = TRUE, col = grDevices::adjustcolor("black", alpha.f = 0.18), border = NA)
     pt <- st_point_on_surface(parcel_r); points(st_coordinates(pt), pch = 19, cex = 1.1)
     
     par(mar = c(5,1,4,2) + 0.1); plot.new()
     legend("left", legend = classes, fill = cols, bty = "n", cex = 0.9, title = "ESM")
   })
+  
+  # Reset → full reload
+  observeEvent(input$reset, { session$sendCustomMessage("reload_page", "now") })
 }
 
 shinyApp(ui, server)

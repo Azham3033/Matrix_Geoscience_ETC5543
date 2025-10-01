@@ -60,18 +60,33 @@ parse_address <- function(addr) {
 # Convert price text to numeric dollars where possible
 parse_price_numeric <- function(price_text) {
   if (is.na(price_text) || str_trim(price_text) == "") return(NA_real_)
-  txt <- str_to_upper(gsub(",", "", price_text))
-  if (str_detect(txt, "EOI|EXPRESSION|CONTACT|TENDER|AUCTION|BY NEGOTIATION|PRICE ON APPLICATION|POA"))
+
+  # Normalise text: uppercase, remove commas and non-breaking spaces
+  txt <- stringr::str_to_upper(price_text)
+  txt <- stringr::str_replace_all(txt, "[,\\u00A0]", "")
+
+  # Skip text-only placeholders
+  if (stringr::str_detect(txt, "EOI|EXPRESSION|CONTACT|TENDER|AUCTION|BY NEGOTIATION|PRICE ON APPLICATION|POA|BY OFFER"))
     return(NA_real_)
-  m <- str_match(txt, "\\$?\\s*([0-9]+(?:\\.[0-9]+)?)\\s*([KM])?")
-  if (any(is.na(m))) return(NA_real_)
-  val <- as.numeric(m[,2]); suf <- m[,3]
+
+  # Flexible match: find first number anywhere, with optional $ and optional K/M suffix
+  m <- stringr::str_match(txt, ".*?\\$?\\s*([0-9]+(?:\\.[0-9]+)?)\\s*([KM])?.*")
+
+  # Only the NUMBER capture is required; suffix may be NA
+  if (is.na(m[,2])) return(NA_real_)
+
+  val <- as.numeric(m[,2])
+  suf <- m[,3]
+
   if (!is.na(suf)) {
     if (suf == "K") val <- val * 1e3
     if (suf == "M") val <- val * 1e6
   }
+
   as.numeric(round(val))
 }
+
+
 
 # Extract listing "cards" from a page (robust CSS; XPath fallback)
 extract_cards <- function(page_doc) {

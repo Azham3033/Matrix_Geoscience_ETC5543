@@ -217,6 +217,7 @@ SELECT
   p.POT_PID,  
   p.MUNICIPALITY,
   d.full_address as FULL_ADDRESS,
+  d.price_numeric as PRICE,
   ST_AsText(ST_GeomFromWKB(p.parcel_geometry))  AS PARCEL_WKT,
   ST_AsText(ST_GeomFromWKB(p.address_geometry)) AS ADDRESS_WKT
 FROM PROPERTY_LISTING d
@@ -260,6 +261,8 @@ JOIN CADASTRAL_ADDRESS_MASTER p
   ON upper(trim(replace(d.full_address, chr(160), ' '))) =
      upper(trim(replace(p.full_address, chr(160), ' ')))
 ```
+
+
 ```{sql, connection=con}
 select count(*) from PROPERTY_MASTER;
 ```
