@@ -169,7 +169,7 @@ ui <- fluidPage(
     column(
       width = 6,
       div(id = "tbl-wrap", DTOutput("tbl")),
-      br(), verbatimTextOutput("sql_preview")
+      br()
     ),
     column(
       width = 6,
@@ -237,7 +237,7 @@ server <- function(input, output, session) {
   has_loc_filter    <- reactive({ is_present(input$municipality) || is_present(input$addr) })
   has_target_filter <- reactive({ selected_not_all(input$crop) || selected_not_all(input$class) })
   
-  # ---- Build SQL (UPPER everywhere) ----
+  # ---- Build SQL ----
   build_sql <- reactive({
     req(input$limit)
     where <- c(); params <- list()
@@ -261,7 +261,7 @@ server <- function(input, output, session) {
     }
     
     where_sql   <- if (length(where)) paste("WHERE", paste(where, collapse = " AND ")) else ""
-    select_cols <- paste(dbQuoteIdentifier(con, c("FULL_ADDRESS","MUNICIPALITY","CROP","CLASS_LABEL","COUNT")), collapse = ", ")
+    select_cols <- paste(dbQuoteIdentifier(con, c("FULL_ADDRESS","MUNICIPALITY","CROP","CLASS_LABEL","PRICE","COUNT")), collapse = ", ")
     
     sql <- sprintf("SELECT %s FROM %s %s ORDER BY FULL_ADDRESS LIMIT %d",
                    select_cols, dbQuoteIdentifier(con, MAIN_TABLE), where_sql, as.integer(input$limit))
