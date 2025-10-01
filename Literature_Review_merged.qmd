@@ -20,11 +20,10 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 # Objective
 
-This project focuses on reviewing the current Tasmanian Enterprise Suitability Map (TESM) and the crops included in it. It will look closely at how the TESM works, including the criteria and data it uses to decide which crops are suitable where, and will point out the strengths and weaknesses of this approach. The project will also explore how crops get chosen for the TESM and whether the map effectively reflects Tasmania’s different land types and local climate conditions.
+This project aims to develop a decision-support tool that integrates Tasmania’s Enterprise Suitability Mapping (soil, climate, and topography layers) with property listing data to identify land parcels matching user-selected crops, budgets, and locations. The tool will generate ranked property recommendations, highlight key limiting factors, and provide optional notifications for new listings that match user preferences.
 
-Next, the project will compare the TESM’s methods and crop choices with similar mapping systems from other places to see how they differ and what lessons can be learned. Finally, based on this comparison and understanding, the project will suggest some new and emerging crops that are well-suited to Tasmanian conditions and could be added to the TESM. These suggestions aim to help improve crop diversity, support better land use decisions, and promote sustainable agricultural growth in Tasmania.
+By combining market availability with agronomic suitability, the tool seeks to transform static suitability maps into actionable insights for farmers and agribusinesses, improving site selection and supporting more confident, sustainable investment decisions in Tasmania. The project will be evaluated through selected case studies and will also and to inform potential expansion to state-wide or national-scale implementations. to guide future scaling.
 
- 
 
 # Part 1: Review of the Existing Tasmanian Enterprise Suitability Maps (TESM)
 

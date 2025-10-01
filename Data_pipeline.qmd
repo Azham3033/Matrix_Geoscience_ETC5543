@@ -230,8 +230,6 @@ JOIN PARCEL_ADDRESS_MASTER p
      upper(trim(replace(p.full_address, chr(160), ' ')));
 ```
 
-
-
 ```{r}
 # Load the table into an R data frame
 cadastral_df <- dbGetQuery(con, "SELECT * FROM CADASTRAL_MASTER")
@@ -242,7 +240,6 @@ head(cadastral_df)
 write_csv(cadastral_df, "dataset/cadastral_master.csv")
 ```
 
-
 ```{sql, connection=con}
 select * from CADASTRAL_MASTER where PID='5273454';
 ```
@@ -252,7 +249,6 @@ select * from CADASTRAL_MASTER where PID='5273454';
 dbWriteTable(con, "tesm_majority", majority_tab_with_pid, overwrite = TRUE)
 ```
 
-
 ```{sql, connection=con}
 select * from tesm_majority limit 5;
 ```
@@ -260,4 +256,3 @@ select * from tesm_majority limit 5;
 ```{sql, connection=con}
 select p.PID,FULL_ADDRESS,CLASS_LABEL,PIXELS,ST_AsText(ST_GeomFromWKB(p.parcel_geometry))   AS parcel_wkt from tesm_majority m join PARCEL_ADDRESS_MASTER p on m.PID=p.PID;
 ```
-
