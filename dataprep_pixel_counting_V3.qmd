@@ -8,10 +8,13 @@ author: "RR"
 
 # Config & Helper
 
+
+
+
 ```{r}
 # ====== CONFIG ======
 esm_dir      <- "ESM_Tiff/ESM_Tiff"                # folder with all crop .tif
-prop_csv     <- "cadastral_master_26925.csv"       # 70 rows
+prop_csv <- "dataset/cadastral_master_26925.csv"     # 70 rows
 initial_crs  <- 28355                              # set to your WKT CRS if different
 majority_thr <- 0.5                                # majority-rule threshold
 drop_variants <- TRUE                              # ignore *_1.tif variants
@@ -71,8 +74,6 @@ preload_all_crops <- function(esm_dir, drop_variants = TRUE) {
 # Summariser
 
 ```{r}
-# ---- Summariser ----
-
 summarise_one_property_one_crop <- function(prop_row, tif_path) {
   r <- terra::rast(tif_path)
   vat_path <- paste0(tif_path, ".vat.dbf")
@@ -116,6 +117,7 @@ summarise_one_property_one_crop <- function(prop_row, tif_path) {
       POT_PID      = prop_row$POT_PID,
       MUNICIPALITY = prop_row$MUNICIPALITY,
       FULL_ADDRESS = prop_row$full_address,
+      Domain_URL  = prop_row$Domain_URL,     # <--- NEW
       COUNT,
       CLASS_LABEL,
       CROP,
@@ -163,6 +165,7 @@ summarise_one_property_one_crop_preloaded <- function(prop_row, r_pre, vat_lu, c
       POT_PID      = prop_row$POT_PID,
       MUNICIPALITY = prop_row$MUNICIPALITY,
       FULL_ADDRESS = prop_row$full_address,
+      Domain_URL  = prop_row$Domain_URL,     # <--- NEW
       COUNT,
       CLASS_LABEL,
       CROP,
@@ -180,50 +183,42 @@ summarise_one_property_one_crop_preloaded <- function(prop_row, r_pre, vat_lu, c
 # load props
 
 ```{r}
-# ---- 2) load_props(): NO lat/long processing; keep address_wkt only ----
+# SIMPLE & ROBUST: CSV-only loader with flexible renaming
 load_props <- function(path, crs = 28355) {
   library(readr); library(dplyr); library(janitor); library(tibble)
-  df <- suppressMessages(readr::read_csv(path, show_col_types = FALSE))
-  if (ncol(df) > 1 && all(c("PID","POT_PID","full_address","parcel_wkt","address_wkt") %in% names(df))) {
-    df <- df %>%
-      janitor::clean_names() %>%
-      rename(
-        PID          = any_of(c("pid","PID")),
-        POT_PID      = any_of(c("pot_pid","POT_PID")),
-        MUNICIPALITY = any_of(c("municipality","MUNICIPALITY","council","lga")),
-        full_address = any_of(c("full_address","address","FULL_ADDRESS")),
-        parcel_wkt   = any_of(c("parcel_wkt","geometry_wkt","wkt","PARCEL_WKT")),
-        address_wkt  = any_of(c("address_wkt","addr_wkt","ADDRESS_WKT"))
-        # NOTE: no latitude/longitude renaming here
-      )
-  } else {
-    raw_lines <- readr::read_lines(path)
-    raw_lines <- raw_lines[nzchar(trimws(raw_lines))]
-    cols    <- c("row_index","PID","POT_PID","MUNICIPALITY",
-                 "full_address","parcel_wkt","address_wkt","latitude","longitude")
-    rec_len <- length(cols)
-    if (length(raw_lines) %% rec_len != 0)
-      stop("File does not contain a whole number of 9-line records. Check formatting.")
-    mat <- matrix(raw_lines, ncol = rec_len, byrow = TRUE)
-    df  <- as_tibble(mat, .name_repair = "minimal")
-    names(df) <- cols
-    df <- df %>%
-      select(-row_index) %>%
-      mutate(
-        PID          = as.character(PID),
-        POT_PID      = as.character(POT_PID),
-        MUNICIPALITY = as.character(MUNICIPALITY),
-        full_address = as.character(full_address),
-        parcel_wkt   = as.character(parcel_wkt),
-        address_wkt  = as.character(address_wkt)
-        # NOTE: we intentionally ignore latitude/longitude even if present
-      )
-  }
-  # Required schema: NO latitude/longitude required anymore
-  required <- c("PID","POT_PID","MUNICIPALITY","full_address","parcel_wkt","address_wkt")
-  missing <- setdiff(required, names(df))
+
+  df <- suppressMessages(readr::read_csv(path, show_col_types = FALSE)) %>%
+    janitor::clean_names() %>%
+    # normalise likely variants to a single schema
+    rename(
+      pid          = any_of(c("pid","PID")),
+      pot_pid      = any_of(c("pot_pid","POT_PID")),
+      municipality = any_of(c("municipality","council","lga")),
+      full_address = any_of(c("full_address","address","fulladdress","full_addr","FULL_ADDRESS")),
+      parcel_wkt   = any_of(c("parcel_wkt","geometry_wkt","wkt","parcel_geometry","PARCEL_WKT")),
+      address_wkt  = any_of(c("address_wkt","addr_wkt","ADDRESS_WKT")),
+      domain_url   = any_of(c("domain_url","listing_url","url","link","property_url","Listing_URL","LISTING_URL","Domain_URL"))
+    )
+
+  # Ensure required columns exist
+  required <- c("pid","pot_pid","municipality","full_address","parcel_wkt","address_wkt")
+  missing  <- setdiff(required, names(df))
   if (length(missing)) stop("Missing required columns: ", paste(missing, collapse = ", "))
-  df
+
+  # Ensure URL column exists (optional)
+  if (!"domain_url" %in% names(df)) df$domain_url <- NA_character_
+
+  # Return with canonical (UPPER) names to match the rest of your pipeline
+  df %>%
+    transmute(
+      PID          = as.character(pid),
+      POT_PID      = as.character(pot_pid),
+      MUNICIPALITY = as.character(municipality),
+      full_address = as.character(full_address),
+      parcel_wkt   = as.character(parcel_wkt),
+      address_wkt  = as.character(address_wkt),
+      Domain_URL   = as.character(domain_url)
+    )
 }
 ```
 
@@ -285,7 +280,7 @@ print(results_master, n = min(30, nrow(results_master)))
 ```{r}
 # Master files
 write_csv(results_master, 
-          file.path("parcel_crop_suitability_counts_master.csv"))
+          file.path("dataset/parcel_crop_suitability_counts_master.csv"))
 
 saveRDS(results_master, 
         file.path("parcel_crop_suitability_counts_master.rds"))

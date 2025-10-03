@@ -15,10 +15,7 @@ library(sf)
 library(duckdb)
 ```
 
-
-
 -   Reading the cadstral data for each municipality in Tasmania
-
 
 ```{r}
 parcels_break_o_day <- st_read("dataset/LIST_PARCELS_BREAK_O_DAY/list_parcels_break_o_day.shp")
@@ -124,7 +121,6 @@ for (muni in muni_names) {
 
 ```
 
-
 ```{r}
 # Build SQL string with UNION ALL
 sql_parts <- lapply(muni_names, function(tbl) {
@@ -150,11 +146,9 @@ create_master_sql <- paste0(
 dbExecute(con, create_master_sql)
 ```
 
-
 ```{sql, connection=con}
 select * from cadastral_master limit 10;
 ```
-
 
 -   Addding index and set geometry column as binary.
 
@@ -196,7 +190,6 @@ desc CADASTRAL_MASTER;
 desc ADDRESS_MASTER;
 ```
 
-
 ```{sql, connection=con}
 CREATE  OR REPLACE TABLE CADASTRAL_ADDRESS_MASTER AS select distinct(P.PID
 ),P.MUNICIPALITY, concat(
@@ -209,7 +202,6 @@ from CADASTRAL_MASTER P inner join ADDRESS_MASTER A on P.PID = A.PID where P.PID
 select distinct(PID),count(*) count from CADASTRAL_ADDRESS_MASTER group by PID having count(*)>1 order by count desc ;
 ```
 
-
 ```{sql, connection=con}
 CREATE OR REPLACE TABLE PROPERTY_MASTER AS
 SELECT
@@ -219,7 +211,8 @@ SELECT
   d.full_address as FULL_ADDRESS,
   d.price_numeric as PRICE,
   ST_AsText(ST_GeomFromWKB(p.parcel_geometry))  AS PARCEL_WKT,
-  ST_AsText(ST_GeomFromWKB(p.address_geometry)) AS ADDRESS_WKT
+  ST_AsText(ST_GeomFromWKB(p.address_geometry)) AS ADDRESS_WKT,
+  d.Listing_URL as Domain_URL
 FROM PROPERTY_LISTING d
 JOIN CADASTRAL_ADDRESS_MASTER p
   ON upper(trim(replace(d.full_address, chr(160), ' '))) =
@@ -227,13 +220,34 @@ JOIN CADASTRAL_ADDRESS_MASTER p
 ```
 
 ```{sql, connection=con}
-select count(distinct(FULL_ADDRESS)) from PROPERTY_LISTING;
+SELECT
+  p.PID,
+  p.POT_PID,  
+  p.MUNICIPALITY,
+  d.full_address as FULL_ADDRESS,
+  d.price_numeric as PRICE,
+  ST_AsText(ST_GeomFromWKB(p.parcel_geometry))  AS PARCEL_WKT,
+  ST_AsText(ST_GeomFromWKB(p.address_geometry)) AS ADDRESS_WKT,
+  d.Listing_URL as Domain_URL
+FROM PROPERTY_LISTING d
+JOIN CADASTRAL_ADDRESS_MASTER p
+  ON upper(trim(replace(d.full_address, chr(160), ' '))) =
+     upper(trim(replace(p.full_address, chr(160), ' ')))
+```
+
+```{sql, connection=con}
+select PID, count(*) cnt from PROPERTY_MASTER group by PID having cnt>1 order by cnt desc limit 5;
+```
+
+```{sql, connection=con}
+
+select * from PROPERTY_MASTER where PID='3175850' limit 5;
+
 ```
 
 ```{sql, connection=con}
 select count(*) from CADASTRAL_ADDRESS_MASTER
 ```
-
 
 ```{sql, connection=con}
 select count(*) from PROPERTY_MASTER limit 5;
@@ -262,20 +276,17 @@ JOIN CADASTRAL_ADDRESS_MASTER p
      upper(trim(replace(p.full_address, chr(160), ' ')))
 ```
 
-
 ```{sql, connection=con}
-select count(*) from PROPERTY_MASTER;
+select * from PROPERTY_MASTER where PID='1601246';
 ```
 
 ```{r}
 # Load the table into an R data frame
 cadastral_df <- dbGetQuery(con, "SELECT * FROM PROPERTY_MASTER")
 
-# Check it
-write_csv(cadastral_df, "dataset/cadastral_master.csv")
+
+view(cadastral_df)
+# write file
+write_csv(cadastral_df, "dataset/cadastral_master_26925.csv")
 write_csv(cadastral_df, "results/PROPERTY_MASTER.csv")
 ```
-
-
-
-

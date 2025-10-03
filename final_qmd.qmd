@@ -19,7 +19,6 @@ library(duckdb)
 final_data<- read_csv("dataset/parcel_crop_suitability_counts_master.csv")
 ```
 
-
 ```{sql, connection=con}
 CREATE  OR REPLACE TABLE CROP_MASTER (
     CROP_ID INTEGER,
@@ -29,9 +28,6 @@ CREATE  OR REPLACE TABLE CROP_MASTER (
 
 
 ```
-
-
-
 
 ```{sql, connection=con}
 INSERT INTO CROP_MASTER (CROP_ID, CROP_NAME, CROP_CATEGORY) VALUES
@@ -89,7 +85,6 @@ select * from CROP_MASTER;
 dbWriteTable(con, "final_data", final_data, overwrite = TRUE)
 ```
 
-
 ```{sql, connection=con}
 desc final_data;
 ```
@@ -104,9 +99,8 @@ CREATE INDEX IF NOT EXISTS idx_class_labels ON final_data(CLASS_LABEL);
 ```
 
 ```{sql, connection=con}
-select F.PID, F.MUNICIPALITY, F.FULL_ADDRESS ,F.CROP,C.CROP_CATEGORY,P.PRICE as PRICE, F.CLASS_LABEL,ANY_VALUE(F.GEOMETRY) POLYGON_COORD, ANY_VALUE(F.ADDRESS_WKT) ADDRESS_COORD, SUM(COUNT) as COUNT from final_data F join PROPERTY_MASTER P ON   F.PID=P.PID  join CROP_MASTER C ON UPPER(C.CROP_NAME)=UPPER(F.CROP) where F.CROP not in ('Cherries','Hazlenut) group by F.PID,F.FULL_ADDRESS,F.MUNICIPALITY, F.CROP,C.CROP_CATEGORY, F.CLASS_LABEL, P.PRICE LIMIT 10;
+select F.PID, F.MUNICIPALITY, F.FULL_ADDRESS ,F.CROP,C.CROP_CATEGORY,P.PRICE as PRICE, F.CLASS_LABEL,ANY_VALUE(F.GEOMETRY) POLYGON_COORD, ANY_VALUE(F.ADDRESS_WKT) ADDRESS_COORD, SUM(COUNT) as COUNT, ANY_VALUE(F.Domain_URL) As WEBSITE from final_data F join PROPERTY_MASTER P ON   F.PID=P.PID  join CROP_MASTER C ON UPPER(C.CROP_NAME)=UPPER(F.CROP) where F.CROP not in ('Cherries','Hazlenut) group by F.PID,F.FULL_ADDRESS,F.MUNICIPALITY, F.CROP,C.CROP_CATEGORY, F.CLASS_LABEL, P.PRICE LIMIT 10;
 ```
-
 
 ```{sql,connection=con}
 DESC PROPERTY_LISTING;
@@ -114,25 +108,31 @@ DESC PROPERTY_LISTING;
 
 ```{sql, connection=con}
 
-CREATE OR REPLACE TABLE CROP_PROPERTY_COUNT_MASTER AS select F.PID, F.MUNICIPALITY, F.FULL_ADDRESS ,F.CROP,C.CROP_CATEGORY,P.PRICE as PRICE, F.CLASS_LABEL,ANY_VALUE(F.GEOMETRY) POLYGON_COORD, ANY_VALUE(F.ADDRESS_WKT) ADDRESS_COORD, SUM(COUNT) as COUNT from final_data F join PROPERTY_MASTER P ON   F.PID=P.PID  join CROP_MASTER C ON UPPER(C.CROP_NAME)=UPPER(F.CROP) where CROP not in ('Cherries','Hazelnuts') group by F.PID,F.FULL_ADDRESS,F.MUNICIPALITY, F.CROP,C.CROP_CATEGORY, F.CLASS_LABEL, P.PRICE
-    ```  
-
-
-```{sql, connection=con}
-select count(*) from CROP_PROPERTY_COUNT_MASTER;
+CREATE OR REPLACE TABLE CROP_PROPERTY_COUNT_MASTER AS select F.PID, F.MUNICIPALITY, F.FULL_ADDRESS ,F.CROP,C.CROP_CATEGORY,P.PRICE as PRICE, F.CLASS_LABEL,ANY_VALUE(F.GEOMETRY) POLYGON_COORD, ANY_VALUE(F.ADDRESS_WKT) ADDRESS_COORD,  SUM(COUNT) as COUNT,ANY_VALUE(F.Domain_URL) as WEBSITE from final_data F join PROPERTY_MASTER P ON   F.PID=P.PID  join CROP_MASTER C ON UPPER(C.CROP_NAME)=UPPER(F.CROP) where CROP not in ('Cherries','Hazelnuts') group by F.PID,F.FULL_ADDRESS,F.MUNICIPALITY, F.CROP,C.CROP_CATEGORY, F.CLASS_LABEL, P.PRICE
 ```
 
+```{r}
+dbExecute(con, "
+  CREATE OR REPLACE TABLE USER_PROFILE (
+    email            VARCHAR NOT NULL,
+    full_name        VARCHAR,
+    phone            VARCHAR,
+    crop             VARCHAR,
+    municipality     VARCHAR,
+    class_label      VARCHAR,
+    price_min        DOUBLE,
+    price_max        DOUBLE,
+    alert_frequency  VARCHAR,
+    notes            VARCHAR,
+    updated_at       TIMESTAMP DEFAULT now(),
+    CONSTRAINT uq_user_profile_email UNIQUE(email)
+  )
+")
+dbExecute(con, "CREATE INDEX IF NOT EXISTS idx_user_profile_email ON USER_PROFILE(email)")
 
-```{sql, connection=con}
-
-select CROP,count(*) CNT from CROP_PROPERTY_COUNT_MASTER group by CROP ORDER BY CNT DESC;
+REG_TABLE <- "USER_PROFILE"
 ```
 
 ```{sql, connection=con}
-select count(distinct(PID)) from CROP_PROPERTY_COUNT_MASTER;
+select * from USER_PROFILE;
 ```
-
-
-
-
-

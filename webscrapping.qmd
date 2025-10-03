@@ -6,7 +6,7 @@ editor: visual
 
 ```{r}
 # --- Packages ------------------------------------------------------------
-# install.packages(c("rvest","dplyr","stringr","tidyr","readr","purrr","tidygeocoder"))
+# install.packages(c("rvest","dplyr","stringr","tidyr","readr","purrr","tidygeocoder")))
 library(rvest)
 library(dplyr)
 library(stringr)
@@ -17,7 +17,7 @@ library(tidygeocoder)
 
 # --- Config: where your saved HTML pages live ----------------------------
 # Folder containing domain_tas_page_1.html, domain_tas_page_2.html, ...
-pages_dir <- "./dataset/domain"
+pages_dir <- "dataset/domain"
 
 # Helper to order files numerically if they're named like ..._page_12.html
 extract_page_num <- function(x) {
@@ -86,14 +86,36 @@ parse_price_numeric <- function(price_text) {
   as.numeric(round(val))
 }
 
+# Normalise relative/absolute links to full Domain URLs
+resolve_url <- function(href) {
+  if (is.null(href) || is.na(href) || !nzchar(href)) return(NA_character_)
+  href <- str_trim(href)
+  if (str_detect(href, "^https?://")) return(href)
+  if (!startsWith(href, "/")) href <- paste0("/", href)
+  paste0("https://www.domain.com.au", href)
+}
 
+# Choose the most likely property link from a set of hrefs in a card
+pick_property_href <- function(hrefs) {
+  hrefs <- unique(hrefs[!is.na(hrefs) & nzchar(hrefs)])
+  if (length(hrefs) == 0) return(NA_character_)
+  # Prioritise obvious listing links (sale/rent pages or property detail slugs/IDs)
+  pri <- hrefs[str_detect(hrefs, "(^/|domain\\.com\\.au).*(/sale/|/rent/|/lease/|/property-|/\\d{6,})")]
+  if (length(pri) > 0) return(pri[[1]])
+  # Fallbacks
+  rel <- hrefs[startsWith(hrefs, "/")]
+  if (length(rel) > 0) return(rel[[1]])
+  abs <- hrefs[str_detect(hrefs, "^https?://")]
+  if (length(abs) > 0) return(abs[[1]])
+  NA_character_
+}
 
 # Extract listing "cards" from a page (robust CSS; XPath fallback)
 extract_cards <- function(page_doc) {
   sels <- c(
-    "ul.css-163kh4h > li div.css-qrqvvg",                    # specific (may change)
     "li[data-testid='search-results__listing'] article",     # common Domain pattern
     "[data-testid='search-results'] li article",
+    "ul.css-163kh4h > li div.css-qrqvvg",                    # specific (may change)
     "ul li article",
     "ul li div"
   )
@@ -105,9 +127,9 @@ extract_cards <- function(page_doc) {
   html_elements(page_doc, xpath = "//li[.//h2]")
 }
 
-# Extract one row (Address_raw, Price_raw) from a single card
+# Extract one row (Address_raw, Price_raw, Listing_URL) from a single card
 extract_one <- function(card) {
-  # Address candidates
+  # ---- Address candidates (use length(el) to avoid xml_missing issues) ---
   addr_raw <- NA_character_
   for (el in list(
     card %>% html_element("h2"),
@@ -116,20 +138,20 @@ extract_one <- function(card) {
     card %>% html_element("a h2"),
     card %>% html_element("a[title]")
   )) {
-    if (!is.null(el)) {
+    if (length(el) > 0) {
       txt <- html_text2(el)
       if (!is.null(txt) && nzchar(str_squish(txt))) { addr_raw <- str_squish(txt); break }
     }
   }
 
-  # Price candidates
+  # ---- Price candidates --------------------------------------------------
   price_raw <- NA_character_
   for (el in list(
     card %>% html_element("p.css-mgq8yx"),
     card %>% html_element("[data-testid='listing-details__price']"),
     card %>% html_element("span[aria-label='price']")
   )) {
-    if (!is.null(el)) {
+    if (length(el) > 0) {
       txt <- html_text2(el)
       if (!is.null(txt) && nzchar(str_squish(txt))) { price_raw <- str_squish(txt); break }
     }
@@ -144,8 +166,17 @@ extract_one <- function(card) {
     if (length(hits) > 0) price_raw <- str_squish(hits[[1]])
   }
 
-  tibble(Address_raw = addr_raw %||% NA_character_,
-         Price_raw   = price_raw %||% NA_character_)
+  # ---- URL candidates (robust, avoids xml_missing) ----------------------
+  a_nodes <- html_elements(card, "a[href]")
+  hrefs   <- if (length(a_nodes)) html_attr(a_nodes, "href") else character(0)
+  picked  <- pick_property_href(hrefs)
+  url_raw <- if (!is.na(picked)) resolve_url(picked) else NA_character_
+
+  tibble(
+    Address_raw = addr_raw %||% NA_character_,
+    Price_raw   = price_raw %||% NA_character_,
+    Listing_URL = url_raw   %||% NA_character_
+  )
 }
 
 # Scrape ONE saved HTML file into a tibble of rows
@@ -173,8 +204,8 @@ if (nrow(raw_df) == 0) stop("Scrape returned 0 rows. Check that your saved HTML 
 tas_df <- raw_df %>%
   filter(
     str_detect(Address_raw, "\\bTAS\\b") |
-    str_detect(Address_raw, "TAS\\s*\\d{4}") |
-    str_detect(Address_raw, "TAS\\d{4}")
+      str_detect(Address_raw, "TAS\\s*\\d{4}") |
+      str_detect(Address_raw, "TAS\\d{4}")
   )
 
 if (nrow(tas_df) == 0) {
@@ -191,10 +222,22 @@ df <- bind_cols(tas_df, addr_split) %>%
   )
 
 # --- Save and preview ----------------------------------------------------
-write_csv(df, "results/domain_tas_listings_all_pages.csv")  # <- uncomment to save
-write_csv(df, "dataset/property_listing.csv") 
+dir.create("results", showWarnings = FALSE, recursive = TRUE)
+dir.create("dataset", showWarnings = FALSE, recursive = TRUE)
+
+write_csv(df, "results/domain_tas_listings_all_pages.csv")
+write_csv(df, "dataset/property_listing.csv")
+
 print(df, n = 25)
 cat("\nTotal TAS listings combined from saved pages: ", nrow(df), "\n")
 
+
+
+
+
 ```
 
+
+
+
+ChatGPT can make mistakes. Check important info.
