@@ -335,9 +335,33 @@ Include a table summarising sources (format, size, relevance).
 
 Step-by-step: scraping → address matching → parcel overlay → suitability calculation → dashboard.
 
-Insert diagram (supervisor specifically asked).
+### Data Fetch (Domain.com and Supporting Datasets)
 
-Mention database structure (DuckDB or equivalent).
+The workflow begins with the data fetch stage, where multiple datasets are collected from both online and cadastral sources to build the foundation for analysis. The primary dataset is obtained from [Domain.com.au](https://www.domain.com.au/sale/?excludeunderoffer=1&landsize=100000-any&landsizeunit=ha&ssubs=0&state=tas&displaymap=1) using an automated web-scraping process. Each webpage typically displays ten property cards, and the scraper systematically iterates through all pages to extract essential details such as the property ID, full address, price, land area (in hectares), listing type (e.g., sale or lease), and corresponding URL links. Once this raw property data is gathered, it undergoes initial text preprocessing through string manipulation and pattern-matching techniques to extract structured information. For instance, numeric price values are parsed from text strings (e.g., “Price: $1.2M” → 1,200,000), land area values are detected using pattern extraction, and irrelevant characters or HTML tags are removed. These operations ensure the scraped data is uniform and free from noise before further integration.
+
+In addition to the property listing data, several related datasets are obtained from official cadastral and spatial data sources. These include the Municipality datasets, which contain cadastral parcel boundaries and polygon coordinates across Tasmania’s 29 municipalities, and the Address datasets, which provide verified address references linked to property identifiers (PIDs). These spatial and address datasets are crucial for ensuring the accuracy and georeferencing of the property information. Furthermore, the workflow incorporates Environmental Suitability Model (ESM) TIFF maps, which depict the crop suitability or feasibility for various crops across Tasmania at the pixel level. These raster layers are integral to later stages of the workflow, where they are spatially overlaid with property polygons to determine the crop suitability profile for each property.
+
+It is important to note that the web-scraping methodology has been employed purely for the prototype phase, providing a flexible and rapid means to access publicly available data for proof-of-concept validation. However, for future scalability or commercialisation, it is strongly recommended to transition towards API-based data retrieval, leveraging official endpoints from Domain.com and cadastral data providers. An API interface would ensure higher data accuracy, stability, and compliance while reducing the operational overhead of scraping.
+
+The cleaned and preprocessed property data is then exported to a CSV file and stored within the project workspace as an intermediate staging layer. Finally, the refined data—along with the cadastral and ESM raster datasets—is loaded into the DuckDB database, forming a unified data foundation for subsequent stages such as data modelling, spatial transformation, and suitability analysis.
+
+
+### Data Modelling, Cleaning, and Transformation
+
+After the data acquisition stage, the workflow transitions into the data modelling and transformation phase, where the collected datasets are standardised, validated, spatially structured, and then processed to generate crop suitability metrics for each property. This phase represents the bridge between the raw input data and the analytical outputs that drive the final visualisation and decision-making components.
+
+The process begins with data modelling and cleaning, where the various input datasets — including the web-scraped property listings, cadastral parcel data, and verified address information — are integrated into a unified relational database structure. As shown in the data model (Figure X) and the Entity Relationship (ER) diagram (Figure Y), the schema consists of five key interconnected tables: Municipality_Master, Address_Master, Property_Master, Property_Listing, and CROP_PROPERTY_COUNT_MASTER. The Municipality_Master table holds cadastral parcel data for all 29 Tasmanian municipalities, containing fields such as PID, CID, and Municipality_ID, along with the polygon coordinates that define each property’s spatial boundaries. These coordinates form the geospatial foundation for the analytical operations carried out later. The Address_Master table provides verified address references linked via PID and GEOCODE_ID, while the Property_Listing table stores the Domain.com property data, with FULL_ADDRESS serving as the key joining field. The Property_Master table acts as a relational hub that consolidates all identifiers and establishes unified records by linking PID, FULL_ADDRESS, and Municipality_ID.
+
+Before the relational model is established, all datasets undergo a rigorous data cleaning and validation process. Duplicate entries are removed, null or incomplete fields are resolved, and inconsistent naming conventions across the municipality and address data are standardised. To ensure consistency across all datasets, the address components — including street name, suburb, and postcode — are concatenated into a single FULL_ADDRESS field. This concatenation creates a uniform join key that allows for accurate integration between the Address_Master and Property_Listing tables. Spatial validation checks are also performed to confirm that the geometries in the Municipality_Master table align with the corresponding address and property records. By the conclusion of this stage, a clean, standardised, and fully georeferenced relational database is established, ensuring efficient and accurate joins between all datasets.
+
+Once the property and cadastral data are successfully joined, the workflow progresses to the data transformation stage, where the geospatial analysis is performed to derive crop suitability counts for each property. The polygon geometries from the Municipality_Master table are spatially overlaid on the Environmental Suitability Model (ESM) raster maps — georeferenced TIFF layers that depict the crop feasibility across Tasmania. Each raster layer contains pixel-level classifications that indicate varying degrees of suitability for specific crops, such as Highly Suitable, Moderately Suitable, Marginally Suitable, or Unsuitable. Using spatial intersection and aggregation techniques, the system identifies all pixels that fall within each property’s polygon boundary and counts the number of pixels associated with each suitability class. This process effectively quantifies how much of each property’s total land area falls under different suitability levels for each crop type.
+
+The resulting output from this transformation is a structured dataset that links every Property ID (PID) and Full Address with multiple crop types and their corresponding pixel counts across suitability classes. This processed information is then stored in the CROP_PROPERTY_COUNT_MASTER table — the final analytical table in the database schema. This table provides a property-level summary of crop feasibility across Tasmania and serves as the foundation for the RShiny dashboard. Through this integration, users can interactively filter, visualise, and analyse agricultural suitability by crop, municipality, or class label, completing the end-to-end data flow from raw property listings to actionable spatial insights.
+
+
+##### **Don't forget to Insert diagram (supervisor specifically asked)**
+
+##### **Mention database structure (DuckDB or equivalent).**
 
 ## Suitability Computation
 
@@ -378,13 +402,50 @@ Majority pixel rule (explain rationale of the $\geq$ 50%).
 Alternative approaches (weighted average, thresholds).
 
 
-## Dashboard Development
+## Dashboard Development(AgriSuit Application)
 
 Framework: R Shiny.
+
+### Purpose
+
+AgriSuit operationalises parcel-level suitability by exposing TESM-derived indicators and listing metadata through a minimal, auditable interface designed for non-specialists. The goal is reproducible, decision-ready outputs with clear provenance and bounded query scope.
+
+
+### Architecture
+
+AgriSuit follows a three-layer design that separates data preparation, service orchestration, and interactive rendering.
+
+- Data layer. TESM rasters are pre-summarised to parcel-level indicators (majority suitability class; limiting factors). Listing metadata (address, locality, indicative price) is ingested and reconciled to cadastral parcels; non-market parcels (e.g., national parks, charitable holdings, government land) are filtered upstream.
+
+- Service layer. Parameterised queries handle geocoding/matching, apply validation rules, and stamp results with provenance (dataset version, refresh timestamp).
+
+- UI layer (R Shiny). Reactive modules manage filters, a unified results set (table + map), and state (validation messages, row caps, legends).
+
+### Core features
+
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Feature          | Details                                                                                                                                                    |
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Filtering        | Crop Category; Crop; Class Label; Municipality; Full Address; Price Min; Price Max; Maximum Rows.                                                          |
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Validation       | Inputs must satisfy (Crop OR Class Label) AND (Municipality OR Full Address); ambiguous or under-specified queries are rejected with prompts.              |
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Results (Table)  | Parcel ID; majority suitability class; limiting factors; listed price; direct link to the public listing.                                                  |
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Results (Maps)   | • Context map (WMS) situating the parcel within Tasmania.                                                                                                  |
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                  | • Parcel-detail map with pixel-level suitability and a crop-specific class legend.                                                                         |
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Registration     | Email (required); Full Name; Phone; at least two preferences from Preferred Crop; Preferred Municipality; Class Label; Price Range (min/max);            |
+|                  | Alert Frequency.                                                                                                                                            |
++------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
 
 Inputs (crop preference, filters).
 
 Outputs (listing table, map overlay, “go to website” button).
+
+
 
 
 # Results
@@ -396,6 +457,7 @@ Show examples of scraped listings.
 Overlay results (parcel + TESM suitability).
 
 Dashboard screenshots.
+
 
 ## Case Example(s)
 
