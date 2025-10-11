@@ -121,6 +121,14 @@ for (muni in muni_names) {
 
 ```
 
+```{sql, connection=con}
+
+desc parcels_break_o_day;
+desc CADASTRAL_MASTER;
+desc PROPERTY_MASTER;
+```
+
+
 ```{r}
 # Build SQL string with UNION ALL
 sql_parts <- lapply(muni_names, function(tbl) {
@@ -183,12 +191,14 @@ desc PROPERTY_LISTING;
 
 ```{sql, connection=con}
 
-desc CADASTRAL_MASTER;
+desc ADDRESS_MASTER;
 ```
 
 ```{sql, connection=con}
-desc ADDRESS_MASTER;
+select PID,COUNT(*) CNT from ADDRESS_MASTER group by PID having CNT>1 order by CNT desc limit 5;
 ```
+
+
 
 ```{sql, connection=con}
 CREATE  OR REPLACE TABLE CADASTRAL_ADDRESS_MASTER AS select distinct(P.PID
@@ -216,8 +226,14 @@ SELECT
 FROM PROPERTY_LISTING d
 JOIN CADASTRAL_ADDRESS_MASTER p
   ON upper(trim(replace(d.full_address, chr(160), ' '))) =
-     upper(trim(replace(p.full_address, chr(160), ' ')));
+     upper(trim(replace(p.full_address, chr(160), ' '))) where POT_PID!=0;
 ```
+
+```{sql, connection=con}
+select PID,POT_PID,MUNICIPALITY,COUNT(*) CNT from PROPERTY_MASTER  where POT_PID!=0 group by PID,POT_PID,MUNICIPALITY having CNT>1 order by CNT desc limit 5;
+
+```
+
 
 ```{sql, connection=con}
 SELECT

@@ -237,7 +237,4 @@ cat("\nTotal TAS listings combined from saved pages: ", nrow(df), "\n")
 
 ```
 
-
-
-
 ChatGPT can make mistakes. Check important info.
