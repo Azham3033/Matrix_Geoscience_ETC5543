@@ -56,7 +56,7 @@ This project aims to integrate TESM crop suitability layers with live property l
 
 The [Tasmanian Enterprise Suitability Map (TESM)](https://nre.tas.gov.au/agriculture/investing-in-irrigation/enterprise-suitability-toolkit/enterprise-suitability-maps) represents a mature, data-driven framework for assessing agricultural potential across Tasmania. Originating from the [Wealth from Water](https://www.flinders.tas.gov.au/client-assets/images/Council/Downloads/Agendas/2015.02/Annex%206.%20Item%20A1%20Wealth%20from%20Water%20Brochure.pdf) program initiated in 2010 by the Tasmanian Department of Primary Industries, Parks, Water and Environment, which has since been restructured and renamed as the Department of Natural Resources and Environment Tasmania [(NRE Tas)](https://nre.tas.gov.au/) in collaboration with the Tasmanian Institute of Agriculture (TIA) and the University of Sydney, TESM sought to provide an objective, reproducible, and spatially explicit basis for agricultural development planning. The program was itself a direct response to the Innovation Strategy (2009) led by Jonathan West, which identified irrigation expansion as a transformative opportunity for Tasmania’s regional economy. The pilot phase initially covered about 70,000 hectares in the Meander Valley and Midlands, subsequently expanding to state-wide coverage through initiatives such as [Water for Profit](https://www.utas.edu.au/__data/assets/pdf_file/0008/1092068/TIA-Water-for-Profit-Brochure-2.pdf). In this progression, the emphasis shifted from qualitative soil surveys to Digital Soil Mapping (DSM) and Digital Soil Assessment (DSA) techniques that operationalised soil and climate data into decision-support tools for land managers and investors (Kidd, 2020).
 
-TESM’s analytical foundation rests upon the integration of three primary data domains, consisting of soil, climate, and topography. The domains are processed through quantitative spatial modelling. The soil component draws on more than 900 core samples describing attributes such as pH, clay content, drainage class, and stone content. [Climate inputs](https://nrmdatalibrary.nre.tas.gov.au/FactSheets/WfW/ListMapUserNotes/Inventory_DCM_Tas.pdf) originate from a network of over 270 temperature sensors distributed across representative terrain positions, enabling fine-scale modelling of variables such as frost risk, chill hours, growing-degree days, and extreme heat frequency. Topographic variables, derived from Shuttle Radar Topography Mission (SRTM) data, gamma-radiometric imagery, and surface geology, capture slope, aspect, and elevation effects. These heterogeneous datasets are harmonised into raster layers at 30 to 80 m resolution and modelled using regression-tree and regression-kriging approaches to produce spatially continuous soil-attribute predictions with validation accuracies appropriate for regional-scale land evaluation (Kidd & Webb, 2015). The result is a three-dimensional digital representation of the Tasmanian soil landscape that supports downstream suitability analyses.
+TESM’s analytical foundation rests upon the integration of three primary data domains, consisting of soil, climate, and topography. The domains are processed through quantitative spatial modelling. The soil component draws on more than 900 core samples describing attributes such as pH, clay content, drainage class, and stone content. [Climate inputs](https://nrmdatalibrary.nre.tas.gov.au/FactSheets/WfW/ListMapUserNotes/Inventory_DCM_Tas.pdf) originate from a network of over 270 temperature sensors distributed across representative terrain positions, enabling fine-scale modelling of variables such as frost risk, chill hours, growing-degree days, and extreme heat frequency. Topographic variables, derived from Shuttle Radar Topography Mission (SRTM) data, gamma-radiometric imagery, and surface geology, capture slope, aspect, and elevation effects. These heterogeneous datasets are standardised and co-registered, then resampled at 30–80 m and modelled using regression-tree and regression-kriging approaches to produce spatially continuous soil-attribute predictions with validation accuracy appropriate for regional-scale land evaluation (Kidd & Webb, 2015). The result is a three-dimensional digital representation of the Tasmanian soil landscape that supports downstream suitability analyses.
 
 The suitability evaluation itself employs a deterministic, rule-based framework derived from the Food and Agriculture Organization (FAO, 1976) land-evaluation system and refined through the “most-limiting-factor” principle articulated by Klingebiel and Montgomery. Each crop or enterprise is governed by a rule set developed jointly by TIA researchers and industry experts, defining optimal and limiting parameter thresholds across the soil–climate–topography continuum. The model classifies each grid cell into four main hierarchical categories, i.e. _well suited_ , _suitable_ , _marginally suitable_ , _unsuitable_ based on the lowest-rated criterion. Thus, if drainage or frost risk is poor even when all other factors are optimal, the overall classification defaults to “unsuitable.” This conservative logic enhances interpretability and ensures that biophysical limitations are not overlooked in investment decisions. The framework also differentiates between _manageable_ and _unmanageable_ constraints, acknowledging that interventions such as liming or artificial drainage can upgrade a site’s effective suitability (Kidd et al., 2015).
 
@@ -263,7 +263,7 @@ Against this backdrop, the Tasmanian DSA/ESM tradition exemplifies a determinist
 A parallel stream of work explores machine-learning and hybrid methods that retain expert structure while learning nonlinear interactions from data. Open-source frameworks such as [CropSuite v1.0](https://gmd.copernicus.org/articles/18/1067/2025/) combine modular crop response functions, climate/soil drivers, and flexible scoring to simulate suitability under alternative scenarios. The platform shows how open architectures can encode expert knowledge yet remain extensible as new covariates or crops are added, an attractive property when emerging commodities or climate adaptations are under consideration. (Zabel, 2022; Taghizadeh-Mehrjardi et al., 2020; Abdelrahrahman, 2021)
 National-level example further illustrate design choices around resolution, transparency, and uncertainty. The [New Zealand S-Map](https://ourenvironment.scinfo.org.nz/maps-and-tools/app/Crop%20Suitability) that linked suitability work for perennial crops integrates phenology-aware climate indicators (e.g., bud-break timing) with frost-risk functions. This feature avoids single-indicator brittleness by combining risk components (frost and bud-break) so that delayed phenology does not falsely appear “low-risk” in very cold regions. Scenario analyses then trace suitability shifts under RCP pathways, making explicit how scores move as climate drivers change, a template for communicating both present-day classification and future risk envelopes (Vetharaniam et al., 2020; SLMACC Project 405422, 2020).
 
-At the global scale, the FAO Global Agro-Ecological Zones (GAEZ) framework [(Agro-MAPS)](https://gaez.fao.org/pages/ecocrop-search) evaluates suitability, potential yields, and yield gaps by integrating harmonised soils/terrain, climate (historical and scenario-based), land cover and crop calendars, and agricultural statistics within a multi-module system (agro-climate, biomass/yield, edaphic constraints, integration/downscaling). Uncertainty is handled via scenario modelling (e.g., RCP pathways, $CO_2$ fertilisation) and by providing ranges for yields and constraints. Compared with TESM’s state-level deterministic rules (and S-Map’s national, phenology-aware risk composition discussed above), GAEZ offers much broader spatial scope and scenario-rich foresight, but at coarser resolution and with less direct farm-scale applicability. (FAO GAEZ v4 Documentation, 2022)
+At the global scale, the FAO Global Agro-Ecological Zones (GAEZ) framework [(Agro-MAPS)](https://gaez.fao.org/pages/ecocrop-search) evaluates suitability, potential yields, and yield gaps by integrating standardised soils/terrain, climate (historical and scenario-based), land cover and crop calendars, and agricultural statistics within a multi-module system (agro-climate, biomass/yield, edaphic constraints, integration/downscaling). Uncertainty is handled via scenario modelling (e.g., RCP pathways, $CO_2$ fertilisation) and by providing ranges for yields and constraints. Compared with TESM’s state-level deterministic rules (and S-Map’s national, phenology-aware risk composition discussed above), GAEZ offers much broader spatial scope and scenario-rich foresight, but at coarser resolution and with less direct farm-scale applicability. (FAO GAEZ v4 Documentation, 2022)
 
 Taken together, contemporary suitability mapping is converging on hybrids: rule-based logic for transparency; probabilistic or fuzzy treatment for uncertainty; and modular, open tools for extensibility. Case studies from Tasmania (deterministic, interpretable rules over high-resolution inputs), New Zealand (phenology-aware, scenario-tested climate risk composition), and national zonation work (policy-ready aggregation) collectively suggest a practical path: retain expert-defined constraints where they are well established, but surface uncertainty and scenario sensitivity wherever inputs, thresholds, or management assumptions are weak. This orientation both improves scientific robustness and yields outputs that are directly actionable for investors, planners, and end-users who must make decisions under uncertainty (Malone & Kidd, 2015; Vetharaniam et al., 2020; Benson, 2016; Zabel, 2022). Yet even the most robust models must be delivered through interfaces that non-specialists can interrogate; this is the role of modern GIS-enabled decision support.
 
@@ -494,122 +494,77 @@ The classification is deterministic: each pixel receives a numeric score for eve
 
 ### Pixel-level Suitability Computation
 
-This subsection details how Tasmania’s Environmental Suitability Model (TESM) converts gridded biophysical variables into categorical suitability classes for each crop. The goal is to make the transformation from raw covariate layers to final parcel-level ratings explicit, auditable, and reproducible. By documenting the scoring logic, aggregation rules, and key assumptions, this section enables transparent validation of suitability outcomes within the AgriSuit platform.
+AgriSuit consumes pre-computed gridded suitability layers from Tasmania’s Enterprise Suitability Mapping (ESM) / LISTmap program. These layers are produced by NRE Tas using statewide Digital Soil Mapping (DSM) products at ~80 m resolution (regression-tree/Cubist with mass-preserving depth splines and cross-validation) and climate-risk surfaces (frost risk, heat risk, growing-degree days) generated from logger-calibrated observations and CFT downscaling with decile-based distribution alignment. Crop-specific enterprise rules then map DSM/CFT covariates to categorical pixel classes. Where climate products exist at 30 m (and some statewide implementations target 80 m for near-real-time delivery), AgriSuit reports the native resolution and any resampling used for co-registration.
 
-Each crop’s suitability evaluation begins with a set of gridded environmental inputs, known as
-covariates, describing soil, climate, and terrain conditions across Tasmania. These continuous raster
-layers provide quantitative values—such as soil pH, temperature, or slope—at regularly spaced grid cells (pixels). A raster, in this context, is defined as a geospatial surface where each pixel at coordinate $(x, y)$.
+1) Inputs and gridding pipeline (soil, climate, terrain)
 
-stores a numeric measurement corresponding to that location. Collectively, these rasters form a
-multi-layered data structure known as a raster stack. 
+Soil attributes 80 m, multi-depth. Version 1.0 statewide soil grids (e.g., pH, EC, organic carbon, particle size, coarse fragments, effective depth, and crop suitability specific attributes) are produced by regression-tree (Cubist) DSM with $k$-fold/LOOCV diagnostics. Site profiles are interpolated to standard depth intervals via mass-preserving depth splines prior to modelling, yielding realistic terrain-related patterns and quantified uncertainty bands.
 
-For each crop c, the TESM applies a rule set: a series of deterministic thresholds that classify every pixel according to how well its local conditions satisfy agronomic requirements. Each rule set is crop-specific and was developed through expert consultation and literature review by the Tasmanian Department of Natural Resources and Environment. 
+Climate variables (current and projections).
+Near-surface temperature series are constructed by placing and calibrating temperature loggers against long-term BoM stations, then learning spatial climate fields and indicators (e.g., frost risk, growing degree days). Cross-validation commonly shows mean absolute errors near $\approx 0.5^{\circ}\text{C}$. CFT projections are downscaled with regression trees and distribution-aligned by decile adjustment against logger records, producing calibrated daily minima/maxima for 1994–2050. Indicator rasters for 2011–2030 and 2031–2050 are recomputed from these calibrated series.
 
-At the first stage, each environmental factor i (e.g., pH, slope, rainfall) is converted to a factor score $S_i(x, y)$ at every pixel. Formally, for a crop c with m relevant factors:
+Illustrative climate rule constructs.
+Rules are explicit. For example, a frost-risk rule for wine grapes may count the frequency of years with $T_{\min} < -2^{\circ}\text{C}$ during 15 Sep–15 Oct. The suite includes frost/heat risks and growing degree days, with statewide model skill reported (e.g., RMSE/$R^2$/concordance).
 
-$$S_i(x, y) \in \{1.0, 2.0, 3.0, 4.0\}$$  
+2) Crop-rule scoring at the pixel scale
 
-Each score is derived from threshold rules that define acceptable value ranges for that factor. For
-example, a soil pH between 6.0 and 7.5 might correspond to class 1.0 (Well-suited), while values
-below 5.0 may yield class 4.0 (Unsuitable).
+Let each pixel location be $(x,y)$. For a given crop $c$, ESM defines a finite set of biophysical factors $i \in {1,\dots,m}$ spanning soil, climate, and terrain. Each factor is translated into a class score
+$S_i(x,y) \in \{1.0, 2.0, 3.0, 4.0\}$
+by deterministic crop rules (thresholds or intervals) that encode agronomic acceptability (e.g., pH windows, frost frequency limits, slope bands). These rules operationalise the bridge from DSM/CFT grids to categorical suitability.
 
-Some factors are also tagged as manageable constraints and conditions that are suboptimal but can potentially be corrected through intervention, such as liming acidic soils or improving drainage. These are represented by a binary flag:
+AgriSuit adopts the program’s Most-Limiting-Factor (MLF) aggregator, which is a standard practice in land evaluation, sets the pixel’s overall class to the most restrictive factor:
 
-$$M_i(x, y) \in \{0, 1\}$$
+$$
+S_{\text{overall}}(x,y) \;=\; \min_{i}\, S_i(x,y)
+$$
 
-where $M_i(x, y)$ = 1 indicates that the constraint is technically manageable.
+The argument to use MLF is because in Tasmania's ESM, crop rules are designed to guard against critical failures (e.g., severe frost, drainage, pH toxicity). MLF enforces that any binding constraint governs the outcome; it is simple, auditable, and aligned with risk-averse, state-wide enterprise mapping practice.
 
-TESM employs the Most-Limiting-Factor (MLF) principle (FAO, 1976), a conservative rule asserting that a parcel’s overall suitability is determined by its weakest factor. Mathematically, the pixel-level overall score is computed as:
+3) From pixel classes to parcel labels
 
-$$S_{\text{overall}}(x, y) = \min_i S_i(x, y)$$
+Parcel summaries reported in AgriSuit are computed as the modal (majority) class within each cadastral polygon $P$ (after snapping CRS and resolution to the source grids), i.e.,
 
+$$
+\hat S_{\text{parcel}}(P)
+\;=\;
+\operatorname*{arg\,max}_{k \in \{1,2,3,4\}}
+\;\frac{1}{|P|}\sum_{p \in P}
+\mathbf{1}\!\left\{\, S_{\text{overall}}(p) = k \,\right\}
+$$
 
-This ensures that even if most environmental conditions are favourable, a single critical limitation, such as poor drainage or low rainfall can lower the total suitability rating. The MLF approach reflects the ecological reality that agricultural success depends on all essential conditions being sufficiently met. 
+This mirrors ESM’s communication of dominant suitability at planning scales while preserving pixel-level diagnostics for limiting factors.
 
-While suitability is computed at the pixel level, land transactions and planning decisions occur at the parcel level. Therefore, the pixel-level outputs must be aggregated within each cadastral polygon P. For a parcel consisting of $|P|$ pixels, the modal (majority) suitability class is used as the parcel-level
+Indicator Function Definition:
 
-$$\widehat{S}_{\text{parcel}}(P) = \arg\max_{k \in \{1,2,3,4\}} 
-\frac{1}{|P|} \sum_{p \in P} \mathbf{1}\big(S_{\text{overall}}(p) = k\big)$$
+$$
+\mathbf{1}\{A\} =
+\begin{cases}
+1, & \text{if } A \text{ is true},\\
+0, & \text{otherwise.}
+\end{cases}
+$$
 
-where 1$(·)$ is an indicator function equal to 1 when the condition is true. This formula identifies the
-suitability class most frequently represented within the parcel’s pixel distribution. 
+4) Worked micro-example (one pixel)
 
-A limiting-factor report is then generated to identify which specific factors i are responsible for the dominant or worst-performing class:
+Consider a pixel with DSM/CFT-derived inputs at $(x,y)$:
 
-$$S_i(p) = \widehat{S}_{\text{parcel}}(P)$$  
+Soil pH (0–15 cm): $6.1$ (within crop-preferred range) $\Rightarrow ; S_{\text{pH}} = 1.0$ (Well-suited).
 
-Such diagnostics help land managers or investors understand whether a site’s constraints stem from
-soil, climate, or topography, and whether these can feasibly be mitigated.
+Effective soil depth: $90$ cm (meets threshold) $\Rightarrow ; S_{\text{depth}} = 1.0$.
 
-The pixel-level computation framework is based on several simplifying assumptions:
+Slope/terrain index: within acceptable band $\Rightarrow ; S_{\text{slope}} = 2.0$ (Moderately suited).
 
-- Deterministic thresholds.
+Frost risk (15 Sep–15 Oct): $7%$ of years with $T_{\min} < -2^{\circ}\text{C}$ $\Rightarrow ; S_{\text{frost}} = 3.0$.
 
-  The model treats each threshold as a hard boundary; uncertainty in measurement or parameterisation is not propagated.
+Applying MLF,
 
-- Pixel independence.
-  
-  Adjacent pixels are assumed independent even though spatial autocorrelation may exist. Management practices (e.g., irrigation, liming) are not explicitly modelled beyond binary “manageable” flags.
-  
-- Uniform resolution.
+$$
+S_{\text{overall}}(x,y) \;=\; \min\{\,1.0,\,1.0,\,2.0,\,3.0\,\} \;=\; 3.0
+$$
 
-  All raster layers are resampled to a common grid (30–80 m resolution) to ensure co-registration, assuming negligible spatial mismatch error.
-  
-Also limitations such as:
+The binding frost constraint drives the pixel to class $3.0$ (Marginal) despite favourable soil metrics, aligned with the intended behaviour under persistent climate risk.
 
-1. Threshold brittleness.
-  
-  Small perturbations around boundary values can flip a pixel from one class to another, producing discontinuities in maps.
-
-2. Aggregation bias.
-  
-  Majority summarisation may obscure small but highly suitable or unsuitable sub-areas (“hotspots”) within larger parcels.
-
-3. Context insensitivity.
-
-  The deterministic rule set cannot capture interactions among factors (e.g., combined effects of rainfall and slope on erosion risk).
-
-
-To address these limitations, researchers such as Malone & Kidd (2015) have proposed fuzzy or
-probabilistic suitability models. Rather than assigning discrete classes, these models estimate a degree of membership 
-$\mu_i (x, y)$ for each factor:
-
-$\mu_i (x, y) \in [0, 1]$
-
-and aggregate using a fuzzy MLF operator:
-
-$\mu_{\text{overall}}(x,y) = \min_{i}\,\mu_i(x,y)$
-
-Alternatively, Monte-Carlo perturbations of input rasters can be used to produce probability distributions of suitability classes rather than fixed outcomes. These probabilistic variants provide a more realistic representation of uncertainty, though they require greater computational effort and calibration data.
-
-Geospatial suitability analysis differs fundamentally from traditional tabular analytics because each observation corresponds to a spatially continuous field rather than a single record. A raster stack represents multiple aligned layers—soil, climate, topography—each sharing the same coordinate reference system (CRS), spatial extent, and resolution. Unlike CSV tables that store independent rows, raster datasets capture spatial continuity and are read using geospatial libraries such as terra or sf in R.
-
-Geospatial units have unique attributes distinct them from numerical datasets:
-
-  1. Geometry: point, line, or polygon defining location or boundary within a CRS;
-
-  2. Attributes: tabular fields linked to each geometry;
-
-  3. Raster stack: co-registered grids containing factor values per pixel.
-
-
-| Category         | Examples                                                                                    |
-| ---------------- | ------------------------------------------------------------------------------------------- |
-| **GIS-native**   | GeoTIFF / COG (rasters); Shapefile, GeoPackage, GeoJSON (vectors); WMS / WFS (web services) |
-| **R-compatible** | Same formats via `terra`, `sf`, and `stars`; CSV or Parquet for summarised tabular outputs  |
-
-
-To ensure reproducible spatial operations, three principles are enforced:
-  
-  - Use a single CRS across all layers before overlay.
-  
-  - Resample rasters to a shared resolution (nearest for categorical, bilinear for continuous).
-
-  - Snap parcel polygons to the raster grid when performing zonal statistics.
-
-While necessary, these steps introduce potential distortions. Resampling can smooth extreme values, and CRS transformations may slightly alter area measurements if misspecified. An emerging alternative is the use of Cloud-Optimised GeoTIFFs (COGs), which allow partial on-the-fly reading of raster tiles from remote storage—minimising file duplication and improving scalability for web-based applications like AgriSuit.
-
-In essence, pixel-level suitability computation transforms raw environmental variables into interpretable, parcel-scale indicators of land potential. By combining deterministic rule sets, conservative aggregation, and transparent assumptions, the TESM framework provides a auditable yet operationally efficient model for land evaluation. Although deterministic, it serves as a robust baseline for integrating probabilistic extensions or adaptive management factors in future iterations of the platform.
+However, the model also has some assumptions and limitations, since it applies crop-rule thresholds as hard cut-offs; prediction uncertainty from DSM/CFT is not propagated into class assignment, which can introduce sensitivity near rule boundaries. Pixel classes are aggregated with a non-compensatory Most-Limiting-Factor operator $S_{\text{overall}}(x,y)=\min_i S_i(x,y)$, so favourable conditions cannot offset a binding constraint. All inputs are co-registered to a common CRS and grid; where resampling is unavoidable we use nearest-neighbour for categorical classes and bilinear for continuous diagnostics. At the parcel scale, modal labelling summarises the dominant signal and may obscure fine-scale hotspots; therefore, limiting-factor rasters accompany parcel summaries.
 
 
 ## Relational Integration & Keys (spatial + non-spatial joins)
@@ -671,13 +626,6 @@ keys are missing.
 In summary, the integration pipeline couples canonical identifiers with spatial containment logic, ensuring that each listing is reliably matched to a physical parcel and corresponding crop-suitability raster summary. This hybrid key architecture provides a reproducible and scalable foundation for AgriSuit’s unified geospatial–market database.
 
 
-### Summary
-
-TESM operationalize high-resolution digital soil predictions and climate/topography rasters through
-explicit, rule-based thresholds and a most-limiting-factor aggregator to yield pixel classes that are
-then summarised to parcels for decision use. The workflow is reproducible and auditable: factorlevel scores, overall pixel class, and parcel majority class are computed with clear provenance, and limiting factors are reported alongside results to guide management options. This design prioritise interpretability for planners and investors while acknowledging constraints—threshold brittleness near cut-points, lack of formal uncertainty propagation, and potential masking of within-parcel hotspots. Future extensions should surface confidence (e.g., fuzzy/probabilistic classes or Monte Carlo perturbations), expose scenario sensitivity (2030/2050 layers), and retain versioned metadata so that suitability assessments remain transparent, comparable over time, and robust for commercial applications.
-
-
 ## Dashboard Development (AgriSuit Application)
 
 ### Purpose
@@ -735,29 +683,28 @@ In summary, AgriSuit successfully operationalises environmental suitability data
 
 ## Strengths and Limitations
 
-AgriSuit delivers substantial technical and commercial value through its integration of environmental data with real-time property markets. Technically, the system’s strengths include automated
-spatial processing, efficient polygon-raster intersection analysis, and deployment of open-source technologies including RShiny, Leaflet, and DuckDB. This technology stack ensures transparency, reproducibility, and scalability while avoiding vendor lock-in. The modular data architecture and input validation mechanisms maintain analytical precision and system performance, demonstrating operational robustness suitable for expansion to larger datasets or additional jurisdictions. From a commercial standpoint, AgriSuit addresses a critical disconnect between agricultural capability assessment and property investment workflows. The platform enables investors, landholders, and planning authorities to conduct rapid, evidence-based land evaluations without specialist GIS skills.
+Initially, this project is still within the prototype stage that demonstrates the feasibility of unifying TESM/LISTmap suitability layers with property data in a single, auditable workflow. Subsequently, the current build implements reproducible polygon–raster aggregation (modal parcel labels with limiting-factor diagnostics), consistent CRS/grid handling with explicit resampling rules, and an open-source stack (R Shiny, Leaflet, DuckDB) that supports inspection, testing, and extension.
 
-By consolidating suitability mapping, property listings, and direct access to listing platforms, the system streamlines due diligence and eliminates the fragmented workflows that currently force users to navigate multiple disconnected data sources. This represents a material improvement over existing approaches to agricultural land assessment. The project’s limitations warrant acknowledgment. The system currently employs deterministic TESM classifications that do not account for probabilistic uncertainty or projected climate shifts. Dependence on web-scraped property data introduces potential issues with refresh frequency and data quality.
+Moving forward, the integrated interface could reduce context-switching in due diligence, shorten time-to-insight for non-GIS users, and supply a consistent evidence trail for planning and advisory tasks; however, these prospective benefits require measurement in real workflows before any claims can be made. However, the present outputs reflect deterministic TESM classes without uncertainty propagation, so class flips may occur near rule thresholds (brittleness), parcel-level modal labels may obscure fine-scale hotspots (aggregation bias), and grid/resampling choices can affect edge pixels; climate views are limited to available scenario epochs, external listings introduce refresh/schema/ToS risks, and multi-user performance and portability beyond Tasmanian rule libraries remain untested.
 
-Additionally, computationally demanding spatial operations may require optimization through cloud infrastructure or API-based architectures to support larger query volumes efficiently. Despite these constraints, AgriSuit establishes a scalable framework that meaningfully advances current land evaluation practices. By combining technical rigor with market applicability, the platform enables more efficient, transparent, and data-informed agricultural investment decision-making across Tasmania.
+Validation will also proceed via LISTmap cross-checks on sampled parcels, boundary and area-balance QA (including $\geq$ 50% coverage checks), and an explicit error budget that attributes variance to resampling, parcel geometry, and geocoding; small user pilots will collect task-time, SUS, and qualitative pain points prior to any efficiency claims. 
+
+Finally, scalability will be addressed by precomputing parcel summaries, persisting results in Parquet/DuckDB, offloading heavy raster operations to API/background jobs, adopting COG tiling with caching and basic observability (latency and cache-hit metrics), and introducing CI/CD for data refresh; optional uncertainty overlays (Monte-Carlo or fuzzy membership with fuzzy-MLF) will be reported alongside the baseline TESM class with clear labeling of native vs. target resolution and scenario epoch, while provenance/versioning and jurisdiction-templated rule libraries form the subsequent roadmap.
 
 
 ## Future Scope
 
-As the AgriSuit platform transitions from a prototype into a potential commercial application, several key enhancements can be integrated to extend its analytical capability, operational efficiency, and user engagement. These improvements will not only increase the platform’s market readiness but also enhance its value proposition for investors, agricultural planners, and policymakers.
+As AgriSuit moves beyond proof-of-concept, the immediate priority is to make suitability analysis scenario-aware. Integrating the TESM 2030 and 2050 climate projection layers as first-class toggles will let users compare present and projected suitability at both parcel and regional scales without altering baseline logic.
 
-1. Integration of Projected Climate Suitability Maps (2030 and 2050)
+To inform risk-aware decisions, the platform should add uncertainty overlays reported alongside TESM classes. Monte-Carlo or fuzzy-membership summaries at pixel and parcel levels would expose confidence and boundary sensitivity while preserving the official categorical output for compliance and communication.
 
-The Tasmanian Environmental Suitability Model (TESM) also includes projected datasets for future time horizons, specifically for the years 2030 and 2050. These projections model how climatic and environmental changes are expected to influence crop suitability over time. Integrating these projected raster layers into the existing analytical pipeline will allow AgriSuit to extend its current static analysis into a temporal forecasting framework, enabling users and investors to assess long-term agricultural viability and make forward-looking land investment decisions.
+Addressing TESM’s scope limits requires broadening inputs from _“can it grow here?”_ to _“is it viable here?”_. Few variable additions are pivotal, distance to secure water sources, irrigation scheme connection, and economic layers such as yield proxies or observed yields where available, logistics distance to processors/ports, and indicative price/cost ranges. Together these enable a suitability-plus-viability view that remains transparent and auditable.
 
-2. Personalised Notification and Alert System
+Operational maturity depends on dependable data operations. Automated refresh and synchronisation of listings and cadastral layers, provenance/version tags binding map releases to app builds, and service decomposition (API endpoints with cloud-based GeoTIFF tiling and caching) will sustain freshness and performance. A personalised notification module (filters for crop, municipality, class, price) can shift the tool from pull-only exploration to timely, criteria-driven alerts without modifying the underlying analytics.
 
-A key area for future enhancement is the implementation of an automated personalised notification system. Under this feature, each registered user would receive tailored email alerts based on their preferred crop, municipality, class label, or price range. These notifications could include new property listings that match user criteria or updates on changes in crop suitability for specific regions. This system would enhance user engagement by keeping investors and farmers informed in real time and transforming AgriSuit from a static analytical dashboard into a dynamic, user-centric information service.
+The same concept is portable to other states, but only with custom setup; jurisdiction-specific rule packs and class vocabularies; data adapters for local soil/climate rasters, CRS and metadata conventions, and licensing; expert validation against local practice; and performance tuning for differing data volumes and service constraints.
 
-3. Automated Database Refresh and Synchronisation
-
-For commercial scalability, the platform could implement an automated daily database refresh mechanism, ideally scheduled during off-peak hours (e.g., midnight). This process would ensure that the server continuously syncs with external data sources, such as Domain.com property listings and updated cadastral datasets, without manual intervention. By refreshing the database every night, AgriSuit would consistently deliver the most up-to-date property information and crop suitability results, maintaining reliability and decision accuracy for its users. In summary, these future enhancements, integrating forecasted suitability maps, introducing personalised notification systems, and automating database updates, would collectively elevate AgriSuit from a research prototype into a fully commercial-ready platform. Together, they would enable data-driven agricultural investment planning, foster continuous user engagement, and ensure the platform remains relevant and responsive in a dynamic environmental and market context.
+A pragmatic roadmap follows from this ordering: deliver scenario toggles and labelling; add uncertainty overlays with concise summary statistics; introduce water-access and core economic indicators; harden data refresh, provenance, and notifications; then package a jurisdiction template (rule-pack plus data-adapter kit) for pilot deployments beyond Tasmania.
 
 
 \newpage
