@@ -1,5 +1,5 @@
 <h1 align="center">AgriSuit</h1>
-<h3 align="center">Parcel-level crop suitability for Tasmania — de-risk land purchase decisions</h3>
+<h3 align="center">Parcel-level crop suitability for Tasmania — where data meets soil, and insights grow into opportunity</h3>
 
 <p align="center">
   <a href="https://github.com/<USER>/<REPO>/actions">
@@ -22,7 +22,7 @@
   <img src="docs/img/agrisuit-demo.gif" alt="AgriSuit demo" width="85%"/>
 </p>
 
-AgriSuit is an R Shiny app that visualises **biophysical crop suitability** at the **parcel** level using Tasmania’s Enterprise Suitability Mapping (ESM) rasters. It helps analysts, investors, and farmers make **lower-risk land-purchase decisions** by turning suitability layers into **per-parcel counts and maps**.
+AgriSuit is an R Shiny app that visualises **biophysical crop suitability** at the **parcel** level using Tasmania’s Enterprise Suitability Mapping (ESM) rasters. It helps agriculture farmers and investors in general make **low-risk land-purchase decisions** by turning suitability layers into **per-parcel counts and maps**.
 
 ---
 
