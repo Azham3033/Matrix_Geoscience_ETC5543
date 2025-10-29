@@ -1,16 +1,10 @@
 ---
-title: "Pixel Counting V3"
+title: "Pixel Mapping"
 author: "RR"
   html:
     code-fold: true
 ---
-
-
 # Config & Helper
-
-
-
-
 ```{r}
 # ====== CONFIG ======
 esm_dir      <- "ESM_Tiff/ESM_Tiff"                # folder with all crop .tif
@@ -74,30 +68,38 @@ preload_all_crops <- function(esm_dir, drop_variants = TRUE) {
 # Summariser
 
 ```{r}
+# Summarise crop classes for a single property against a single crop raster
 summarise_one_property_one_crop <- function(prop_row, tif_path) {
   r <- terra::rast(tif_path)
-  vat_path <- paste0(tif_path, ".vat.dbf")
-  vat_lu <- build_vat_lookup(vat_path)
-  r <- attach_levels(r, vat_lu)
 
-  parcel_sf  <- sf::st_sf(
+  # Load value-attribute table (VAT) and attach labels to raster levels
+  vat_path <- paste0(tif_path, ".vat.dbf")
+  vat_lu   <- build_vat_lookup(vat_path)
+  r        <- attach_levels(r, vat_lu)
+
+  # Build parcel and address geometries from WKT
+  parcel_sf <- sf::st_sf(
     PID          = prop_row$PID,
     POT_PID      = prop_row$POT_PID,
     MUNICIPALITY = prop_row$MUNICIPALITY,
     FULL_ADDRESS = prop_row$full_address,
     geometry     = sf::st_as_sfc(prop_row$parcel_wkt, crs = initial_crs)
   )
-  addr_sf <- sf::st_sf(geometry = sf::st_as_sfc(prop_row$address_wkt, crs = initial_crs))
+  addr_sf <- sf::st_sf(geometry = sf::st_as_sfc(prop_row$address_wkt, crs = initial_crs))  # kept for parity
 
+  # Fix invalid geometry if needed
   if (!all(sf::st_is_valid(parcel_sf))) parcel_sf <- sf::st_make_valid(parcel_sf)
 
+  # Reproject parcel to raster CRS and crop raster to parcel extent
   parcel_r <- sf::st_transform(parcel_sf, sf::st_crs(r))
-  r_crop <- terra::crop(r, terra::vect(parcel_r))
+  r_crop   <- terra::crop(r, terra::vect(parcel_r))
 
-  r_rl <- raster::raster(r_crop)
+  # Exact extract cell values intersecting the parcel
+  r_rl   <- raster::raster(r_crop)
   cell_df <- exactextractr::exact_extract(r_rl, parcel_r, fun = NULL, progress = FALSE)[[1]]
   if (is.null(cell_df) || nrow(cell_df) == 0) return(NULL)
 
+  # Identify the value column returned by exact_extract
   val_name <- setdiff(names(cell_df), c("coverage_fraction", "cell_area"))
   if (length(val_name) != 1L) stop("Unexpected raster columns from exact_extract().")
   cell_df <- dplyr::rename(cell_df, value = !!val_name)
@@ -105,19 +107,23 @@ summarise_one_property_one_crop <- function(prop_row, tif_path) {
   vat_lu_dedup <- dplyr::distinct(vat_lu, code, label)
 
   out <- cell_df |>
+    # Keep majority-covering cells and non-missing values
     dplyr::filter(!is.na(value), coverage_fraction >= majority_thr) |>
+    # Count cells by class value
     dplyr::count(value, name = "COUNT") |>
+    # Join human-readable class labels
     dplyr::left_join(vat_lu_dedup, by = c("value" = "code")) |>
     dplyr::mutate(
       CLASS_LABEL = dplyr::coalesce(label, as.character(value)),
       CROP        = tools::file_path_sans_ext(basename(tif_path))
     ) |>
+    # Final tidy columns (carry-through identifiers and geometry WKT)
     dplyr::transmute(
       PID          = prop_row$PID,
       POT_PID      = prop_row$POT_PID,
       MUNICIPALITY = prop_row$MUNICIPALITY,
       FULL_ADDRESS = prop_row$full_address,
-      Domain_URL  = prop_row$Domain_URL,     # <--- NEW
+      Domain_URL   = prop_row$Domain_URL,
       COUNT,
       CLASS_LABEL,
       CROP,
@@ -129,6 +135,7 @@ summarise_one_property_one_crop <- function(prop_row, tif_path) {
   out
 }
 
+# Same as above, but with raster and VAT preloaded for performance
 summarise_one_property_one_crop_preloaded <- function(prop_row, r_pre, vat_lu, crop_name) {
   parcel_sf <- sf::st_sf(
     PID          = prop_row$PID,
@@ -139,13 +146,16 @@ summarise_one_property_one_crop_preloaded <- function(prop_row, r_pre, vat_lu, c
   )
   if (!all(sf::st_is_valid(parcel_sf))) parcel_sf <- sf::st_make_valid(parcel_sf)
 
+  # Reproject parcel to raster CRS and crop to extent
   parcel_r <- sf::st_transform(parcel_sf, sf::st_crs(r_pre))
   r_crop   <- terra::crop(r_pre, terra::vect(parcel_r))
 
+  # Exact extract
   r_rl   <- raster::raster(r_crop)
   cell_df <- exactextractr::exact_extract(r_rl, parcel_r, fun = NULL, progress = FALSE)[[1]]
   if (is.null(cell_df) || nrow(cell_df) == 0) return(NULL)
 
+  # Detect value column and normalise name
   val_name <- setdiff(names(cell_df), c("coverage_fraction", "cell_area"))
   if (length(val_name) != 1L) stop("Unexpected raster columns from exact_extract().")
   cell_df <- dplyr::rename(cell_df, value = !!val_name)
@@ -165,7 +175,7 @@ summarise_one_property_one_crop_preloaded <- function(prop_row, r_pre, vat_lu, c
       POT_PID      = prop_row$POT_PID,
       MUNICIPALITY = prop_row$MUNICIPALITY,
       FULL_ADDRESS = prop_row$full_address,
-      Domain_URL  = prop_row$Domain_URL,     # <--- NEW
+      Domain_URL   = prop_row$Domain_URL,
       COUNT,
       CLASS_LABEL,
       CROP,
@@ -176,7 +186,6 @@ summarise_one_property_one_crop_preloaded <- function(prop_row, r_pre, vat_lu, c
 
   out
 }
-
 ```
 
 
@@ -273,7 +282,7 @@ tables_by_pid <- split(results_master, results_master$PID)
 # purrr::iwalk(tables_by_pid, ~ readr::write_csv(.x, file.path("property_tables", paste0(.y, ".csv"))))
 # readr::write_csv(results_master, "parcel_crop_suitability_counts_master.csv")
 
-print(results_master, n = min(30, nrow(results_master)))
+# print(results_master, n = min(30, nrow(results_master)))
 ```
 
 

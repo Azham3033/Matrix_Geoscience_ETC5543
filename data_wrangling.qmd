@@ -1,8 +1,12 @@
 ---
-title: "test_scrapping"
+title: "Data Wrangling"
 format: html
 editor: visual
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
 
 ```{r}
 # --- Packages ------------------------------------------------------------
@@ -14,26 +18,30 @@ library(tidyr)
 library(readr)
 library(purrr)
 library(tidygeocoder)
+```
 
-# --- Config: where your saved HTML pages live ----------------------------
-# Folder containing domain_tas_page_1.html, domain_tas_page_2.html, ...
+```{r}
+# Folder with the saved Domain HTML pages (page_1.html, page_2.html, etc.)
 pages_dir <- "dataset/domain"
 
-# Helper to order files numerically if they're named like ..._page_12.html
+# Pulls the page number out of filenames like "..._page_12.html"
 extract_page_num <- function(x) {
   m <- str_match(basename(x), "page_(\\d+)\\.html$")
-  as.integer(m[,2])
+  as.integer(m[, 2])
 }
 
-# --- Helpers -------------------------------------------------------------
+# Simple helper: if 'a' is NULL, use 'b' instead
 `%||%` <- function(a, b) if (is.null(a)) b else a
+```
 
-# Parse TAS address into columns (street, suburb, state, postcode)
+```{r}
+# Break a full TAS address into street, suburb, state, and postcode
 parse_address <- function(addr) {
+  # Trim spaces; if empty, return blanks for all fields
   addr <- str_squish(addr %||% "")
   if (addr == "") return(tibble(street = NA, suburb = NA, state = NA, postcode = NA))
 
-  # "street, suburb TAS 7xxx"
+  # Handle format: "street, suburb TAS 7xxx"
   m1 <- str_match(addr, "^(.*?),\\s*(.*?)\\s+(TAS)\\s*(\\d{4})$")
   if (!any(is.na(m1))) {
     return(tibble(
@@ -43,7 +51,8 @@ parse_address <- function(addr) {
       postcode = str_squish(m1[,5])
     ))
   }
-  # "street,suburbTAS7xxx"
+
+  # Handle format: "street,suburbTAS7xxx" (no spaces)
   m2 <- str_match(addr, "^(.*?),(.*?)(TAS)(\\d{4})$")
   if (!any(is.na(m2))) {
     return(tibble(
@@ -54,9 +63,12 @@ parse_address <- function(addr) {
     ))
   }
 
+  # If nothing matches, just return the raw text as street
   tibble(street = addr, suburb = NA, state = NA, postcode = NA)
 }
+```
 
+```{r}
 # Convert price text to numeric dollars where possible
 parse_price_numeric <- function(price_text) {
   if (is.na(price_text) || str_trim(price_text) == "") return(NA_real_)
@@ -85,6 +97,9 @@ parse_price_numeric <- function(price_text) {
 
   as.numeric(round(val))
 }
+```
+
+```{r}
 
 # Normalise relative/absolute links to full Domain URLs
 resolve_url <- function(href) {
@@ -143,8 +158,7 @@ extract_one <- function(card) {
       if (!is.null(txt) && nzchar(str_squish(txt))) { addr_raw <- str_squish(txt); break }
     }
   }
-
-  # ---- Price candidates --------------------------------------------------
+    # ---- Price candidates --------------------------------------------------
   price_raw <- NA_character_
   for (el in list(
     card %>% html_element("p.css-mgq8yx"),
@@ -178,6 +192,10 @@ extract_one <- function(card) {
     Listing_URL = url_raw   %||% NA_character_
   )
 }
+```
+
+```{r}
+
 
 # Scrape ONE saved HTML file into a tibble of rows
 scrape_local_file <- function(filepath) {
@@ -220,21 +238,20 @@ df <- bind_cols(tas_df, addr_split) %>%
     Price_numeric = map_dbl(Price_raw, parse_price_numeric),
     full_address  = str_squish(paste(street, suburb, state, postcode, "Australia"))
   )
+```
 
+```{r}
 # --- Save and preview ----------------------------------------------------
 dir.create("results", showWarnings = FALSE, recursive = TRUE)
 dir.create("dataset", showWarnings = FALSE, recursive = TRUE)
 
+# Save the combined file in two spots:
+# one in 'dataset' for modelling and cleaning,
+# and another in 'results' for output reference.
 write_csv(df, "results/domain_tas_listings_all_pages.csv")
 write_csv(df, "dataset/property_listing.csv")
 
-print(df, n = 25)
-cat("\nTotal TAS listings combined from saved pages: ", nrow(df), "\n")
-
-
-
-
+#print(df, n = 25)
+#cat("\nTotal TAS listings combined from saved pages: ", nrow(df), "\n")
 
 ```
-
-ChatGPT can make mistakes. Check important info.
