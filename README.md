@@ -1,9 +1,9 @@
 <h1 align="center">AgriSuit</h1>
-<h3 align="center">Parcel-level crop suitability for Tasmania — where data meets soil, and insights grow into opportunity</h3>
+<h3 align="center">Parcel-level crop suitability for Tasmania — insights grow into opportunity</h3>
 
 <p align="center">
-  <a href="https://github.com/<USER>/<REPO>/actions">
-    <img src="https://github.com/<USER>/<REPO>/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check" />
+  <a href="https://github.com/Azham3033/Matrix_Geoscience_ETC5543/commits/master/">
+    <img src="https://img.shields.io/badge/Commits-view%20history-informational.svg" alt="Commits: view history" />
   </a>
   <a href="https://cran.r-project.org/">
     <img src="https://img.shields.io/badge/R-%3E%3D%204.3+-blue.svg" alt="R version" />
@@ -38,7 +38,7 @@ AgriSuit is an R Shiny app that visualises **biophysical crop suitability** at t
 ## Quick start
 
 ```r
-# R >= 4.3
+# R v4.3+
 install.packages(c(
   "shiny","shinyjs","sf","terra","exactextractr","leaflet","DBI","duckdb",
   "dplyr","DT","stringr","foreign","purrr","tidyr","readr","lubridate"
@@ -86,7 +86,7 @@ See /docs/methodology.md
 
 3. [Address Points Data (LIST Open Data)](https://listdata.thelist.tas.gov.au/opendata/)
 
-4. [Crop Rules Dataset (reference rules)(https://drive.google.com/file/d/1Ng79ZmtG-Ssd4yhOUoprvve3QhnzEqJ1/view?usp=drive_link)
+4. [Crop Rules Dataset (reference rules)](https://drive.google.com/drive/folders/1-uEme-nQeKq4tD5kMnbbDOJzOlWpyYvg?usp=sharing)
 
 Data are not bundled with the repository. Respect original data licenses/terms from each provider.
 
@@ -100,15 +100,6 @@ Data are not bundled with the repository. Respect original data licenses/terms f
 | Data preprocessing                           | `DBI`, `RSQLite`, `tidyverse`, `dbplyr`, `lubridate`, `sf`, `duckdb`                                           |
 | Pixel class labels counting                  | `readr`, `dplyr`, `purrr`, `sf`, `terra`, `foreign`, `exactextractr`, `stringr`, `janitor`, `tibble`, `raster` |
 | Pixels mapping & web maps                    | `sf`, `terra`, `leaflet`, `stringr`, `foreign`                                                                 |
-
-
-## Roadmap
-
-- Property-listing integration (≥10 ha) + notifications
-
-- Uncertainty treatments; yield/economic overlays
-
-- WMTS/WCS options, legend improvements, and QA scripts hardening
 
 
 ## Acknowledgments
