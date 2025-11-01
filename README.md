@@ -35,6 +35,13 @@ AgriSuit is an R Shiny app that visualises **biophysical crop suitability** at t
 - Majority-rule pixel accounting (≥ 50% of pixel inside parcel)
 - Defensive validation and parameterised SQL (`sqlInterpolate`) for safety
 
+## Feed Dataset (Prerequisite of Quick start below)
+
+These datasets needs to be downloaded first, then put it in the same level as **app.R**
+
+[Shiny App Feed Datasets](https://drive.google.com/drive/folders/1nDDL1lKjfjte7VxJwOMS9mSUr2QZvcQo?usp=sharing)
+
+
 ## Quick start
 
 ```r

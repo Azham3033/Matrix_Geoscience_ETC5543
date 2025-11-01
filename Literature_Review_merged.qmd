@@ -1,18 +1,34 @@
 ---
 title: "AgriSuit: Pixel-Based Parcel Suitability Analysis"
 author:
-- name: Rafli Ramdani
-  degrees: Master of Business Analytics
-  email: rram0049@student.monash.edu
-- name: Azham Hassan Venghat
-  degrees: Master of Business Analytics
-  email: aven0024@student.monash.edu
+  - name: RR
+    degrees: Master of Business Analytics
+    email: rram0049@student.monash.edu
+  - name: Azham Hassan Venghat
+    degrees: Master of Business Analytics
+    email: aven0024@student.monash.edu
+  - name: Dr. Kane Maxwell
+    degrees: Matrix Geoscience
+    email:  kane.maxwell@matrixgeoscience.com
 phone: (03) 9905 2478
 email: BusEco-Econometrics@monash.edu
 organization: ETC5543
 bibliography: references.bib
-format: report-pdf
+link-citations: true
+format:
+  report-pdf:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    cite-method: biblatex
+    title-block-style: plain
+    title-block-author-details: true
+header-includes:
+  - \ExecuteBibliographyOptions{doi=true,url=false}
+  - \DeclareFieldFormat{doi}{\href{https://doi.org/#1}{https://doi.org/#1}}
+  - \renewbibmacro*{doi+eprint+url}{\printfield{doi}\newunit}
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
@@ -67,11 +83,11 @@ The [Tasmanian Enterprise Suitability Map (TESM)](https://nre.tas.gov.au/agricul
 
 TESM’s analytical foundation rests upon the integration of three primary data domains, consisting of soil, climate, and topography. The domains are processed through quantitative spatial modelling. The soil component draws on more than 900 core samples describing attributes such as pH, clay content, drainage class, and stone content (Kidd & Webb, 2015). [Climate inputs](https://nrmdatalibrary.nre.tas.gov.au/FactSheets/WfW/ListMapUserNotes/Inventory_DCM_Tas.pdf) originate from a network of over 270 temperature sensors distributed across representative terrain positions, enabling fine-scale modelling of variables such as frost risk, chill hours, growing-degree days, and extreme heat frequency. Topographic variables, derived from Shuttle Radar Topography Mission (SRTM) data, gamma-radiometric imagery, and surface geology, capture slope, aspect, and elevation effects. These heterogeneous datasets are standardised and co-registered, then resampled at 80 m and modelled using regression-tree and regression-kriging approaches to produce spatially continuous soil-attribute predictions with validation accuracy appropriate for regional-scale land evaluation (Kidd & Webb, 2015). The result is a three-dimensional digital representation of the Tasmanian soil landscape that supports downstream suitability analyses.
 
-The suitability evaluation itself employs a deterministic, rule-based framework derived from the Food and Agriculture Organization (FAO, 1976) land-evaluation system and refined through the “most-limiting-factor” principle articulated by Klingebiel and Montgomery. Each crop or enterprise is governed by a rule set developed jointly by TIA researchers and industry experts, defining optimal and limiting parameter thresholds across the soil–climate–topography continuum. The model classifies each grid cell into four main hierarchical categories, i.e. _well suited_ , _suitable_ , _marginally suitable_ , _unsuitable_ based on the lowest-rated criterion. Thus, if drainage or frost risk is poor even when all other factors are optimal, the overall classification defaults to “unsuitable.” This conservative logic enhances interpretability and ensures that biophysical limitations are not overlooked in investment decisions. The framework also differentiates between _manageable_ and _unmanageable_ constraints, acknowledging that interventions such as liming or artificial drainage can upgrade a site’s effective suitability (Kidd et al., 2015).
+The suitability evaluation itself employs a deterministic, rule-based framework derived from the Food and Agriculture Organization (FAO, 1976) land-evaluation system and refined through the “most-limiting-factor” principle articulated by Klingebiel and Montgomery. Each crop or enterprise is governed by a rule set developed jointly by TIA researchers and industry experts, defining optimal and limiting parameter thresholds across the soil–climate–topography continuum. The model classifies each grid cell into four main hierarchical categories, i.e. _well suited_ , _suitable_ , _marginally suitable_ , _unsuitable_ based on the lowest-rated criterion. Thus, if drainage or frost risk is poor even when all other factors are optimal, the overall classification defaults to “unsuitable.” This conservative logic enhances interpretability and ensures that biophysical limitations are not overlooked in investment decisions. The framework also differentiates between _manageable_ and _unmanageable_ constraints, acknowledging that interventions such as liming or artificial drainage can upgrade a site’s effective suitability @Kidd2015-dsa-tas.
 
 Following early operational success, the project advanced to produce state-wide 3D soil-attribute maps at high resolution, which were integrated into the national [Terrestrial Ecosystem Research Network (TERN)](https://www.tern.org.au/) and [GlobalSoilMap.net](https://isric.org/projects/globalsoilmapnet) repositories (Kidd & Webb, 2015). Complementary climatic projections from [Climate Futures for Tasmania](https://climatefutures.org.au/climate-futures-for-tasmania/) were incorporated to generate suitability layers for 2030 and 2050 under [Representative Concentration Pathway (RCP) 8.5 scenarios](https://www.climatechangeinaustralia.gov.au/en/changing-climate/future-climate-scenarios/greenhouse-gas-scenarios/). Each enterprise is therefore represented by three temporal surfaces of current (2018), near-future (2030), and long-term (2050), enabling preliminary adaptation planning. An aggregated [Enterprise Versatility Index (EVI)](https://www.thelist.tas.gov.au/app/content/data/geo-meta-data-record?detailRecordUID=d56c5151-9eef-49aa-9712-4f700d65547e) summarises the number of viable enterprises/crops per grid cell, thereby identifying land parcels capable of diversified production. The integration of these high-resolution soil and climate grids has substantially improved Tasmania’s ability to visualise spatial heterogeneity in agricultural potential.
 
-The Tasmanian wine sector provides a salient example of TESM’s applied relevance. Building on earlier climate modelling (Webb et al., 2015, 2018), the Enterprise suitability mapping and Tasmania’s wine sector (Brullo et.al, 2024) demonstrates how TESM outputs guide site selection for viticulture by combining frost-risk surfaces, growing-degree-day thresholds, and soil-drainage indices. These analyses have supported Tasmania’s transition toward high-value sparkling and cool-climate table wines, where irrigation expansion and land-use zoning are strategically coordinated with biophysical suitability. TESM data are increasingly used by policy agencies to outline priority irrigation districts and agricultural investment zones, reinforcing its dual role as a scientific and economic planning instrument.
+The Tasmanian wine sector provides a salient example of TESM’s applied relevance. Building on earlier climate modelling @Webb2018-frost-tas, the Enterprise suitability mapping and Tasmania’s wine sector (Brullo et.al, 2024) demonstrates how TESM outputs guide site selection for viticulture by combining frost-risk surfaces, growing-degree-day thresholds, and soil-drainage indices. These analyses have supported Tasmania’s transition toward high-value sparkling and cool-climate table wines, where irrigation expansion and land-use zoning are strategically coordinated with biophysical suitability. TESM data are increasingly used by policy agencies to outline priority irrigation districts and agricultural investment zones, reinforcing its dual role as a scientific and economic planning instrument.
 
 
 \newpage
@@ -779,7 +795,3 @@ AgriSuit delivers a functional foundation for integrating geospatial analytics w
 
 \newpage
 
-
-# Resources
-
-guvbvu
