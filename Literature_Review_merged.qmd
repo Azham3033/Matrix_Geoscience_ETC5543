@@ -344,10 +344,7 @@ AgriSuit is designed to close this gap. By directly linking TESM-derived suitabi
 
 \newpage 
 
-
-# Data
-
-## Data Sources and Description
+# Data Sources and Description
 
 This section outlines the four datasets integrated into the AgriSuit platform; property listings from Domain.com.au, crop-specific environmental suitability maps (TESM), cadastral parcel boundaries from LISTMap, and address-point data from LISTMap. Analyses were conducted in R (version 4.3.0 or above) using `rvest`, `dplyr`, `purrr`, `sf`, `terra`, `exactextractr`, and `knitr`, `kableExtra.` The interactive prototype uses shiny and leaflet. Each dataset contributes a unique spatial or semantic dimension that collectively enables parcel-level crop-suitability analysis and property–crop linkage. @tbl-datasources summarises the provenance, file characteristics, and licensing status of each dataset.
 
@@ -367,102 +364,6 @@ Table: Data Descriptions {#tbl-datasources}
 
 Together, these datasets form a unified analytical base linking market listings with environmental suitability and cadastral geometry.
 
-
-## Data Wrangling Process (IDA)
-
-The initial wrangling phase standardised the property-listing dataset and prepared geospatial layers for integration. Web-scraped HTML content was parsed using `rvest` package and cleaned through regular expression logic to extract addresses and numeric prices. @tbl-rawdata shows a sample of the raw property data prior to transformation.
-
-Table: Raw Wrangled Data Display {#tbl-rawdata}
-
-| Full Address (raw)                            | Price_raw         |
-| --------------------------------------------- | ------------------ |
-| 401 Bresnehans Road, Little Swanport TAS 7190 | Offers Over $875 k |
-| 111 Nubeena Road Taranna TAS 7180   | $1,295,000 |
-| 120 Russells Plains Road Rocherlea TAS 7248 | $550,000 |
-| 19 Central Castra Road Sprent TAS 7315 | Offers Over $875k |
-| 172 Bridgenorth Road Legana TAS 7277 | Expressions Of Interest |
-
-
-
-Geospatial components were obtained from the Tasmanian [LISTMap Open Data](https://listdata.thelist.tas.gov.au/opendata/) portal. Cadastral parcels were downloaded per municipality (29 folders), while statewide address points and cropspecific TESM rasters were retrieved as separate layers. Each file was inspected for completeness and
-
-
-## Data Handling and Integration (EDA)
-
-### Property Listing Cleaning
-
-The cleaned property dataset retained 262 valid Tasmanian listings with geocoded latitude–longitude coordinates obtained via SQL cleaning workflows. Outliers (e.g., missing or duplicate full addresses) were removed.
-
-A composite key full_address was created by concatenating street, suburb, state, and postcode fields.
-
-### Cadastral Parcels
-
-Each municipal folder contained a set of standard GIS vector components (Rogers et al, 2025), displayed on @tbl-gis:
-
-Table: GIS Folder Components {#tbl-gis}
-
-| Component              | Function                                      |
-| ---------------------- | --------------------------------------------- |
-| `.shp`                 | Stores polygon geometry (parcel boundaries)   |
-| `.dbf`                 | Contains attribute table (e.g., PID, area)    |
-| `.prj`                 | Defines coordinate reference system (CRS)     |
-| `.shx`, `.sbn`, `.sbx` | Spatial index files for faster rendering      |
-| `.gdb`, `.tab`         | Alternative formats for the same geometry set |
-
-
-These files collectively represent cadastral parcels in EPSG:28355 (GDA94 / MGA Zone 55). The Parcel Identifier (PID) attribute uniquely distinct each parcel and serves as the join key linking with both the address-point dataset and TESM raster extractions. Parcel polygons provide the geometric foundation for zonal statistics such as area and pixel-count aggregation.
-
-### Address Points
-
-The statewide address-point dataset is stored as a shapefile containing coordinate locations and parsed address components (ST_NO_FROM, STREET, ST_TYPE, LOCALITY, STATE, POSTCODE).
-
-@tbl-addresspoints illustrates the tokenised structure of this dataset.
-
-
-Table: Address Points Tokenized Raw Data {#tbl-addresspoints}
-
-| ST_NO_FROM | STREET     | ST_TYPE | LOCALITY        | STATE | POSTCODE |
-| ---------- | ---------- | ------- | --------------- | ----- | -------- |
-| 401        | Bresnehans | Road    | Little Swanport | TAS   | 7190     |
-| 21         | Waterson   | Lane    | Carlton         | TAS   | 7173     |
-| 172        | Bridgenorth| Road    | Legana          | TAS   | 7277     |
-
-
-To align with the property-listing format, these components were concatenated into a single full_address field by the pattern ST_NO_FROM + STREET + ST_TYPE + LOCALITY + STATE + POSTCODE + "Australia". This derived string enables one-to-one matching with listing data and provides a secondary linkage to parcel polygons via PID.
-
-
-### Crop TESM Layers
-
-TESM rasters represent crop-specific environmental suitability across Tasmania. Each crop has a GeoTIFF raster (.tif) encoding suitability scores and a corresponding attribute table (.vat.dbf) defining class labels and colour schemes. Both are required: the .tif stores numeric cell values, while .vat.dbf provides the categorical legend necessary for interpretation. Crops lacking complete pairs (notably cherries and hazelnuts) were excluded from subsequent analysis.
-Raster data were processed in `terra` using the `exactextractr` method to compute per-parcel suitability distributions. Each parcel was overlaid on the corresponding crop raster to extract pixel counts per class. Suitability aggregation followed the most-limiting-factor principle described in Section 6.2.
-
-
-### Coordinate Alignment and Integration
-
-Before joining datasets, all layers were re-projected to the same coordinate reference system (EPSG:28355) to ensure consistent distance and area metrics. The integration workflow comprised:
-
-  1. Matching property listings - address points via full_address
-  
-  2. Linking address points - parcels via PID
-  
-  3. Overlaying parcels - crop TESM rasters for pixel-level aggregation
-
-The final database contained over 100.000 rows representing all combinations of (land parcel × crop × suitability class × pixel count) for 33 crops and 7-11 class labels depending on the crops. Pre-computing this structure significantly reduced runtime during Shiny-app queries, avoiding on-the-fly pixel-count calculations. @tbl-tool shows the process and tool pairs.
-
-
-Table: Process-Tool Pairs {#tbl-tool}
-
-| Stage | Operation                       | Key Script / Tool  | Output Object   | Records / Features |
-| ----- | ------------------------------- | ------------------ | --------------- | ------------------ |
-| A     | Web scraping and price cleaning | rvest + regex      | `df_raw`        | 289                |
-| B     | Geocoding                       | tidygeocoder (OSM) | `df_geo`        | 262                |
-| C     | Parcel join                     | sf + terra         | `parcel_joined` | 262                |
-| D     | TESM extraction                 | exactextractr      | `crop_parcel`   | > 100,000           |
-
-
-\newpage
-
-
 # Methodology
 
 ![Project’s Flowchart Diagram](images/project_flow_diagram.jpg){#fig-flow width=80% fig-align="center"}
@@ -471,9 +372,7 @@ Table: Process-Tool Pairs {#tbl-tool}
 The data pipeline illustrated above @fig-flow represents a streamlined end-to-end workflow that transforms raw property listings into interactive geospatial insights. The process begins with automated data extraction from Domain.com, capturing property attributes and spatial identifiers. This raw data undergoes rigorous modelling and cleaning to ensure structural consistency and remove redundancies before being passed through a transformation stage that maps listings to cadastral parcels and crop-suitability indicators. The transformed datasets are then integrated and loaded into a consolidated DuckDB environment, forming the analytical backbone of the system. Finally, the curated data is delivered through an RShiny interface, enabling dynamic exploration, filtering, and visualisation of property-suitability relationships. Together, these stages create a cohesive data ecosystem that bridges web-sourced property data with spatial analytics, ensuring both transparency and reproducibility across the AgriSuit workflow.
 
 
-## Data Pipeline
-
-### Data Fetch (Domain.com.au and Supporting Datasets)
+## Data Fetch (Domain.com.au and Supporting Datasets)
 
 Referring to @fig-flow, the work begins with the data fetch stage, where multiple datasets are collected from both online and cadastral sources to build the foundation for analysis. The primary dataset is obtained from [Domain.com.au](https://www.domain.com.au/sale/?excludeunderoffer=1&landsize=100000-any&landsizeunit=ha&ssubs=0&state=tas&displaymap=1) using an automated web-scraping process. Each webpage typically displays ten property cards, and the scraper systematically iterates through all pages to extract essential details such as the property ID, full address, price, land area (in hectares), listing type (e.g., sale or lease), and corresponding URL links. Once this raw property data is gathered, it undergoes initial text preprocessing through string manipulation and pattern-matching techniques to extract structured information. For instance, numeric price values are parsed from text strings (e.g., “Price: $1.2M” → 1,200,000), land area values are detected using pattern extraction, and irrelevant characters or HTML tags are removed. These operations ensure the scraped data is uniform and free from noise before further integration.
 
@@ -486,113 +385,35 @@ It is important to note that the web-scraping methodology has been employed pure
 The cleaned and preprocessed property data is then exported to a CSV file and stored within the project workspace as an intermediate staging layer. Finally, the refined data, along with the cadastral and ESM raster datasets is loaded into the DuckDB database, forming a unified data foundation for subsequent stages such as data modelling, spatial transformation, and suitability analysis.
 
 
-### Data Modelling, Cleaning, and Transformation
+## Data Modelling, Cleaning, and Transformation
 
-After the data acquisition stage, the workflow transitions into the data modelling and transformation phase, where the collected datasets are standardised, validated, spatially structured, and then processed to generate crop suitability metrics for each property. This phase represents the bridge between the raw input data and the analytical outputs that drive the final visualisation and decision-making components.
+Following the data-fetching procedures detailed in Section 6.1, the workflow transitioned into the data-modelling and integration phase, where the collected datasets were validated, cleaned, and spatially structured to form a coherent analytical foundation for the AgriSuit dashboard. This stage was essential for transforming diverse and semi-structured inputs—ranging from web-scraped property listings to official cadastral parcels—into a relationally connected database capable of supporting parcel-level analysis.
 
-The process begins with data modelling and cleaning, where the various input datasets, including the web-scraped property listings, cadastral parcel data, and verified address information, integration into a unified relational database structure. As shown in @fig-flow and @fig-dataflow, the schema consists of five key interconnected tables: Municipality_Master, Address_Master, Property_Master, Property_Listing, and CROP_PROPERTY_COUNT_MASTER. The Municipality_Master table holds cadastral parcel data for all Tasmanian municipalities, containing fields such as PID, CID, and Municipality_ID, along with the polygon coordinates that define each property’s spatial boundaries. These coordinates form the geospatial foundation for the analytical operations carried out later. The Address_Master table provides verified address references linked via PID, while the Property_Listing table stores the Domain.com property data, with FULL_ADDRESS serving as the key joining field. The Property_Master table acts as a relational hub that consolidates all identifiers and establishes unified records by linking PID, FULL_ADDRESS, and Municipality_ID.
+### Data Cleaning and Validation
 
-Before the relational model is established, all datasets undergo a rigorous data cleaning and validation process. Duplicate entries are removed, null or incomplete fields are resolved, and inconsistent naming conventions across the municipality and address data are standardised. To ensure consistency across all datasets, the address components, including street name, suburb, and postcode are concatenated into a single FULL_ADDRESS field. This concatenation creates a uniform join key that allows for accurate integration between the Address_Master and Property_Listing tables. Spatial validation checks are also performed to confirm that the geometries in the Municipality_Master table align with the corresponding address and property records. By the conclusion of this stage, a clean, standardised, and fully georeferenced relational database is established, ensuring efficient and accurate joins between all datasets.
+The initial step involved refining and validating the property listing and address datasets to ensure accuracy, completeness, and consistency. Raw listings retrieved from the web-scraping workflow contained missing fields, duplicated entries, and irregular formatting that could interfere with spatial joins. These records were systematically filtered, retaining only complete entries with verified location information. Textual inconsistencies such as spacing, capitalisation, and punctuation were corrected to align with Tasmanian addressing conventions. Each valid record was then geocoded to obtain latitude and longitude coordinates, ensuring positional accuracy. This process established a verified and uniform property dataset suitable for integration with official spatial layers.
 
-Once the property and cadastral data are successfully joined, the workflow progresses to the data transformation stage, where the geospatial analysis is performed to derive crop suitability counts for each property. The polygon geometries from the Municipality_Master table are spatially overlaid on the Environmental Suitability Model (ESM) raster maps (georeferenced TIFF layers) depicts the crop suitability across Tasmania. Each raster layer contains pixel-level classifications that indicate varying degrees of suitability for specific crops, such as Highly Suitable, Moderately Suitable, Marginally Suitable, or Unsuitable. Using spatial intersection and aggregation techniques, the system identifies all pixels that fall within each property’s polygon boundary and counts the number of pixels associated with each suitability class. This process effectively quantifies how much of each property’s total land area falls under different suitability levels for each crop type.
+### Address Standardisation
 
-The resulting output from this transformation is a structured dataset that links every Property ID (PID) and Full Address with multiple crop types and their corresponding pixel counts across suitability classes. This processed information is then stored in the CROP_PROPERTY_COUNT_MASTER table (final analytical table in the database schema). This table provides a property-level summary of crop feasibility across Tasmania and serves as the foundation for the RShiny dashboard. Through this integration, users can interactively filter, visualise, and analyse agricultural suitability by crop, municipality, or class label, completing the end-to-end data flow from raw property listings to actionable spatial insights.
+After validation, the address data were standardised to ensure structural uniformity across all datasets. Individual address components—street number, street name, street type, suburb, state, and postcode, were concatenated into a composite FULL_ADDRESS field. This field provided a consistent textual identifier across both the web-scraped listings and the verified address-point dataset described in Section 6.1. The purpose of this step was to harmonise address representation rather than immediately establish relational dependencies, reducing ambiguity when cross-referencing between independent data sources. The outcome was a clean, standardised address framework that ensured one-to-one correspondence between listed properties and their official spatial references.
 
+### Parcel Preparation and Spatial Validation
 
-## Suitability Computation
+Parallel to address standardisation, cadastral parcel layers were prepared and validated. Each municipal dataset contained standard GIS vector components, including geometry files (.shp), attribute tables (.dbf), coordinate definitions (.prj), and supporting index files (.shx, .sbn, .sbx). These files collectively define parcel boundaries and their associated attributes such as Parcel Identifier (PID) and Municipality_ID. To maintain uniformity, all datasets were re-projected into the common coordinate reference system EPSG:28355 (GDA94 / MGA Zone 55). Geometry checks ensured that parcel boundaries were topologically valid and spatially aligned with their corresponding address points. The PID field was reviewed to confirm uniqueness, thereby preventing duplication or missing identifiers. By the conclusion of this step, the cadastral data were spatially coherent, attribute consistent, and ready to serve as the geometric foundation for integration.
 
-### Rule-Based Threshold Overview
+### Relational Database Design
 
-Each crop layer is governed by a set of agronomic thresholds derived from expert consultation and literature review. For every environmental variable, suitability is classified into four ordinal categories:
+With clean and verified datasets established, the workflow progressed to database modelling. A relational schema was designed to manage the interconnected property, address, and parcel data efficiently and to support reproducible spatial joins. The schema comprised five core tables: Municipality_Master, Address_Master, Property_Listing, Property_Master, and CROP_PROPERTY_COUNT_MASTER.
+The Municipality_Master table stored parcel geometries and associated identifiers. The Address_Master table contained verified addresses linked to parcels via PID, while Property_Listing stored the cleaned Domain.com records indexed by FULL_ADDRESS. The Property_Master table functioned as the central bridge, combining PID, FULL_ADDRESS, and Municipality_ID into unified property records. The CROP_PROPERTY_COUNT_MASTER table was reserved for analytical outputs generated later during the suitability computation stage.
+Each table was structured with explicit primary and foreign key constraints to ensure referential integrity. For instance, PID acted as the primary key within Municipality_Master and a foreign key within Address_Master and Property_Master. Similarly, FULL_ADDRESS served as the primary key in Property_Listing and as a foreign key reference within Property_Master. These relationships established the logical hierarchy connecting textual property identifiers to their spatial representations.
 
+### Join Logic and Integration
 
-Table: Class Labels {#tbl-clslabels}
+Following schema design, relational joins were performed to merge the datasets into a single queryable structure. The first join linked Property_Listing and Address_Master via FULL_ADDRESS, creating verified address-to-listing correspondences. The second join connected Address_Master to Municipality_Master through the PID attribute, binding each address to its cadastral parcel boundary. The resulting relational chain, Property_Listing → Address_Master → Municipality_Master—formed the backbone of the AgriSuit database, enabling spatially aware queries that connect market listings to physical land units. The Property_Master table consolidated these relationships into a unified view, providing a single record per property containing its listing details, verified address, and parcel metadata. This relational structure ensured that every property could be unambiguously traced from textual address to geospatial boundary, forming a transparent link between public market information and official land records.
 
-| Class                     | Interpretation                            | Example threshold (barley) |
-| ------------------------- | ----------------------------------------- | -------------------------- |
-| 1.0 – Well suited         | Ideal, no constraints                     | pH 6.0–7.5; slope $\leq$ 10 %   |
-| 2.0 – Suitable            | Minor constraint, manageable              | pH 5.5–6.0; slope 10–15 %  |
-| 3.0 – Moderately suitable | Moderate constraint, yield penalty likely | pH 5.0–5.5; slope 15–25 %  |
-| 4.0 – Unsuitable          | Severe or unmanageable constraint         | pH $\leq$ 5.0; slope $\geq$ 25 %     |
+### System Validation and Output
 
-
-The classification in @tbl-clslabels is deterministic: each pixel receives a numeric score for every factor based on where its value falls within these threshold ranges.
-
-
-### Pixel-level Suitability Computation
-
-AgriSuit consumes pre-computed gridded suitability layers from Tasmania’s Enterprise Suitability Mapping (ESM) / LISTmap program. These layers are produced by NRE Tas using statewide Digital Soil Mapping (DSM) products at ~80 m resolution (regression-tree/Cubist with mass-preserving depth splines and cross-validation) and climate-risk surfaces (frost risk, heat risk, growing-degree days) generated from logger-calibrated observations and CFT downscaling with decile-based distribution alignment. Crop-specific enterprise rules then map DSM/CFT covariates to categorical pixel classes. Where climate products exist at 30 m (and some statewide implementations target 80 m for near-real-time delivery), AgriSuit reports the native resolution and any resampling used for co-registration (Kidd, 2015).
-
-1) Inputs and gridding pipeline (soil, climate, terrain)
-
-Soil attributes 80 m, multi-depth. Version 1.0 statewide soil grids (e.g., pH, EC, organic carbon, particle size, coarse fragments, effective depth, and crop suitability specific attributes) are produced by regression-tree (Cubist) DSM with $k$-fold/LOOCV diagnostics. Site profiles are interpolated to standard depth intervals via mass-preserving depth splines prior to modelling, yielding realistic terrain-related patterns and quantified uncertainty bands.
-
-Climate variables (current and projections).
-Near-surface temperature series are constructed by placing and calibrating temperature loggers against long-term BoM stations, then learning spatial climate fields and indicators (e.g., frost risk, growing degree days). Cross-validation commonly shows mean absolute errors near $\approx 0.5^{\circ}\text{C}$. CFT projections are downscaled with regression trees and distribution-aligned by decile adjustment against logger records, producing calibrated daily minima/maxima for 1994–2050. Indicator rasters for 2011–2030 and 2031–2050 are recomputed from these calibrated series.
-
-Illustrative climate rule constructs.
-Rules are explicit. For example, a frost-risk rule for wine grapes may count the frequency of years with $T_{\min} < -2^{\circ}\text{C}$ during 15 Sep–15 Oct. The suite includes frost/heat risks and growing degree days, with statewide model skill reported (e.g., RMSE/$R^2$/concordance).
-
-2) Crop-rule scoring at the pixel scale
-
-Let each pixel location be $(x,y)$. For a given crop $c$, ESM defines a finite set of biophysical factors $i \in {1,\dots,m}$ spanning soil, climate, and terrain. Each factor is translated into a class score
-$S_i(x,y) \in \{1.0, 2.0, 3.0, 4.0\}$
-by deterministic crop rules (thresholds or intervals) that encode agronomic acceptability (e.g., pH windows, frost frequency limits, slope bands). These rules operationalise the bridge from DSM/CFT grids to categorical suitability.
-
-AgriSuit adopts the program’s Most-Limiting-Factor (MLF) aggregator, which is a standard practice in land evaluation, sets the pixel’s overall class to the most restrictive factor:
-
-$$
-S_{\text{overall}}(x,y) \;=\; \min_{i}\, S_i(x,y)
-$$
-
-The argument to use MLF is because in Tasmania's ESM, crop rules are designed to guard against critical failures (e.g., severe frost, drainage, pH toxicity). MLF enforces that any binding constraint governs the outcome; it is simple, auditable, and aligned with risk-averse, state-wide enterprise mapping practice.
-
-3) From pixel classes to parcel labels
-
-Parcel summaries reported in AgriSuit are computed as the modal (majority) class within each cadastral polygon $P$ (after snapping CRS and resolution to the source grids), i.e.,
-
-$$
-\hat S_{\text{parcel}}(P)
-\;=\;
-\operatorname*{arg\,max}_{k \in \{1,2,3,4\}}
-\;\frac{1}{|P|}\sum_{p \in P}
-\mathbf{1}\!\left\{\, S_{\text{overall}}(p) = k \,\right\}
-$$
-
-This mirrors ESM’s communication of dominant suitability at planning scales while preserving pixel-level diagnostics for limiting factors.
-
-Indicator Function Definition:
-
-$$
-\mathbf{1}\{A\} =
-\begin{cases}
-1, & \text{if } A \text{ is true},\\
-0, & \text{otherwise.}
-\end{cases}
-$$
-
-4) Worked micro-example (one pixel)
-
-Consider a pixel with DSM/CFT-derived inputs at $(x,y)$:
-
-Soil pH (0–15 cm): $6.1$ (within crop-preferred range) $\Rightarrow ; S_{\text{pH}} = 1.0$ (Well-suited).
-
-Effective soil depth: $90$ cm (meets threshold) $\Rightarrow ; S_{\text{depth}} = 1.0$.
-
-Slope/terrain index: within acceptable band $\Rightarrow ; S_{\text{slope}} = 2.0$ (Moderately suited).
-
-Frost risk (15 Sep–15 Oct): $7%$ of years with $T_{\min} < -2^{\circ}\text{C}$ $\Rightarrow ; S_{\text{frost}} = 3.0$.
-
-Applying MLF,
-
-$$
-S_{\text{overall}}(x,y) \;=\; \min\{\,1.0,\,1.0,\,2.0,\,3.0\,\} \;=\; 3.0
-$$
-
-The binding frost constraint drives the pixel to class $3.0$ (Marginal) despite favourable soil metrics, aligned with the intended behaviour under persistent climate risk.
-
-However, the model also has some assumptions and limitations, since it applies crop-rule thresholds as hard cut-offs; prediction uncertainty from DSM/CFT is not propagated into class assignment, which can introduce sensitivity near rule boundaries. Pixel classes are aggregated with a non-compensatory Most-Limiting-Factor operator $S_{\text{overall}}(x,y)=\min_i S_i(x,y)$, so favourable conditions cannot offset a binding constraint. All inputs are co-registered to a common CRS and grid; where resampling is unavoidable we use nearest-neighbour for categorical classes and bilinear for continuous diagnostics. At the parcel scale, modal labelling summarises the dominant signal and may obscure fine-scale hotspots; therefore, limiting-factor rasters accompany parcel summaries.
-
+Before finalising the integration, integrity tests were conducted to confirm the accuracy of all joins and key relationships. Duplicate keys, orphaned references, and inconsistent coordinate records were systematically checked and corrected. Spatial overlays were used to verify that linked parcels accurately encompassed their associated geocoded addresses, ensuring no mismatches between tabular and geometric components. The validated output was a harmonised, fully georeferenced relational database capable of supporting both tabular and spatial queries. This structure provided a robust foundation for the analytical operations that follow in Section 6.3, where the database relationships are extended to incorporate environmental suitability data and pixel-based aggregation.
 
 ## Relational Integration & Keys
 
@@ -635,6 +456,16 @@ In the case of failed deterministic joins, two complementary methods suggested b
 
 In summary, the integration pipeline couples canonical identifiers with spatial containment logic, ensuring that each listing is reliably matched to a physical parcel and corresponding crop-suitability raster summary. This hybrid key architecture provides a reproducible and scalable foundation for AgriSuit’s unified geospatial–market database.
 
+
+## Pixel Suitability
+
+Geospatial inputs consist of layered surfaces and geometries that must be spatially consistent. A raster is a gridded surface in which each cell (pixel) stores a value for a single thematic layer (e.g., enterprise suitability); multiple layers coexist and must share a coordinate reference system to be comparable. In contrast to CSVs or single SQL tables, useful analysis emerges only after geometries (parcels, address points) and rasters are aligned and joined with stable identifiers. In our pipeline, relational keys from Section 6.3 (notably PID and canonical full_address) anchor this alignment, while spatial containment ensures that per-parcel summaries correspond exactly to what is rendered.
+
+The overall suitability at pixel scale follows the Most-Limiting-Factor (MLF) principle, "for each crop, soil, climate, and terrain sub-rules yield categorical classes, and the strictest class governs the pixel’s final label". This non-compensatory operator makes the mapping transparent and risk-averse, so parcel-level tallies faithfully reflect limiting conditions.
+
+Operationally, the parcel geometry is validated and reprojected to the crop raster’s CRS, the raster is windowed to a buffered cut-out around the parcel for efficiency, and the value attribute table (VAT) is used to translate numeric codes into human-readable class names. For pixel counting, the raster is masked by the parcel polygon and intersecting pixels are retrieved with their inside-parcel fractions; a 50% majority rule excludes boundary slice and reduces double-counting at edges. Counts are aggregated by suitability class, then stamped with parcel identifiers (PID), canonical address, municipality, and crop name, yielding a per-parcel x per-crop summary that is written to the analytics table for downstream queries and filtering.
+
+For pixel mapping, the same alignment and VAT translation steps are used, but the goal is an interpretable visualisation. The raster is clipped exactly to the parcel footprint, class labels are applied, and a stable colour scheme from the legend registry is assigned (with a neutral fallback when a class lacks a registered colour). Only classes present within the parcel are retained, producing a clean, colour-coded map tile that corresponds one-to-one with the counts stored in the summary table and the relational bridges.
 
 ## Dashboard Development (AgriSuit Application)
 
@@ -763,13 +594,13 @@ Broadening scope from “can it grow here?” to “is it viable here?” will r
 
 Operational maturity likewise depends on dependable data operations. Automated refresh and synchronisation of listings and cadastral layers, provenance/version tags that bind map releases to app builds, and service decomposition, an API endpoints with cloud-optimised GeoTIFF tiling and caching to help sustain freshness and performance. A personalised notification module (filters for crop, municipality, class, price) can then shift the tool from pull-only exploration to timely, criteria-driven alerts without altering the analytical logic.
 
-Deployment path (multi-user and secure). A production instance should migrate to a stand-alone database server or managed cloud service, such as PostgreSQL with PostGIS on AWS RDS, Google Cloud SQL, or Azure Database for PostgreSQL. This stack supports spatial types and indexes (PostGIS), automated backups, point-in-time recovery, encryption at rest/in transit, monitoring/alerting, and elastic compute/storage to meet peak demand.
+**Deployment path (multi-user and secure)**. A production instance should migrate to a stand-alone database server or managed cloud service, such as PostgreSQL with PostGIS on AWS RDS, Google Cloud SQL, or Azure Database for PostgreSQL. This stack supports spatial types and indexes (PostGIS), automated backups, point-in-time recovery, encryption at rest/in transit, monitoring/alerting, and elastic compute/storage to meet peak demand.
 
 There are also operational considerations, a cloud database enables controlled capacity scaling (up/down with load), isolates analytical jobs from the web tier, and formalises data governance (least-privilege access, audit logs, scheduled maintenance windows). The migration plan should also pin data provenance (schema versions, release tags) and formalise refresh jobs for listings and cadastral layers.
 
 The same concept is portable to other states, provided a custom setup is undertaken: jurisdiction-specific rule packs and class vocabularies, data adapters for local soil/climate rasters and CRS/metadata conventions, appropriate licensing and attribution, expert validation against local practice, and performance tuning for differing data volumes and service constraints.
 
-A pragmatic roadmap follows this sequence: deliver climatic scenario toggles and labelling; add uncertainty overlays with concise summary statistics; introduce water-access and core economic indicators; harden data refresh, provenance, and notifications; execute the database migration; then package a jurisdiction template (rule-pack plus data-adapter kit) for pilots beyond Tasmania.
+**A pragmatic roadmap follows this sequence**: deliver climatic scenario toggles and labelling; add uncertainty overlays with concise summary statistics; introduce water-access and core economic indicators; harden data refresh, provenance, and notifications; execute the database migration; then package a jurisdiction template (rule-pack plus data-adapter kit) for pilots beyond Tasmania.
 
 
 \newpage
