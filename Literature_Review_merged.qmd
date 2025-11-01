@@ -84,6 +84,14 @@ TESM’s analytical foundation rests upon the integration of three primary data 
 
 The suitability evaluation itself employs a deterministic, rule-based framework derived from the Food and Agriculture Organization (FAO, 1976) land-evaluation system and refined through the most-limiting-factor principle articulated by Klingebiel and Montgomery. Each crop or enterprise is governed by a rule set developed jointly by TIA researchers and industry experts, defining optimal and limiting parameter thresholds across the soil–climate–topography continuum, as outlined in @tbl-allvariables. The model classifies each grid cell into four main hierarchical categories, i.e. _well suited_ , _suitable_ , _marginally suitable_ , _unsuitable_ based on the lowest-rated criterion. Thus, if drainage or frost risk is poor even when all other factors are optimal, the overall classification defaults to “unsuitable.” This conservative logic enhances interpretability and ensures that biophysical limitations are not overlooked in investment decisions. The framework also differentiates between _manageable_ and _unmanageable_ constraints, acknowledging that interventions such as liming or artificial drainage can upgrade a site’s effective suitability @Kidd2015-dsa-tas.
 
+```{r, warning=F, message=F}
+library(tidyverse)
+library(kableExtra)
+crops_all <- readRDS("dataset/all_crops_df.rds")
+crops_list <- crops_all |> 
+  distinct(`Crop Type`)
+```
+
 ```{r}
 crops_inputs <- crops_all |>
   pivot_longer(
@@ -205,20 +213,6 @@ The Tasmanian wine sector provides a salient example of TESM’s applied relevan
 
 
 \newpage
-
-```{r, warning=F, message=F}
-library(tidyverse)
-
-crops_all <- readRDS("dataset/all_crops_df.rds")
-
-```
-
-```{r}
-library(kableExtra)
-
-crops_list <- crops_all |> 
-  distinct(`Crop Type`)
-```
 
 ```{r}
 crops_types <- crops_list |>
