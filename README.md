@@ -39,7 +39,7 @@ AgriSuit is an R Shiny app that visualises **biophysical crop suitability** at t
 
 These datasets needs to be downloaded first, then put it in the same level as **app.R**
 
-[Shiny App Feed Datasets](https://drive.google.com/drive/folders/1nDDL1lKjfjte7VxJwOMS9mSUr2QZvcQo?usp=sharing)
+[AgriSuit Feed Datasets](https://drive.google.com/drive/folders/1nDDL1lKjfjte7VxJwOMS9mSUr2QZvcQo?usp=sharing)
 
 
 ## Quick start
@@ -65,7 +65,7 @@ DB_PATH: DuckDB file with summary tables (created by the pipeline script).
 
 ESM_DIR: folder with ESM rasters and VAT DBFs.
 
-For building DuckDB tables and refreshing summaries, see `Data_Flow.qmd`.
+For building DuckDB tables and refreshing summaries, see `Data_pipeline.qmd`.
 
 
 ## Method (brief)
@@ -83,7 +83,7 @@ See /docs/methodology.md
  for details.
 
 
-## Raw Datasets (Hyperlinks)
+## Raw Datasets (Not required to Run AgriSuit, to adhere original dataset owners)
 
 1. [Property Listing Dataset](https://www.domain.com.au/sale/?excludeunderoffer=1&landsize=100000-any&landsizeunit=ha&state=tas) — pre-filtered for ≥ 10 ha land in TAS.
 
