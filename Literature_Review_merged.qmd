@@ -39,24 +39,20 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 # Abstract
 
-This study presents AgriSuit, a prototype decision aid that links state-scale crop-suitability mapping with real-estate listings to support parcel-level screening for agricultural investment. The platform ingests official rule-based suitability layers, applies a most-limiting-factor aggregator at the pixel scale, and summarises parcels by dominant class with limiting-factor diagnostics. An interactive web interface overlays parcels with suitability evidence and provides direct link-outs to listing pages to streamline due-diligence actions. In pilot use, the approach delivers transparent, auditable outputs accessible to non-GIS users while revealing important caveats: deterministic classifications without uncertainty propagation, threshold sensitivity, aggregation bias, fixed crop catalogues, and time-windowed climate inputs. A forward roadmap prioritises scenario toggles for future climates, compact uncertainty summaries reported alongside official classes, incorporation of water-access and economic indicators to assess viability, and templated integration for additional jurisdictions.
+This study introduces AgriSuit, an R Shiny web dashboard that connects crop-suitability maps with real-estate listings to support quick and transparent agricultural property screening. The platform analyses official suitability data to identify the main environmental factors that limit growth and calculates the percentage of land suitable for each crop within a parcel. These results are summarised visually, helping users understand which crops are most viable and why. Through its interactive dashboard, users can explore parcel-level suitability maps, view soil and climate details, and open property listings directly to assist in due-diligence and investment decisions. In pilot use, AgriSuit delivered clear and accessible results for non-technical users while revealing current limitations, such as a fixed list of crops and simplified climate assumptions. Future development will focus on adding climate scenario options, uncertainty indicators, and water-access and economic layers to make the tool more comprehensive and scalable across regions.
 
 # Introduction and Motivation
 
 The Tasmanian Enterprise Suitability Map (TESM) is a geospatial decision-support tool that integrates soil, climate, and landscape data to classify land as well suited, suitable, marginally suitable, or unsuitable for a range of agricultural enterprises. Developed by the Tasmanian Institute of Agriculture (TIA) in collaboration with industry, TESM supports planning and investment by providing sciencebased assessments of crop potential across Tasmania. By making suitability information publicly accessible through LISTmap, it has become a cornerstone of agricultural planning and resource allocation in the state.
 
-Despite its strengths, existing platforms present two key limitations. First, they respond poorly to changes in agribusiness trends, including the emergence of new crops that may become economically viable or strategically important for food security in the near future. Second, they are not directly linked with the property market, leaving a critical gap between geospatial crop suitability analysis
-and the practical realities of land acquisition. Prospective buyers or agribusiness investors seeking to identify land parcels that align with their crop preferences must manually consult multiple sources, including property listing sites, agronomy reports, and local council data. This process is time-consuming, fragmented, and often discourages comprehensive due diligence.
+Despite its strengths, existing platforms present two key limitations. First, they respond poorly to changes in agribusiness trends, including the emergence of new crops that may become economically viable or strategically important for food security in the near future. Second, they are not directly linked with the property market, leaving a critical gap between geospatial crop suitability analysis and the practical realities of land acquisition. Prospective buyers or agribusiness investors seeking to identify land parcels that align with their crop preferences must manually consult multiple sources, including property listing sites, agronomy reports, and local council data. This process is time-consuming, fragmented, and often discourages comprehensive due diligence.
 
 Prospective buyers and landholders in Tasmania therefore lack an efficient mechanism to assess which crops are suitable for newly listed properties at the time they appear on the market. Current real-estate platforms do not integrate geospatial factors such as soils, climate, topography, or water access into actionable summaries, meaning that opportunities are frequently missed. This project addresses that gap by automatically assessing crop suitability for new property sales listings and directly linking users with properties that match their preferred crops. To achieve this, the project develops an integrated system that combines property listing information, cadastral parcel boundaries, and statewide crop suitability layers. This system computes parcel-level suitability and presents the results through an interactive Shiny dashboard, providing users with a more personalised and efficient way to evaluate investment opportunities.
 
 Building on this problem statement, the present study redefines the role of TESM by moving beyond the static functions of LISTmap. The project develops an integrated system that links live property sales data with crop suitability assessments derived from TESM, providing users with a more personalised and efficient way to identify land that matches their preferred crops. By combining property listing
 information, cadastral parcel boundaries, and statewide crop suitability layers, the system computes parcel-level suitability and delivers a more dynamic and actionable decision-support tool.
 
-The significance of this research extends across several domains. For investors, the system enables better decision-making by reducing business risk and enhancing opportunity discovery. It assists those who already have specific crop strategies by identifying parcels that match their requirements as soon as they are listed, while also supporting landholders or capital investors who wish to explore which
-crops are most suitable for a given parcel. For the agribusiness sector, it provides a scalable framework for integrating suitability analysis into real-time land acquisition decisions, enabling faster and more confident responses in an environment of rising land values, shifting crop demands, and climate uncertainty. By reducing the risk of costly misallocation, the system ensures that capital and resources are directed toward opportunities with the greatest long-term viability. For policy and planning bodies, the system demonstrates how public geospatial resources such as TESM can be re-purposed into practical, user-focused applications that bridge information gaps between government datasets and private-sector decision-making. It also highlights that these resources are not confined to a
-small niche of agricultural specialists, but can deliver value to mainstream business communities, including property-based investors and developers. This broader relevance strengthens the case for continued improvement of TESM and LISTmap through the inclusion of additional variables and more sophisticated modelling approaches. By connecting suitability assessment with property market
-dynamics, this project contributes to the creation of a more responsive, transparent, and data-driven agricultural investment environment in Tasmania.
+The significance of this research extends across several domains. For investors, the system enables better decision-making by reducing business risk and enhancing opportunity discovery. It assists those who already have specific crop strategies by identifying parcels that match their requirements as soon as they are listed, while also supporting landholders or capital investors who wish to explore which crops are most suitable for a given parcel. For the agribusiness sector, it provides a scalable framework for integrating suitability analysis into real-time land acquisition decisions, enabling faster and more confident responses in an environment of rising land values, shifting crop demands, and climate uncertainty. By reducing the risk of costly misallocation, the system ensures that capital and resources are directed toward opportunities with the greatest long-term viability. For policy and planning bodies, the system demonstrates how public geospatial resources such as TESM can be re-purposed into practical, user-focused applications that bridge information gaps between government datasets and private-sector decision-making. It also highlights that these resources are not confined to a small niche of agricultural specialists, but can deliver value to mainstream business communities, including property-based investors and developers. This broader relevance strengthens the case for continued improvement of TESM and LISTmap through the inclusion of additional variables and more sophisticated modelling approaches. By connecting suitability assessment with property market dynamics, this project contributes to the creation of a more responsive, transparent, and data-driven agricultural investment environment in Tasmania.
 
 
 \newpage
@@ -86,93 +82,7 @@ The [Tasmanian Enterprise Suitability Map (TESM)](https://nre.tas.gov.au/agricul
 
 TESM’s analytical foundation rests upon the integration of three primary data domains, consisting of soil, climate, and topography. The domains are processed through quantitative spatial modelling. The soil component draws on more than 900 core samples describing attributes such as pH, clay content, drainage class, and stone content (Kidd & Webb, 2015). [Climate inputs](https://nrmdatalibrary.nre.tas.gov.au/FactSheets/WfW/ListMapUserNotes/Inventory_DCM_Tas.pdf) originate from a network of over 270 temperature sensors distributed across representative terrain positions, enabling fine-scale modelling of variables such as frost risk, chill hours, growing-degree days, and extreme heat frequency. Topographic variables, derived from Shuttle Radar Topography Mission (SRTM) data, gamma-radiometric imagery, and surface geology, capture slope, aspect, and elevation effects. These heterogeneous datasets are standardised and co-registered, then resampled at 80 m and modelled using regression-tree and regression-kriging approaches to produce spatially continuous soil-attribute predictions with validation accuracy appropriate for regional-scale land evaluation (Kidd & Webb, 2015). The result is a three-dimensional digital representation of the Tasmanian soil landscape that supports downstream suitability analyses.
 
-The suitability evaluation itself employs a deterministic, rule-based framework derived from the Food and Agriculture Organization (FAO, 1976) land-evaluation system and refined through the most-limiting-factor principle articulated by Klingebiel and Montgomery. Each crop or enterprise is governed by a rule set developed jointly by TIA researchers and industry experts, defining optimal and limiting parameter thresholds across the soil–climate–topography continuum. The model classifies each grid cell into four main hierarchical categories, i.e. _well suited_ , _suitable_ , _marginally suitable_ , _unsuitable_ based on the lowest-rated criterion. Thus, if drainage or frost risk is poor even when all other factors are optimal, the overall classification defaults to “unsuitable.” This conservative logic enhances interpretability and ensures that biophysical limitations are not overlooked in investment decisions. The framework also differentiates between _manageable_ and _unmanageable_ constraints, acknowledging that interventions such as liming or artificial drainage can upgrade a site’s effective suitability @Kidd2015-dsa-tas.
-
-Following early operational success, the project advanced to produce state-wide 3D soil-attribute maps at high resolution, which were integrated into the national [Terrestrial Ecosystem Research Network (TERN)](https://www.tern.org.au/) and [GlobalSoilMap.net](https://isric.org/projects/globalsoilmapnet) repositories. Complementary climatic projections from [Climate Futures for Tasmania](https://climatefutures.org.au/climate-futures-for-tasmania/) were incorporated to generate suitability layers for 2030 and 2050 under [Representative Concentration Pathway (RCP) 8.5 scenarios](https://www.climatechangeinaustralia.gov.au/en/changing-climate/future-climate-scenarios/greenhouse-gas-scenarios/). Each enterprise is therefore represented by three temporal surfaces of current (2018), near-future (2030), and long-term (2050), enabling preliminary adaptation planning. An aggregated [Enterprise Versatility Index (EVI)](https://www.thelist.tas.gov.au/app/content/data/geo-meta-data-record?detailRecordUID=d56c5151-9eef-49aa-9712-4f700d65547e) summarises the number of viable enterprises/crops per grid cell, thereby identifying land parcels capable of diversified production. The integration of these high-resolution soil and climate grids has substantially improved Tasmania’s ability to visualise spatial heterogeneity in agricultural potential.
-
-The Tasmanian wine sector provides a salient example of TESM’s applied relevance. Building on earlier climate modelling @Webb2018-frost-tas, the Enterprise suitability mapping and Tasmania’s wine sector (Brullo et.al, 2024) demonstrates how TESM outputs guide site selection for viticulture by combining frost-risk surfaces, growing-degree-day thresholds, and soil-drainage indices. These analyses have supported Tasmania’s transition toward high-value sparkling and cool-climate table wines, where irrigation expansion and land-use zoning are strategically coordinated with biophysical suitability. TESM data are increasingly used by policy agencies to outline priority irrigation districts and agricultural investment zones, reinforcing its dual role as a scientific and economic planning instrument.
-
-
-\newpage
-
-```{r, warning=F, message=F}
-library(tidyverse)
-
-crops_all <- readRDS("dataset/all_crops_df.rds")
-
-```
-
-```{r}
-library(kableExtra)
-
-crops_list <- crops_all |> 
-  distinct(`Crop Type`)
-```
-
-```{r}
-crops_types <- crops_list |>
-  mutate(
-    Type = case_when(
-      # pastures
-      str_detect(`Crop Type`, 
-                 regex("clover|ryegrass|fescue|phalaris|lucerne|cocksfoot", 
-                       ignore_case = TRUE)) ~ "pastures",
-      # perennial horticulture (fruit, nuts and wine grapes)
-      str_detect(`Crop Type`, 
-                 regex("blueberries|cherries|hazelnuts|olives|raspberries|strawberries|tablewg|sparklingwg", 
-                       ignore_case = TRUE)) ~ "perennial horticulture",
-      # vegetables
-      `Crop Type` %in% c("carrots", "carrotseed", "onions", "potatoes") ~ "vegetables",
-
-      # cereals / oilseeds
-      `Crop Type` %in% c("barley", "wheat", "linseed") ~ "cereals",
-
-      # pharmaceuticals
-      `Crop Type` %in% c("hemp", "poppies", "pyrethrum") ~ "pharmaceuticals",
-
-      # forestry
-      str_detect(`Crop Type`, 
-                 regex("tree", ignore_case = TRUE)) ~ "forestry",
-      TRUE ~ "unclassified"
-    )
-  )
-```
-
-```{r}
-#| label: tbl-cropcommodity
-#| tbl-cap: "List of All Current Crops in TESM"
-
-grouped_tbl <- crops_types |>
-  group_by(Type) |>
-  summarise(
-    `Crops` = paste(sort(unique(`Crop Type`)), collapse = ", "),
-    .groups = "drop"
-  ) |>
-  # (optional) order the rows the way you want
-  mutate(Type = factor(
-    Type,
-    levels = c("cereals","perennial horticulture","vegetables",
-               "pharmaceuticals","pastures","forestry","unclassified")
-  )) |>
-  arrange(Type)
-
-kable(grouped_tbl) |>
-  kable_styling(full_width = FALSE) |>
-  column_spec(2, width = "10cm")
-
-```
-
-
-As shown in @tbl-cropcommodity, TESM catalogue comprises 33 crops grouped into seven major commodity classes. Given Tasmania’s comparatively limited arable extent, fragmented parcel structure, and frost-prone microclimates, crop choices must emphasise tolerance to wider climatic variability (e.g., frost and cool-season conditions) and the ability to sustain viable yields at smaller spatial scales than are typical on mainland Australia. Consequently, suitability assessments and investment screening prioritise climate-resilient cultivars, management flexibility (e.g., irrigation/readiness for frost mitigation), and systems that maintain productivity under tighter land and environmental constraints.
-
-Despite its technical sophistication, the Tasmanian Enterprise Suitability Model (TESM) has several recognised limitations. Its spatial accuracy depends on data density, declining in sparsely surveyed regions. The assumption of universal irrigation can overestimate suitability in dryland areas, and deterministic thresholds do not account for uncertainty, making results sensitive to small input changes. TESM also provides a static snapshot rather than a dynamic forecasting tool, and the administrative process for adding new crops limits responsiveness to emerging industries.
-
-Nevertheless, TESM remains a significant contribution to digital soil assessment in Tasmania. It represents one of Australia’s most comprehensive applications of digital soil modelling, integrating DSM, rule-based evaluation, and climate projections to support evidence-based agricultural planning. While its fixed thresholds and irrigation assumptions highlight the need for more flexible and uncertainty-aware systems, TESM continues to serve as a robust first-pass planning tool that translates complex soil–climate data into practical, interpretable suitability information.
-
-
-## Approaches to Crop Suitability Mapping
-
-Crop-suitability frameworks vary widely across regions in data quality, model design, and agronomic priorities. For this project, linking suitability models with property listings to inform land-use investment is to understand how alternative approaches affect comparability, interpretability, and system integration. Tasmania’s TESM provides a deterministic, rule-based baseline; other systems adopt probabilistic or hybrid methods that quantify uncertainty and simulate climate responses. Comparing these approaches shows that the concept of coupling suitability with market data is globally transferable, but implementation depends on each system’s data structures, class vocabularies, and decision logic (Malone & Kidd, 2015).
+The suitability evaluation itself employs a deterministic, rule-based framework derived from the Food and Agriculture Organization (FAO, 1976) land-evaluation system and refined through the most-limiting-factor principle articulated by Klingebiel and Montgomery. Each crop or enterprise is governed by a rule set developed jointly by TIA researchers and industry experts, defining optimal and limiting parameter thresholds across the soil–climate–topography continuum, as outlined in @tbl-allvariables. The model classifies each grid cell into four main hierarchical categories, i.e. _well suited_ , _suitable_ , _marginally suitable_ , _unsuitable_ based on the lowest-rated criterion. Thus, if drainage or frost risk is poor even when all other factors are optimal, the overall classification defaults to “unsuitable.” This conservative logic enhances interpretability and ensures that biophysical limitations are not overlooked in investment decisions. The framework also differentiates between _manageable_ and _unmanageable_ constraints, acknowledging that interventions such as liming or artificial drainage can upgrade a site’s effective suitability @Kidd2015-dsa-tas.
 
 ```{r}
 crops_inputs <- crops_all |>
@@ -289,25 +199,113 @@ kable(vars_tbl, booktabs = TRUE, col.names = c("Class", "Variables")) |>
 
 ```
 
-DIsplayed in @tbl-allvariables containing variables encoded for soil, climate, and terrain, with a Most-Limiting-Factor aggregator to assign pixel classes. Strengths are transparency, auditability, and direct traceability from factor thresholds to parcel-level outcomes. Constraints include boundary brittleness near cut-offs, non-compensation among factors, and dependence on official class schemes and legends. For integration with listings, deterministic maps are straightforward to explain to non-specialists, but require careful legend normalisation across crops and explicit notes on native resolution and epochs.
+Following early operational success, the project advanced to produce state-wide 3D soil-attribute maps at high resolution, which were integrated into the national [Terrestrial Ecosystem Research Network (TERN)](https://www.tern.org.au/) and [GlobalSoilMap.net](https://isric.org/projects/globalsoilmapnet) repositories. Complementary climatic projections from [Climate Futures for Tasmania](https://climatefutures.org.au/climate-futures-for-tasmania/) were incorporated to generate suitability layers for 2030 and 2050 under [Representative Concentration Pathway (RCP) 8.5 scenarios](https://www.climatechangeinaustralia.gov.au/en/changing-climate/future-climate-scenarios/greenhouse-gas-scenarios/). Each enterprise is therefore represented by three temporal surfaces of current (2018), near-future (2030), and long-term (2050), enabling preliminary adaptation planning. An aggregated [Enterprise Versatility Index (EVI)](https://www.thelist.tas.gov.au/app/content/data/geo-meta-data-record?detailRecordUID=d56c5151-9eef-49aa-9712-4f700d65547e) summarises the number of viable enterprises/crops per grid cell, thereby identifying land parcels capable of diversified production. The integration of these high-resolution soil and climate grids has substantially improved Tasmania’s ability to visualise spatial heterogeneity in agricultural potential.
 
-Probabilistic and fuzzy extensions. These quantify class likelihoods or membership grades and can propagate input uncertainty, reducing edge effects and supporting risk-aware screening. They improve decision confidence but introduce additional layers (probabilities, intervals) that must be summarised coherently for property workflows. Integration benefits from storing both the baseline categorical class and a compact uncertainty statistic (e.g., confidence band or top-two class probabilities) at parcel scale.
+The Tasmanian wine sector provides a salient example of TESM’s applied relevance. Building on earlier climate modelling @Webb2018-frost-tas, the Enterprise suitability mapping and Tasmania’s wine sector (Brullo et.al, 2024) demonstrates how TESM outputs guide site selection for viticulture by combining frost-risk surfaces, growing-degree-day thresholds, and soil-drainage indices. These analyses have supported Tasmania’s transition toward high-value sparkling and cool-climate table wines, where irrigation expansion and land-use zoning are strategically coordinated with biophysical suitability. TESM data are increasingly used by policy agencies to outline priority irrigation districts and agricultural investment zones, reinforcing its dual role as a scientific and economic planning instrument.
 
-Hybrid and modular systems. Phenology-aware or scenario-rich designs (e.g., New Zealand implementations that combine frost risk with bud-break timing) mitigate single-indicator brittleness and make climate sensitivity explicit. Global frameworks (e.g., FAO GAEZ) extend scope to yield and yield-gap analyses with scenario pathways, trading local detail for coverage and comparability. For real-estate linkage, hybrids are attractive because they expose both current classification and scenario response, but they demand clear schema bridges (class labels, epochs, units) and careful downscaling when parcel-level decisions are required.
 
-Implications for linking suitability with property markets:
+\newpage
 
-- Comparability: Class schemes, colour palettes, and granularity differ across crops and systems; cross-crop and cross-region comparisons require legend harmonisation and explicit metadata.
+```{r, warning=F, message=F}
+library(tidyverse)
 
-- Resolution and epochs: Native grid size and climate windows must be surfaced to avoid over-precision at parcel boundaries and to enable like-for-like comparisons over time (e.g., present vs 2030/2050).
+crops_all <- readRDS("dataset/all_crops_df.rds")
 
-- Uncertainty communication: Where probabilistic outputs exist, parcel-level summaries should report both the categorical class and a compact confidence indicator.
+```
 
-- Licensing and custodianship: Data access, update cadence, and the ability to add crops or modify rules are governed by custodians; portability to new jurisdictions requires new rule packs and validation with local experts.
+```{r}
+library(kableExtra)
 
-- Workflow integration: Suitability layers must align with listing attributes (location, area filters, water access) and cadastral geometries to support due-diligence tasks without GIS expertise.
+crops_list <- crops_all |> 
+  distinct(`Crop Type`)
+```
 
-In summary, deterministic, probabilistic, and hybrid frameworks each offer distinct trade-offs in interpretability, risk communication, and scalability. The underlying idea—integrating suitability evidence with property listings to support investment decisions—is broadly applicable, but delivering it in practice requires custom schema mapping, legend normalisation, and jurisdiction-specific rule packs. The next section turns to GIS-enabled Spatial Decision Support Systems (SDSS), showing how interactive platforms operationalise these requirements through reproducible overlays, parcel-level summaries, and scenario/uncertainty toggles appropriate for end-user workflows.
+```{r}
+crops_types <- crops_list |>
+  mutate(
+    Type = case_when(
+      # pastures
+      str_detect(`Crop Type`, 
+                 regex("clover|ryegrass|fescue|phalaris|lucerne|cocksfoot", 
+                       ignore_case = TRUE)) ~ "pastures",
+      # perennial horticulture (fruit, nuts and wine grapes)
+      str_detect(`Crop Type`, 
+                 regex("blueberries|cherries|hazelnuts|olives|raspberries|strawberries|tablewg|sparklingwg", 
+                       ignore_case = TRUE)) ~ "perennial horticulture",
+      # vegetables
+      `Crop Type` %in% c("carrots", "carrotseed", "onions", "potatoes") ~ "vegetables",
+
+      # cereals / oilseeds
+      `Crop Type` %in% c("barley", "wheat", "linseed") ~ "cereals",
+
+      # pharmaceuticals
+      `Crop Type` %in% c("hemp", "poppies", "pyrethrum") ~ "pharmaceuticals",
+
+      # forestry
+      str_detect(`Crop Type`, 
+                 regex("tree", ignore_case = TRUE)) ~ "forestry",
+      TRUE ~ "unclassified"
+    )
+  )
+```
+
+```{r}
+#| label: tbl-cropcommodity
+#| tbl-cap: "List of All Current Crops in TESM"
+
+grouped_tbl <- crops_types |>
+  group_by(Type) |>
+  summarise(
+    `Crops` = paste(sort(unique(`Crop Type`)), collapse = ", "),
+    .groups = "drop"
+  ) |>
+  # (optional) order the rows the way you want
+  mutate(Type = factor(
+    Type,
+    levels = c("cereals","perennial horticulture","vegetables",
+               "pharmaceuticals","pastures","forestry","unclassified")
+  )) |>
+  arrange(Type)
+
+kable(grouped_tbl) |>
+  kable_styling(full_width = FALSE) |>
+  column_spec(2, width = "10cm")
+
+```
+
+
+As shown in @tbl-cropcommodity, TESM catalogue comprises 33 crops grouped into seven major commodity classes. Given Tasmania’s comparatively limited arable extent, fragmented parcel structure, and frost-prone microclimates, crop choices must emphasise tolerance to wider climatic variability (e.g., frost and cool-season conditions) and the ability to sustain viable yields at smaller spatial scales than are typical on mainland Australia. Consequently, suitability assessments and investment screening prioritise climate-resilient cultivars, management flexibility (e.g., irrigation/readiness for frost mitigation), and systems that maintain productivity under tighter land and environmental constraints.
+
+Despite its technical sophistication, the Tasmanian Enterprise Suitability Model (TESM) has several recognised limitations. Its spatial accuracy depends on data density, declining in sparsely surveyed regions. The assumption of universal irrigation can overestimate suitability in dryland areas, and deterministic thresholds do not account for uncertainty, making results sensitive to small input changes. TESM also provides a static snapshot rather than a dynamic forecasting tool, and the administrative process for adding new crops limits responsiveness to emerging industries.
+
+Nevertheless, TESM remains a significant contribution to digital soil assessment in Tasmania. It represents one of Australia’s most comprehensive applications of digital soil modelling, integrating DSM, rule-based evaluation, and climate projections to support evidence-based agricultural planning. While its fixed thresholds and irrigation assumptions highlight the need for more flexible and uncertainty-aware systems, TESM continues to serve as a robust first-pass planning tool that translates complex soil–climate data into practical, interpretable suitability information.
+
+
+## Approaches to Crop Suitability Mapping
+
+Crop-suitability frameworks vary widely across regions in data quality, model design, and agronomic priorities. For this project, linking suitability models with property listings to inform land-use investment is to understand how alternative approaches affect comparability, interpretability, and system integration. Tasmania’s TESM provides a deterministic, rule-based baseline; other systems adopt probabilistic or hybrid methods that quantify uncertainty and simulate climate responses. Comparing these approaches shows that the concept of coupling suitability with market data is globally transferable, but implementation depends on each system’s data structures, class vocabularies, and decision logic (Malone & Kidd, 2015).
+
+Strengths are transparency, auditability, and direct traceability from factor thresholds to parcel-level outcomes. Constraints include boundary brittleness near cut-offs, non-compensation among factors, and dependence on official class schemes and legends. For integration with listings, deterministic maps are straightforward to explain to non-specialists, but require careful legend normalisation across crops and explicit notes on native resolution and epochs.
+
+#### Probabilistic and fuzzy extensions 
+These quantify class likelihoods or membership grades and can propagate input uncertainty, reducing edge effects and supporting risk-aware screening. They improve decision confidence but introduce additional layers (probabilities, intervals) that must be summarised coherently for property workflows. Integration benefits from storing both the baseline categorical class and a compact uncertainty statistic (e.g., confidence band or top-two class probabilities) at parcel scale.
+
+#### Hybrid and modular systems
+Phenology-aware or scenario-rich designs (e.g., New Zealand implementations that combine frost risk with bud-break timing) mitigate single-indicator brittleness and make climate sensitivity explicit. Global frameworks (e.g., FAO GAEZ) extend scope to yield and yield-gap analyses with scenario pathways, trading local detail for coverage and comparability. For real-estate linkage, hybrids are attractive because they expose both current classification and scenario response, but they demand clear schema bridges (class labels, epochs, units) and careful downscaling when parcel-level decisions are required.
+
+#### Implications for linking suitability with property markets:
+
+- **Comparability**: Class schemes, colour palettes, and granularity differ across crops and systems; cross-crop and cross-region comparisons require legend harmonisation and explicit metadata.
+
+- **Resolution and epochs**: Native grid size and climate windows must be surfaced to avoid over-precision at parcel boundaries and to enable like-for-like comparisons over time (e.g., present vs 2030/2050).
+
+- **Uncertainty communication**: Where probabilistic outputs exist, parcel-level summaries should report both the categorical class and a compact confidence indicator.
+
+- **Licensing and custodianship**: Data access, update cadence, and the ability to add crops or modify rules are governed by custodians; portability to new jurisdictions requires new rule packs and validation with local experts.
+
+- **Workflow integration**: Suitability layers must align with listing attributes (location, area filters, water access) and cadastral geometries to support due-diligence tasks without GIS expertise.
+
+In summary, deterministic, probabilistic, and hybrid frameworks each offer distinct trade-offs in interpretability, risk communication, and scalability. The underlying idea—integrating suitability evidence with property listings to support investment decisions—is broadly applicable, but delivering it in practice requires custom schema mapping, legend normalisation, and jurisdiction-specific rule packs. The next section turns to GIS-enabled Spatial Decision Support Systems (SDSS), showing how interactive platforms operationalise these requirements through reproducible overlays, parcel-level summaries, and scenario/uncertainty toggles appropriate for end user workflows.
 
 ## Geographic Information Systems (GIS) and Spatial Decision Support
 
@@ -793,4 +791,256 @@ AgriSuit delivers a functional foundation for integrating geospatial analytics w
 
 
 \newpage
+
+# Github Repository 
+The complete codebase for the AgriSuit project is
+hosted on GitHub and can be accessed at the following
+[link](https://github.com/Azham3033/Matrix_Geoscience_ETC5543)  
+
+# Appendix
+
+Code snippet for data wrangling ( cleaning raw price to numeric column).
+
+```{r eval=FALSE, echo=TRUE, message=FALSE,warning=FALSE}
+# Convert price text to numeric dollars where possible
+parse_price_numeric <- function(price_text) {
+  if (is.na(price_text) || str_trim(price_text) == "") return(NA_real_)
+
+  # Normalise text: uppercase, remove commas and non-breaking spaces
+  txt <- stringr::str_to_upper(price_text)
+  txt <- stringr::str_replace_all(txt, "[,\\u00A0]", "")
+
+  # Skip text-only placeholders
+  if (stringr::str_detect(txt,
+                          "EOI|EXPRESSION|CONTACT|TENDER|AUCTION|BY 
+                  NEGOTIATION|PRICE ON APPLICATION|POA|BY OFFER"))
+    return(NA_real_)
+  # Flexible match: find first number anywhere, with optional $ 
+  # and optional K/M suffix
+  m <- stringr::str_match(txt,
+                          ".*?\\$?\\s*([0-9]+(?:\\.[0-9]+)?)\\s*([KM])?.*")
+
+  # Only the NUMBER capture is required; suffix may be NA
+  if (is.na(m[,2])) return(NA_real_)
+
+  val <- as.numeric(m[,2])
+  suf <- m[,3]
+
+  if (!is.na(suf)) {
+    if (suf == "K") val <- val * 1e3
+    if (suf == "M") val <- val * 1e6
+  }
+
+  as.numeric(round(val))
+}
+```
+
+Establishing the database connections (Duck Db).
+
+```{r  eval=FALSE, echo=TRUE, message=FALSE,warning=FALSE}
+#  Creating / opening a database file
+con <- dbConnect(duckdb(), dbdir = "TESM.duckdb", read_only = FALSE)
+```
+
+ Consolidating the land informations into one table.
+
+```{sql,eval=FALSE, echo=TRUE, message=FALSE,warning=FALSE}
+#| code-overflow: wrap
+/* creating the final master table by joining the property listing data with
+ cadstral address master table.*/
+
+CREATE OR REPLACE TABLE PROPERTY_MASTER AS
+SELECT
+  p.PID,
+  p.POT_PID,  
+  p.MUNICIPALITY,
+  d.full_address as FULL_ADDRESS,
+  d.price_numeric as PRICE,
+  ST_AsText(ST_GeomFromWKB(p.parcel_geometry))  AS PARCEL_WKT,
+  ST_AsText(ST_GeomFromWKB(p.address_geometry)) AS ADDRESS_WKT,
+  d.Listing_URL as Domain_URL
+FROM PROPERTY_LISTING d
+JOIN CADASTRAL_ADDRESS_MASTER p
+  ON upper(trim(replace(d.full_address, chr(160), ' '))) =
+     upper(trim(replace(p.full_address, chr(160), ' '))) where POT_PID!=0;
+```
+
+Code snippet for Pixel counting.
+
+```{r eval=FALSE, echo=TRUE, message=FALSE,warning=FALSE}
+#| code-overflow: wrap
+vat_lu_dedup <- dplyr::distinct(vat_lu, code, label)
+
+out <- cell_df |>
+  # Keep majority-covering cells and non-missing values
+  dplyr::filter(!is.na(value), coverage_fraction >= majority_thr) |>
+  # Count cells by class value
+  dplyr::count(value, name = "COUNT") |>
+  # Join human-readable class labels
+  dplyr::left_join(vat_lu_dedup, by = c("value" = "code")) |>
+  dplyr::mutate(
+    CLASS_LABEL = dplyr::coalesce(label, as.character(value)),
+    CROP        = tools::file_path_sans_ext(basename(tif_path))
+  ) |>
+  # Final tidy columns (carry-through identifiers and geometry WKT)
+  dplyr::transmute(
+    PID          = prop_row$PID,
+    POT_PID      = prop_row$POT_PID,
+    MUNICIPALITY = prop_row$MUNICIPALITY,
+    FULL_ADDRESS = prop_row$full_address,
+    Domain_URL   = prop_row$Domain_URL,
+    COUNT,
+    CLASS_LABEL,
+    CROP,
+    GEOMETRY     = prop_row$parcel_wkt,
+    ADDRESS_WKT  = prop_row$address_wkt
+  ) |>
+  dplyr::arrange(dplyr::desc(COUNT))
+```
+
+Code for the pixel level mapping on Rshiny dashboard.
+
+```{r  eval=FALSE, echo=TRUE, message=FALSE,warning=FALSE}
+#| code-overflow: wrap
+tif_path <- file.path(esm_dir, paste0(crop_nm, ".tif"))
+validate(need(file.exists(tif_path), 
+              sprintf("Missing GeoTIFF: %s", tif_path)))
+r <- terra::rast(tif_path)
+
+bb <- st_bbox(st_transform(parcel_sf, st_crs(r)))
+ext_zoom <- terra::ext(as.numeric(bb["xmin"]) - zoom_buffer_m,
+                       as.numeric(bb["xmax"]) + zoom_buffer_m,
+                       as.numeric(bb["ymin"]) - zoom_buffer_m,
+                       as.numeric(bb["ymax"]) + zoom_buffer_m)
+r_cut <- terra::crop(r, ext_zoom)
+
+vat_path <- paste0(tif_path, ".vat.dbf")
+cat_tbl <- NULL
+if (file.exists(vat_path)) {
+  vat  <- foreign::read.dbf(vat_path, as.is = TRUE)
+  vcol <- grep("^value$", names(vat), ignore.case = TRUE, value = TRUE)
+  if (length(vcol) == 1L) {
+    lcol <- grep("(suitab|class|label|cat|legend|desc|category)", names(vat), 
+                 ignore.case = TRUE, value = TRUE)
+    if (!length(lcol)) lcol <- vcol
+    cat_tbl <- data.frame(ID = vat[[vcol]], label = 
+                            trimws(as.character(vat[[lcol]])))
+    r_cut   <- as.factor(r_cut)
+    levels(r_cut) <- data.frame(ID = cat_tbl$ID, class = cat_tbl$label)
+  }
+}
+
+pal     <- get_crop_palette(crop_nm)
+classes <- pal$class_label
+cols    <- pal$color_hex
+
+canon2 <- function(s) { s <- gsub("\\s+"," ", trimws(s)); 
+s <- gsub("soil mgmt","soil management", s, ignore.case=TRUE); tolower(s) }
+
+col_map <- NULL
+if (!is.null(cat_tbl)) {
+  lut_lab2col <- setNames(cols, canon2(classes))
+  cm <- lut_lab2col[canon2(cat_tbl$label)]
+  cm[is.na(cm)] <- "lightgray"
+  names(cm) <- as.character(cat_tbl$ID)
+  col_map <- cm
+}
+
+parcel_r <- st_transform(parcel_sf, st_crs(r_cut))
+
+r_mask <- try(terra::mask(r_cut, terra::vect(parcel_r)), silent = TRUE)
+if (inherits(r_mask, "try-error")) r_mask <- r_cut
+r_fac <- as.factor(r_mask)
+
+lev_df <- levels(r_fac)[[1]]
+ids_in_levels 
+<- if (!is.null(lev_df) && "ID" %in% names(lev_df)) as.character(lev_df$ID) 
+else character(0)
+
+cols_for_levels <- rep("lightgray", length(ids_in_levels))
+if (!is.null(col_map) && length(ids_in_levels)) {
+  hitc <- col_map[ids_in_levels]
+  cols_for_levels[!is.na(hitc)] <- hitc[!is.na(hitc)]
+}
+
+```
+
+Rshiny server code where the Rshiny user input fetches data from the duckdb 
+database.
+
+```{r  eval=FALSE, echo=TRUE, message=FALSE,warning=FALSE}
+#| code-overflow: wrap
+# ---- Validation (Explore) ----
+has_loc_filter<- reactive({ is_present(input$municipality) 
+  || is_present(input$addr) })
+has_target_filter <- reactive({ selected_not_all(input$crop) 
+  || selected_not_all(input$class) })
+
+# ---- Build SQL (Explore) ----
+build_sql <- reactive({
+  req(input$limit)
+  where  <- c(); params <- list()
+  
+  if (selected_not_all(input$crop)) {
+    where <- c(where, sprintf("UPPER(%s)=UPPER(?crop)",
+                              dbQuoteIdentifier(con,"CROP"))); 
+    params$crop <- input$crop
+  } else if (!is.null(input$crop_category) && input$crop_category != "All") {
+    where <- c(where, 
+    sprintf("UPPER(%s) IN
+    (SELECT UPPER(CROP_NAME) FROM %s WHERE UPPER(CROP_CATEGORY)=UPPER(?cat))",
+               dbQuoteIdentifier(con,"CROP"),
+               dbQuoteIdentifier(con, CROP_MASTER)))
+    params$cat <- input$crop_category
+  }
+  if (!is.null(input$class) && input$class != "All") {
+    where <- 
+      c(where, sprintf("UPPER(%s)=UPPER(?class_label)",
+                       dbQuoteIdentifier(con,"CLASS_LABEL")));
+    params$class_label <- input$class
+  }
+  if (is_present(input$municipality)) {
+    where <- 
+      c(where, sprintf("UPPER(%s)=UPPER(?municipality)", 
+                       dbQuoteIdentifier(con,"MUNICIPALITY"))); 
+    params$municipality <- input$municipality
+  }
+  if (is_present(input$addr)) {
+    where <- 
+      c(where, sprintf("UPPER(%s) ILIKE '%%'
+                       || UPPER(?addr) || '%%'", 
+                       dbQuoteIdentifier(con,"FULL_ADDRESS"))); 
+    params$addr <- input$addr
+  }
+  
+  where_sql <-
+    if (length(where)) paste("WHERE", paste(where, collapse=" AND ")) 
+  else ""
+  select_cols <- 
+    paste(dbQuoteIdentifier(con, c("FULL_ADDRESS","MUNICIPALITY",
+           "CROP","CLASS_LABEL","PRICE","COUNT","COVERAGE","WEBSITE")),
+                       collapse=", ")
+  sql <- sprintf("SELECT %s FROM %s %s ORDER BY FULL_ADDRESS LIMIT %d",
+                 select_cols, 
+                 dbQuoteIdentifier(con, MAIN_TABLE), 
+                 where_sql, as.integer(input$limit))
+  list(sql=sql, params=params)
+})
+output$sql_preview <- renderText({ build_sql()$sql })
+
+# ---- Run query (Explore) ----
+data_reactive <- eventReactive(input$run, {
+  validate(
+    need(has_loc_filter(), 
+         "Please select a Municipality or enter 
+         a Full Address before running."),
+    need(has_target_filter(), 
+         "Please select either a specific Crop or a Class label
+         (Crop Category alone isn’t enough).")
+  )
+  b <- build_sql()
+  safe_query(con, b$sql, b$params)
+}, ignoreInit = TRUE)
+```
+
 
