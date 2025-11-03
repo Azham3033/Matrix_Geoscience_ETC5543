@@ -281,7 +281,7 @@ grouped_tbl <- crops_types |>
                "pharmaceuticals","pastures","forestry","unclassified")
   )) |>
   arrange(Type)
-
+  
 kable(grouped_tbl) |>
   kable_styling(full_width = FALSE) |>
   column_spec(2, width = "10cm")
