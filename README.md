@@ -8,9 +8,6 @@
   <a href="https://cran.r-project.org/">
     <img src="https://img.shields.io/badge/R-%3E%3D%204.3+-blue.svg" alt="R version" />
   </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-CC%20BY%204.0-lightgrey.svg" alt="License: CC BY 4.0" />
-  </a>
   <a href="#">
     <img src="https://img.shields.io/badge/status-research%20prototype-informational.svg" alt="Status" />
   </a>
